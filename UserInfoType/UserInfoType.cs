@@ -15,5 +15,6 @@ namespace UserInfoType
         public bool PasswordNeverExpires { get; set; }
         public bool UserMayNotChangePassword { get; set; }
         public List<string> Groups { get; set; }
+        public string ErrorInfo { get; set; }
     }
 }

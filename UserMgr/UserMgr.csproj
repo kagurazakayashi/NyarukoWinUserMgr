@@ -75,6 +75,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UserInfoLoader\UserInfoLoader.csproj">
+      <Project>{7eaa4071-debe-43fa-ae56-7eea97517196}</Project>
+      <Name>UserInfoLoader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\userinfotype\UserInfoType.csproj">
       <Project>{c48ecb0b-0d6c-4e50-97a7-7d62cbe8504e}</Project>
       <Name>UserInfoType</Name>
