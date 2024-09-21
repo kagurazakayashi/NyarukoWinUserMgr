@@ -13,15 +13,15 @@ namespace UserInfoLoader
     /// </summary>
     public class UserLoader
     {
+        // 初始化一個空的使用者列表
+        public List<UserInfo> users = new List<UserInfo>();
+
         /// <summary>
         /// 獲取本機電腦中的所有使用者資訊。
         /// </summary>
         /// <returns>返回包含本機使用者資訊的列表。</returns>
-        public static List<UserInfo> GetLocalUsers()
+        public void GetLocalUsers()
         {
-            // 初始化一個空的使用者列表
-            var users = new List<UserInfo>();
-
             try
             {
                 // 獲取本機電腦名稱
@@ -29,6 +29,9 @@ namespace UserInfoLoader
 
                 // 建立指向本機電腦的目錄條目
                 DirectoryEntry localMachine = new DirectoryEntry($"WinNT://{machineName},computer");
+
+                // 清空使用者列表
+                users.Clear();
 
                 // 遍歷本機電腦的所有子節點
                 foreach (DirectoryEntry user in localMachine.Children)
@@ -77,9 +80,6 @@ namespace UserInfoLoader
                 users.Clear();
                 users.Add(new UserInfo { ErrorInfo = ex.Message });
             }
-
-            // 返回使用者列表
-            return users;
         }
     }
 }
