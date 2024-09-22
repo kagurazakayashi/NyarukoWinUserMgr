@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInfoType", "UserInfoTyp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInfoLoader", "UserInfoLoader\UserInfoLoader.csproj", "{7EAA4071-DEBE-43FA-AE56-7EEA97517196}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemRes", "SystemRes\SystemRes.csproj", "{00E6561B-C3EB-4CAE-A294-7F70C6D185D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +29,15 @@ Global
 		{7EAA4071-DEBE-43FA-AE56-7EEA97517196}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EAA4071-DEBE-43FA-AE56-7EEA97517196}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EAA4071-DEBE-43FA-AE56-7EEA97517196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00E6561B-C3EB-4CAE-A294-7F70C6D185D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00E6561B-C3EB-4CAE-A294-7F70C6D185D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00E6561B-C3EB-4CAE-A294-7F70C6D185D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00E6561B-C3EB-4CAE-A294-7F70C6D185D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {029905A0-7041-425F-B2BA-D760245E8990}
 	EndGlobalSection
 EndGlobal
