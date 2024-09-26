@@ -8,20 +8,48 @@ using System.Text;
 using System.Windows.Forms;
 using UserInfoType;
 using UserInfoLoader;
+using Slboot;
 
 namespace winusermgr
 {
     public partial class Form1 : Form
     {
         UserLoader userLoader = new UserLoader();
+        SlbootAni slboot = new SlbootAni();
         public Form1()
         {
             InitializeComponent();
+            toolStripButtonReload.Image = Shell32IconHelper.GetIconFromSysImageres(228).ToBitmap() ?? Shell32IconHelper.CreatePlaceholderBitmap();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            slboot.Init(20);
+            if (slboot.aniFont != null)
+            {
+                labelWait.Font = slboot.aniFont;
+            }
             reloadData();
+        }
+
+        private void waitAni(bool enable)
+        {
+            if (enable)
+            {
+                labelWait.Visible = true;
+                dataGridUsers.Visible = false;
+                if (slboot.aniFont != null)
+                {
+                    timerWaitAni.Enabled = true;
+                }
+            }
+            else
+            {
+                timerStopWaitAni.Enabled = false;
+                timerWaitAni.Enabled = false;
+                dataGridUsers.Visible = true;
+                labelWait.Visible = false;
+            }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -36,6 +64,7 @@ namespace winusermgr
 
         private void reloadData()
         {
+            waitAni(true);
             // 載入本地使用者資訊
             userLoader.GetLocalUsers();
             // 檢查是否發生錯誤
@@ -50,6 +79,17 @@ namespace winusermgr
                 // $"⭐ Name: {user.Name}, FullName: {user.FullName}, Description: {user.Description}, AccountExpires: {user.AccountExpires}, Disabled: {user.Disabled}, PasswordNeverExpires: {user.PasswordNeverExpires}, UserMayNotChangePassword: {user.UserMayNotChangePassword}, Group: {string.Join(", ", user.Groups)}\n";
                 dataGridUsers.Rows.Add(user.Name, user.FullName, user.Description, user.AccountExpires, user.Disabled, user.PasswordNeverExpires, user.UserMayNotChangePassword, string.Join(", ", user.Groups));
             }
+            timerStopWaitAni.Enabled = true;
+        }
+
+        private void timerWaitAni_Tick(object sender, EventArgs e)
+        {
+            labelWait.Text = slboot.UpdateChar();
+        }
+
+        private void timerStopWaitAni_Tick(object sender, EventArgs e)
+        {
+            waitAni(false);
         }
     }
 }

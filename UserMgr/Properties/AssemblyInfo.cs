@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("winusermgr")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("系统用户快速管理工具")]
+[assembly: AssemblyDescription("系统用户快速管理工具")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("KagurazakaYashi")]
 [assembly: AssemblyProduct("winusermgr")]
-[assembly: AssemblyCopyright("Copyright ©  2024")]
+[assembly: AssemblyCopyright("Copyright © KagurazakaMiyabi 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

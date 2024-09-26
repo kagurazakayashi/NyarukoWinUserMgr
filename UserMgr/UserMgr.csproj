@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -75,11 +75,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SystemRes\SystemRes.csproj">
+      <Project>{00e6561b-c3eb-4cae-a294-7f70c6d185d8}</Project>
+      <Name>SystemRes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UserInfoLoader\UserInfoLoader.csproj">
       <Project>{7eaa4071-debe-43fa-ae56-7eea97517196}</Project>
       <Name>UserInfoLoader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\userinfotype\UserInfoType.csproj">
+    <ProjectReference Include="..\UserInfoType\UserInfoType.csproj">
       <Project>{c48ecb0b-0d6c-4e50-97a7-7d62cbe8504e}</Project>
       <Name>UserInfoType</Name>
     </ProjectReference>
