@@ -21,10 +21,10 @@ namespace Slboot
         {
             string windowsPath = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
 
-            string fontPath = Path.Combine(windowsPath, "\\Boot\\Fonts\\segoe_slboot.ttf");
+            string fontPath = windowsPath + "\\Boot\\Fonts\\segoe_slboot.ttf";
             if (!File.Exists(fontPath))
             {
-                Console.WriteLine("找不到动画字体 " + fontPath);
+                Console.WriteLine(windowsPath + " 找不到动画字体 " + fontPath);
                 return;
             }
             privateFonts = new PrivateFontCollection();

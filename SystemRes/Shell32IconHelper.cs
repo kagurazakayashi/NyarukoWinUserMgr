@@ -35,7 +35,7 @@ public class Shell32IconHelper
     public static Icon GetIconFromSysImageres(int iconIndex)
     {
         string windowsPath = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-        return ExtractIconFromDll(Path.Combine(windowsPath, "System32\\imageres.dll"), iconIndex);
+        return ExtractIconFromDll(windowsPath + "\\System32\\imageres.dll", iconIndex);
     }
     static Icon ExtractIconFromDll(string dllPath, int iconIndex)
     {

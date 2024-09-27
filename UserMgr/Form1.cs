@@ -34,21 +34,17 @@ namespace winusermgr
 
         private void waitAni(bool enable)
         {
-            if (enable)
+            toolStrip1.Enabled = !enable;
+            UseWaitCursor = enable;
+            labelWait.Visible = enable;
+            dataGridUsers.Visible = !enable;
+            if (enable && slboot.aniFont != null)
             {
-                labelWait.Visible = true;
-                dataGridUsers.Visible = false;
-                if (slboot.aniFont != null)
-                {
-                    timerWaitAni.Enabled = true;
-                }
+                timerWaitAni.Enabled = enable;
             }
             else
             {
-                timerStopWaitAni.Enabled = false;
                 timerWaitAni.Enabled = false;
-                dataGridUsers.Visible = true;
-                labelWait.Visible = false;
             }
         }
 
