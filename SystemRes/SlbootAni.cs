@@ -38,5 +38,9 @@ namespace Slboot
             currentCharIndex++;
             return char.ConvertFromUtf32(codePoint);
         }
+        public void StopUpdateChar()
+        {
+            currentCharIndex = 0;
+        }
     }
 }

@@ -29,6 +29,9 @@ namespace winusermgr
             {
                 labelWait.Font = slboot.aniFont;
             }
+            string machineName = Environment.MachineName;
+            toolStripComboBoxMachine.Items.Add(machineName);
+            toolStripComboBoxMachine.Text = machineName;
             reloadData();
         }
 
@@ -45,6 +48,7 @@ namespace winusermgr
             else
             {
                 timerWaitAni.Enabled = false;
+                slboot.StopUpdateChar();
             }
         }
 
@@ -62,7 +66,7 @@ namespace winusermgr
         {
             waitAni(true);
             // 載入本地使用者資訊
-            userLoader.GetLocalUsers();
+            userLoader.GetLocalUsers(toolStripComboBoxMachine.Text);
             // 檢查是否發生錯誤
             if (userLoader.users.Count == 1 && userLoader.users[0].ErrorInfo.Length > 0)
             {
@@ -70,6 +74,7 @@ namespace winusermgr
                 return;
             }
             dataGridUsers.Rows.Clear();
+            Text = toolStripComboBoxMachine.Text + " 的用户目录";
             foreach (UserInfo user in userLoader.users)
             {
                 // $"⭐ Name: {user.Name}, FullName: {user.FullName}, Description: {user.Description}, AccountExpires: {user.AccountExpires}, Disabled: {user.Disabled}, PasswordNeverExpires: {user.PasswordNeverExpires}, UserMayNotChangePassword: {user.UserMayNotChangePassword}, Group: {string.Join(", ", user.Groups)}\n";

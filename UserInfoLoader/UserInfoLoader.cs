@@ -20,12 +20,15 @@ namespace UserInfoLoader
         /// 獲取本機電腦中的所有使用者資訊。
         /// </summary>
         /// <returns>返回包含本機使用者資訊的列表。</returns>
-        public void GetLocalUsers()
+        public void GetLocalUsers(string machineName = "")
         {
             try
             {
                 // 獲取本機電腦名稱
-                string machineName = Environment.MachineName;
+                if (machineName.Length == 0)
+                {
+                    machineName = Environment.MachineName;
+                }
 
                 // 建立指向本機電腦的目錄條目
                 DirectoryEntry localMachine = new DirectoryEntry($"WinNT://{machineName},computer");
@@ -80,6 +83,11 @@ namespace UserInfoLoader
                 users.Clear();
                 users.Add(new UserInfo { ErrorInfo = ex.Message });
             }
+        }
+
+        public void GetLocalUsers()
+        {
+            GetLocalUsers("");
         }
     }
 }
