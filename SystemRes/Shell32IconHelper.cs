@@ -32,10 +32,10 @@ public class Shell32IconHelper
         public string szTypeName;
     }
 
-    public static Icon GetIconFromSysImageres(int iconIndex)
+    public static Icon GetIconFromSysImageres(int iconIndex, string imageresdll = "\\System32\\SHELL32.dll")
     {
         string windowsPath = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-        return ExtractIconFromDll(windowsPath + "\\System32\\imageres.dll", iconIndex);
+        return ExtractIconFromDll(windowsPath + imageresdll, iconIndex);
     }
     static Icon ExtractIconFromDll(string dllPath, int iconIndex)
     {
@@ -55,6 +55,15 @@ public class Shell32IconHelper
         }
         MessageBox.Show($"{Marshal.GetLastWin32Error()}", $"无法提取图标 {iconIndex} : {dllPath}", MessageBoxButtons.OK, MessageBoxIcon.Error);
         return null;
+    }
+    public static Bitmap GetBitmapFromSysImageres(int iconIndex, string imageresdll = "\\System32\\SHELL32.dll")
+    {
+        Icon icon = GetIconFromSysImageres(iconIndex, imageresdll);
+        if (icon != null)
+        {
+            return icon.ToBitmap();
+        }
+        return CreatePlaceholderBitmap();
     }
     public static Bitmap CreatePlaceholderBitmap()
     {
