@@ -19,7 +19,8 @@ namespace winusermgr
         public Form1()
         {
             InitializeComponent();
-            toolStripButtonReload.Image = Shell32IconHelper.GetIconFromSysImageres(228).ToBitmap() ?? Shell32IconHelper.CreatePlaceholderBitmap();
+            toolStripButtonReload.Image = Shell32IconHelper.GetBitmapFromSysImageres(176);
+            toolStripButtonGroups.Image = Shell32IconHelper.GetBitmapFromSysImageres(251);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -91,6 +92,15 @@ namespace winusermgr
         private void timerStopWaitAni_Tick(object sender, EventArgs e)
         {
             waitAni(false);
+        }
+
+        private void toolStripButtonGroups_Click(object sender, EventArgs e)
+        {
+            FormGroupSelect formGroupSelect = new FormGroupSelect();
+            if (formGroupSelect.ShowDialog() == DialogResult.OK)
+            {
+                reloadData();
+            }
         }
     }
 }

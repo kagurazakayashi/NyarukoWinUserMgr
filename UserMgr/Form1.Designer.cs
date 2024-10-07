@@ -31,13 +31,12 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripComboBoxMachine = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripButtonReload = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonGroups = new System.Windows.Forms.ToolStripButton();
             this.dataGridUsers = new System.Windows.Forms.DataGridView();
-            this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
-            this.labelWait = new System.Windows.Forms.Label();
-            this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.udName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.udFullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.udDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,6 +45,9 @@
             this.udPasswordNeverExpires = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.udUserMayNotChangePassword = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.udGroups = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
+            this.labelWait = new System.Windows.Forms.Label();
+            this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).BeginInit();
             this.SuspendLayout();
@@ -56,13 +58,21 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.toolStripComboBoxMachine,
-            this.toolStripButtonReload});
+            this.toolStripButtonReload,
+            this.toolStripSeparator1,
+            this.toolStripButtonGroups});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.toolStrip1.Size = new System.Drawing.Size(980, 28);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(46, 25);
+            this.toolStripLabel1.Text = "主机:";
             // 
             // toolStripComboBoxMachine
             // 
@@ -76,11 +86,27 @@
             this.toolStripButtonReload.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonReload.Name = "toolStripButtonReload";
             this.toolStripButtonReload.Size = new System.Drawing.Size(82, 25);
-            this.toolStripButtonReload.Text = "刷新(&R)";
+            this.toolStripButtonReload.Text = "加载(&R)";
             this.toolStripButtonReload.Click += new System.EventHandler(this.toolStripButtonReload_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
+            // 
+            // toolStripButtonGroups
+            // 
+            this.toolStripButtonGroups.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonGroups.Image")));
+            this.toolStripButtonGroups.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonGroups.Name = "toolStripButtonGroups";
+            this.toolStripButtonGroups.Size = new System.Drawing.Size(145, 25);
+            this.toolStripButtonGroups.Text = "选择用户组列(&S)";
+            this.toolStripButtonGroups.Click += new System.EventHandler(this.toolStripButtonGroups_Click);
             // 
             // dataGridUsers
             // 
+            this.dataGridUsers.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dataGridUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridUsers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.udName,
@@ -99,33 +125,6 @@
             this.dataGridUsers.Size = new System.Drawing.Size(980, 673);
             this.dataGridUsers.TabIndex = 1;
             this.dataGridUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // timerStopWaitAni
-            // 
-            this.timerStopWaitAni.Interval = 1000;
-            this.timerStopWaitAni.Tick += new System.EventHandler(this.timerStopWaitAni_Tick);
-            // 
-            // labelWait
-            // 
-            this.labelWait.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelWait.Location = new System.Drawing.Point(0, 0);
-            this.labelWait.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelWait.Name = "labelWait";
-            this.labelWait.Size = new System.Drawing.Size(980, 701);
-            this.labelWait.TabIndex = 2;
-            this.labelWait.Text = "正在加载";
-            this.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // timerWaitAni
-            // 
-            this.timerWaitAni.Interval = 33;
-            this.timerWaitAni.Tick += new System.EventHandler(this.timerWaitAni_Tick);
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(44, 22);
-            this.toolStripLabel1.Text = "主机：";
             // 
             // udName
             // 
@@ -173,6 +172,28 @@
             this.udGroups.HeaderText = "用户组";
             this.udGroups.Name = "udGroups";
             // 
+            // timerStopWaitAni
+            // 
+            this.timerStopWaitAni.Interval = 1000;
+            this.timerStopWaitAni.Tick += new System.EventHandler(this.timerStopWaitAni_Tick);
+            // 
+            // labelWait
+            // 
+            this.labelWait.BackColor = System.Drawing.SystemColors.Window;
+            this.labelWait.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelWait.Location = new System.Drawing.Point(0, 0);
+            this.labelWait.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelWait.Name = "labelWait";
+            this.labelWait.Size = new System.Drawing.Size(980, 701);
+            this.labelWait.TabIndex = 2;
+            this.labelWait.Text = "正在加载";
+            this.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // timerWaitAni
+            // 
+            this.timerWaitAni.Interval = 33;
+            this.timerWaitAni.Tick += new System.EventHandler(this.timerWaitAni_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
@@ -182,6 +203,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.labelWait);
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.Name = "Form1";
             this.Text = "用户管理器";
@@ -212,6 +234,8 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn udPasswordNeverExpires;
         private System.Windows.Forms.DataGridViewCheckBoxColumn udUserMayNotChangePassword;
         private System.Windows.Forms.DataGridViewTextBoxColumn udGroups;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton toolStripButtonGroups;
     }
 }
 
