@@ -75,6 +75,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -102,6 +103,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <None Include="Resources\data_sheet.png" />
+    <None Include="Resources\list.png" />
+    <None Include="Resources\data_configuration.png" />
+    <None Include="Resources\next.png" />
+    <None Include="Resources\plus.png" />
+    <None Include="Resources\cancel.png" />
+    <None Include="Resources\checkmark.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

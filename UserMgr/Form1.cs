@@ -19,8 +19,8 @@ namespace winusermgr
         public Form1()
         {
             InitializeComponent();
-            toolStripButtonReload.Image = Shell32IconHelper.GetBitmapFromSysImageres(176);
-            toolStripButtonGroups.Image = Shell32IconHelper.GetBitmapFromSysImageres(251);
+            //toolStripButtonReload.Image = Shell32IconHelper.GetBitmapFromSysImageres(176);
+            //toolStripButtonGroups.Image = Shell32IconHelper.GetBitmapFromSysImageres(251);
         }
 
         private void Form1_Load(object sender, EventArgs e)

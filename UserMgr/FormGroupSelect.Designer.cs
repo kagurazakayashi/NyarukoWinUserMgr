@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGroupSelect));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listBoxSystemGroup = new System.Windows.Forms.ListBox();
@@ -37,10 +36,10 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonRemove = new System.Windows.Forms.Button();
-            this.buttonCancel = new System.Windows.Forms.Button();
-            this.buttonOK = new System.Windows.Forms.Button();
-            this.buttonAddCus = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.buttonAddCus = new System.Windows.Forms.Button();
+            this.buttonOK = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -130,6 +129,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonAdd.Enabled = false;
+            this.buttonAdd.Image = global::winusermgr.Properties.Resources.next;
             this.buttonAdd.Location = new System.Drawing.Point(3, 195);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(59, 50);
@@ -148,71 +148,75 @@
             this.buttonRemove.TabIndex = 1;
             this.buttonRemove.UseVisualStyleBackColor = true;
             // 
-            // buttonCancel
-            // 
-            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonCancel.Location = new System.Drawing.Point(634, 505);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(144, 50);
-            this.buttonCancel.TabIndex = 1;
-            this.buttonCancel.Text = "取消(&C)";
-            this.buttonCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
-            // 
-            // buttonOK
-            // 
-            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonOK.Enabled = false;
-            this.buttonOK.Location = new System.Drawing.Point(484, 505);
-            this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(144, 50);
-            this.buttonOK.TabIndex = 2;
-            this.buttonOK.Text = "确定(&O)";
-            this.buttonOK.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonOK.UseVisualStyleBackColor = true;
-            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
-            // 
-            // buttonAddCus
-            // 
-            this.buttonAddCus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAddCus.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonAddCus.Enabled = false;
-            this.buttonAddCus.Location = new System.Drawing.Point(334, 505);
-            this.buttonAddCus.Name = "buttonAddCus";
-            this.buttonAddCus.Size = new System.Drawing.Size(144, 50);
-            this.buttonAddCus.TabIndex = 3;
-            this.buttonAddCus.Text = "添加自定义(&A)";
-            this.buttonAddCus.UseVisualStyleBackColor = true;
-            // 
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(6, 517);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(322, 28);
+            this.textBox1.Size = new System.Drawing.Size(230, 28);
             this.textBox1.TabIndex = 4;
+            // 
+            // buttonAddCus
+            // 
+            this.buttonAddCus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAddCus.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonAddCus.Enabled = false;
+            this.buttonAddCus.Image = global::winusermgr.Properties.Resources.plus;
+            this.buttonAddCus.Location = new System.Drawing.Point(242, 505);
+            this.buttonAddCus.Name = "buttonAddCus";
+            this.buttonAddCus.Size = new System.Drawing.Size(185, 50);
+            this.buttonAddCus.TabIndex = 3;
+            this.buttonAddCus.Text = "添加自定义(&A)";
+            this.buttonAddCus.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonAddCus.UseVisualStyleBackColor = true;
+            // 
+            // buttonOK
+            // 
+            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOK.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonOK.Enabled = false;
+            this.buttonOK.Image = global::winusermgr.Properties.Resources.checkmark;
+            this.buttonOK.Location = new System.Drawing.Point(433, 505);
+            this.buttonOK.Name = "buttonOK";
+            this.buttonOK.Size = new System.Drawing.Size(185, 50);
+            this.buttonOK.TabIndex = 2;
+            this.buttonOK.Text = "确定(&O)";
+            this.buttonOK.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
+            // 
+            // buttonCancel
+            // 
+            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCancel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonCancel.Image = global::winusermgr.Properties.Resources.cancel;
+            this.buttonCancel.Location = new System.Drawing.Point(624, 505);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(154, 50);
+            this.buttonCancel.TabIndex = 1;
+            this.buttonCancel.Text = "取消(&C)";
+            this.buttonCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // FormGroupSelect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
-            this.ControlBox = false;
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonAddCus);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.buttonCancel);
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormGroupSelect";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "选择用户组列";
+            this.Load += new System.EventHandler(this.FormGroupSelect_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);

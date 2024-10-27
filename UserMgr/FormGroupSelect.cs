@@ -17,15 +17,15 @@ namespace winusermgr
         public FormGroupSelect()
         {
             InitializeComponent();
-            Bitmap bitmap = Shell32IconHelper.GetBitmapFromSysImageres(137);
-            buttonAdd.Image = bitmap;
-            bitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
-            flippedBitmap = new Bitmap(bitmap);
+            //Bitmap bitmap = Shell32IconHelper.GetBitmapFromSysImageres(137);
+            //buttonAdd.Image = bitmap;
+            //bitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
+            flippedBitmap = new Bitmap(buttonAdd.Image);
             flippedBitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
             buttonRemove.Image = flippedBitmap;
-            buttonOK.Image = Shell32IconHelper.GetBitmapFromSysImageres(301);
-            cancelBitmap = Shell32IconHelper.GetBitmapFromSysImageres(131);
-            buttonCancel.Image = cancelBitmap;
+            //buttonOK.Image = Shell32IconHelper.GetBitmapFromSysImageres(301);
+            //cancelBitmap = Shell32IconHelper.GetBitmapFromSysImageres(131);
+            //buttonCancel.Image = cancelBitmap;
             //Icon = Shell32IconHelper.GetIconFromSysImageres(111);
         }
 
@@ -39,6 +39,11 @@ namespace winusermgr
         {
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private void FormGroupSelect_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -31,11 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripComboBoxMachine = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripButtonReload = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonGroups = new System.Windows.Forms.ToolStripButton();
             this.dataGridUsers = new System.Windows.Forms.DataGridView();
             this.udName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.udFullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,13 +45,18 @@
             this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
             this.labelWait = new System.Windows.Forms.Label();
             this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripButtonReload = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonGroups = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
             // 
+            this.toolStrip1.AllowMerge = false;
             this.toolStrip1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.toolStripComboBoxMachine,
@@ -63,16 +65,9 @@
             this.toolStripButtonGroups});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.toolStrip1.Size = new System.Drawing.Size(980, 28);
             this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(46, 25);
-            this.toolStripLabel1.Text = "主机:";
+            this.toolStrip1.Text = "主机";
             // 
             // toolStripComboBoxMachine
             // 
@@ -80,28 +75,10 @@
             this.toolStripComboBoxMachine.Size = new System.Drawing.Size(150, 28);
             this.toolStripComboBoxMachine.Text = "localhost";
             // 
-            // toolStripButtonReload
-            // 
-            this.toolStripButtonReload.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReload.Image")));
-            this.toolStripButtonReload.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonReload.Name = "toolStripButtonReload";
-            this.toolStripButtonReload.Size = new System.Drawing.Size(82, 25);
-            this.toolStripButtonReload.Text = "加载(&R)";
-            this.toolStripButtonReload.Click += new System.EventHandler(this.toolStripButtonReload_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
-            // 
-            // toolStripButtonGroups
-            // 
-            this.toolStripButtonGroups.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonGroups.Image")));
-            this.toolStripButtonGroups.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonGroups.Name = "toolStripButtonGroups";
-            this.toolStripButtonGroups.Size = new System.Drawing.Size(145, 25);
-            this.toolStripButtonGroups.Text = "选择用户组列(&S)";
-            this.toolStripButtonGroups.Click += new System.EventHandler(this.toolStripButtonGroups_Click);
             // 
             // dataGridUsers
             // 
@@ -193,6 +170,31 @@
             // 
             this.timerWaitAni.Interval = 33;
             this.timerWaitAni.Tick += new System.EventHandler(this.timerWaitAni_Tick);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Image = global::winusermgr.Properties.Resources.data_configuration;
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(62, 25);
+            this.toolStripLabel1.Text = "主机:";
+            // 
+            // toolStripButtonReload
+            // 
+            this.toolStripButtonReload.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReload.Image")));
+            this.toolStripButtonReload.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReload.Name = "toolStripButtonReload";
+            this.toolStripButtonReload.Size = new System.Drawing.Size(82, 25);
+            this.toolStripButtonReload.Text = "加载(&R)";
+            this.toolStripButtonReload.Click += new System.EventHandler(this.toolStripButtonReload_Click);
+            // 
+            // toolStripButtonGroups
+            // 
+            this.toolStripButtonGroups.Image = global::winusermgr.Properties.Resources.data_sheet;
+            this.toolStripButtonGroups.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonGroups.Name = "toolStripButtonGroups";
+            this.toolStripButtonGroups.Size = new System.Drawing.Size(145, 25);
+            this.toolStripButtonGroups.Text = "选择用户组列(&S)";
+            this.toolStripButtonGroups.Click += new System.EventHandler(this.toolStripButtonGroups_Click);
             // 
             // Form1
             // 
