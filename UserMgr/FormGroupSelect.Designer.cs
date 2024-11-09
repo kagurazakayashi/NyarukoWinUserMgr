@@ -32,12 +32,12 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listBoxSystemGroup = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.listBoxSelectGroup = new System.Windows.Forms.ListBox();
+            this.listBoxSelectedGroup = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonRemove = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.buttonAddCus = new System.Windows.Forms.Button();
+            this.textBoxCustom = new System.Windows.Forms.TextBox();
+            this.buttonAddCustom = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
@@ -84,12 +84,14 @@
             this.listBoxSystemGroup.ItemHeight = 21;
             this.listBoxSystemGroup.Location = new System.Drawing.Point(3, 24);
             this.listBoxSystemGroup.Name = "listBoxSystemGroup";
+            this.listBoxSystemGroup.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listBoxSystemGroup.Size = new System.Drawing.Size(344, 469);
             this.listBoxSystemGroup.TabIndex = 0;
+            this.listBoxSystemGroup.SelectedIndexChanged += new System.EventHandler(this.listBoxSystemGroup_SelectedIndexChanged);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.listBoxSelectGroup);
+            this.groupBox2.Controls.Add(this.listBoxSelectedGroup);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(430, 3);
             this.groupBox2.Name = "groupBox2";
@@ -98,15 +100,17 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "要显示的用户组";
             // 
-            // listBoxSelectGroup
+            // listBoxSelectedGroup
             // 
-            this.listBoxSelectGroup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxSelectGroup.FormattingEnabled = true;
-            this.listBoxSelectGroup.ItemHeight = 21;
-            this.listBoxSelectGroup.Location = new System.Drawing.Point(3, 24);
-            this.listBoxSelectGroup.Name = "listBoxSelectGroup";
-            this.listBoxSelectGroup.Size = new System.Drawing.Size(345, 469);
-            this.listBoxSelectGroup.TabIndex = 0;
+            this.listBoxSelectedGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxSelectedGroup.FormattingEnabled = true;
+            this.listBoxSelectedGroup.ItemHeight = 21;
+            this.listBoxSelectedGroup.Location = new System.Drawing.Point(3, 24);
+            this.listBoxSelectedGroup.Name = "listBoxSelectedGroup";
+            this.listBoxSelectedGroup.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listBoxSelectedGroup.Size = new System.Drawing.Size(345, 469);
+            this.listBoxSelectedGroup.TabIndex = 0;
+            this.listBoxSelectedGroup.SelectedIndexChanged += new System.EventHandler(this.listBoxSelectedGroup_SelectedIndexChanged);
             // 
             // tableLayoutPanel2
             // 
@@ -135,6 +139,7 @@
             this.buttonAdd.Size = new System.Drawing.Size(59, 50);
             this.buttonAdd.TabIndex = 0;
             this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
             // buttonRemove
             // 
@@ -147,29 +152,33 @@
             this.buttonRemove.Size = new System.Drawing.Size(59, 50);
             this.buttonRemove.TabIndex = 1;
             this.buttonRemove.UseVisualStyleBackColor = true;
+            this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
             // 
-            // textBox1
+            // textBoxCustom
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBoxCustom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(6, 517);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(230, 28);
-            this.textBox1.TabIndex = 4;
+            this.textBoxCustom.Location = new System.Drawing.Point(6, 517);
+            this.textBoxCustom.MaxLength = 32;
+            this.textBoxCustom.Name = "textBoxCustom";
+            this.textBoxCustom.Size = new System.Drawing.Size(230, 28);
+            this.textBoxCustom.TabIndex = 4;
+            this.textBoxCustom.WordWrap = false;
+            this.textBoxCustom.TextChanged += new System.EventHandler(this.textBoxCus_TextChanged);
             // 
-            // buttonAddCus
+            // buttonAddCustom
             // 
-            this.buttonAddCus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAddCus.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonAddCus.Enabled = false;
-            this.buttonAddCus.Image = global::winusermgr.Properties.Resources.plus;
-            this.buttonAddCus.Location = new System.Drawing.Point(242, 505);
-            this.buttonAddCus.Name = "buttonAddCus";
-            this.buttonAddCus.Size = new System.Drawing.Size(185, 50);
-            this.buttonAddCus.TabIndex = 3;
-            this.buttonAddCus.Text = "添加自定义(&A)";
-            this.buttonAddCus.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonAddCus.UseVisualStyleBackColor = true;
+            this.buttonAddCustom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAddCustom.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonAddCustom.Enabled = false;
+            this.buttonAddCustom.Image = global::winusermgr.Properties.Resources.plus;
+            this.buttonAddCustom.Location = new System.Drawing.Point(242, 505);
+            this.buttonAddCustom.Name = "buttonAddCustom";
+            this.buttonAddCustom.Size = new System.Drawing.Size(185, 50);
+            this.buttonAddCustom.TabIndex = 3;
+            this.buttonAddCustom.Text = "添加自定义(&A)";
+            this.buttonAddCustom.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonAddCustom.UseVisualStyleBackColor = true;
             // 
             // buttonOK
             // 
@@ -205,8 +214,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.buttonAddCus);
+            this.Controls.Add(this.textBoxCustom);
+            this.Controls.Add(this.buttonAddCustom);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.buttonCancel);
@@ -232,13 +241,13 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ListBox listBoxSystemGroup;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ListBox listBoxSelectGroup;
+        private System.Windows.Forms.ListBox listBoxSelectedGroup;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Button buttonRemove;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonOK;
-        private System.Windows.Forms.Button buttonAddCus;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button buttonAddCustom;
+        private System.Windows.Forms.TextBox textBoxCustom;
     }
 }
