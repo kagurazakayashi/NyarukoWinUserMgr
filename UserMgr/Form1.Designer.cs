@@ -48,6 +48,8 @@
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripButtonReload = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonGroups = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLockON = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLockOFF = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).BeginInit();
             this.SuspendLayout();
@@ -58,11 +60,13 @@
             this.toolStrip1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLockOFF,
             this.toolStripLabel1,
             this.toolStripComboBoxMachine,
             this.toolStripButtonReload,
             this.toolStripSeparator1,
-            this.toolStripButtonGroups});
+            this.toolStripButtonGroups,
+            this.toolStripLockON});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(980, 28);
@@ -98,6 +102,7 @@
             this.dataGridUsers.Location = new System.Drawing.Point(0, 28);
             this.dataGridUsers.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.dataGridUsers.Name = "dataGridUsers";
+            this.dataGridUsers.ReadOnly = true;
             this.dataGridUsers.RowTemplate.Height = 23;
             this.dataGridUsers.Size = new System.Drawing.Size(980, 673);
             this.dataGridUsers.TabIndex = 1;
@@ -196,6 +201,28 @@
             this.toolStripButtonGroups.Text = "选择用户组列(&S)";
             this.toolStripButtonGroups.Click += new System.EventHandler(this.toolStripButtonGroups_Click);
             // 
+            // toolStripLockON
+            // 
+            this.toolStripLockON.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripLockON.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.toolStripLockON.Image = global::winusermgr.Properties.Resources._lock;
+            this.toolStripLockON.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripLockON.Name = "toolStripLockON";
+            this.toolStripLockON.Size = new System.Drawing.Size(179, 25);
+            this.toolStripLockON.Text = "解锁不可用的设置(&A)";
+            this.toolStripLockON.ToolTipText = "解锁设置(&U)";
+            this.toolStripLockON.Click += new System.EventHandler(this.toolStripLockON_Click);
+            // 
+            // toolStripLockOFF
+            // 
+            this.toolStripLockOFF.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripLockOFF.Enabled = false;
+            this.toolStripLockOFF.Image = global::winusermgr.Properties.Resources.unlock;
+            this.toolStripLockOFF.Name = "toolStripLockOFF";
+            this.toolStripLockOFF.Size = new System.Drawing.Size(154, 25);
+            this.toolStripLockOFF.Text = "已使用管理员身份";
+            this.toolStripLockOFF.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
@@ -238,6 +265,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn udGroups;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolStripButtonGroups;
+        private System.Windows.Forms.ToolStripButton toolStripLockON;
+        private System.Windows.Forms.ToolStripLabel toolStripLockOFF;
     }
 }
 

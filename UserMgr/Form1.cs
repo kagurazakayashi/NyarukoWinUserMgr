@@ -16,6 +16,7 @@ namespace winusermgr
     {
         UserLoader userLoader = new UserLoader();
         SlbootAni slboot = new SlbootAni();
+        private int timerStopWaitAniEndMode = 0;
         public Form1()
         {
             InitializeComponent();
@@ -25,6 +26,10 @@ namespace winusermgr
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            bool isAdmin = UAC.IsRunAsAdministrator();
+            toolStripLockON.Visible = !isAdmin;
+            toolStripLockOFF.Visible = isAdmin;
+            dataGridUsers.ReadOnly = !isAdmin;
             slboot.Init(20);
             if (slboot.aniFont != null)
             {
@@ -38,6 +43,14 @@ namespace winusermgr
 
         private void waitAni(bool enable)
         {
+            if (!enable && timerStopWaitAniEndMode == -1)
+            {
+                return;
+            }
+            if (!enable && timerStopWaitAniEndMode == 1)
+            {
+                Application.Exit();
+            }
             toolStrip1.Enabled = !enable;
             UseWaitCursor = enable;
             labelWait.Visible = enable;
@@ -45,10 +58,12 @@ namespace winusermgr
             if (enable && slboot.aniFont != null)
             {
                 timerWaitAni.Enabled = enable;
+                timerStopWaitAni.Enabled = enable;
             }
             else
             {
                 timerWaitAni.Enabled = false;
+                timerStopWaitAni.Enabled = false;
                 slboot.StopUpdateChar();
             }
         }
@@ -100,6 +115,22 @@ namespace winusermgr
             if (formGroupSelect.ShowDialog() == DialogResult.OK)
             {
                 reloadData();
+            }
+        }
+
+        private void toolStripLockON_Click(object sender, EventArgs e)
+        {
+            timerStopWaitAniEndMode = -1;
+            waitAni(true);
+            if (UAC.RestartAsAdministrator())
+            {
+                timerStopWaitAni.Interval = 3000;
+                timerStopWaitAniEndMode = 1;
+            }
+            else
+            {
+                timerStopWaitAniEndMode = 0;
+                waitAni(false);
             }
         }
     }
