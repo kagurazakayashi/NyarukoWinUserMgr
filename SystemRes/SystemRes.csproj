@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="INI.cs" />
     <Compile Include="Shell32IconHelper.cs" />
     <Compile Include="SlbootAni.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

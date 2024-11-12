@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using UserInfoType;
 using UserInfoLoader;
-using Slboot;
 
 namespace winusermgr
 {

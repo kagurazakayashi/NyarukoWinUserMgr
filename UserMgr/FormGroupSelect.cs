@@ -16,10 +16,12 @@ namespace winusermgr
     {
         Bitmap flippedBitmap;
         string[] systemGroups;
+        INI iniconf;
 
         public FormGroupSelect()
         {
             InitializeComponent();
+            iniconf = new INI(Application.StartupPath + "\\config.ini");
             //Bitmap bitmap = Shell32IconHelper.GetBitmapFromSysImageres(137);
             //buttonAdd.Image = bitmap;
             //bitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
@@ -40,8 +42,56 @@ namespace winusermgr
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
-            Close();
+            if (saveConfig())
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+        }
+
+        private bool saveConfig()
+        {
+            try
+            {
+                iniconf.IniWriteValue("Config", "GroupsCount", listBoxSelectedGroup.Items.Count.ToString());
+                for (int i = 0; i < listBoxSelectedGroup.Items.Count; i++)
+                {
+                    iniconf.IniWriteValue("Groups", $"G{i}", listBoxSelectedGroup.Items[i].ToString());
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (MessageBox.Show(ex.Message, "配置写入失败", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
+                {
+                    return saveConfig();
+                }
+            }
+            return false;
+        }
+
+        private void loadConfig()
+        {
+            if (!iniconf.ExistINIFile())
+            {
+                return;
+            }
+            try
+            {
+                int count = int.Parse(iniconf.IniReadValue("Config", "GroupsCount"));
+                for (int i = 0; i < count; i++)
+                {
+                    listBoxSelectedGroup.Items.Add(iniconf.IniReadValue("Groups", $"G{i}"));
+                }
+                RemoveDuplicateItems();
+            }
+            catch (Exception ex)
+            {
+                if (MessageBox.Show(ex.Message, "配置读取失败", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
+                {
+                    loadConfig();
+                }
+            }
         }
 
         private void FormGroupSelect_Load(object sender, EventArgs e)
@@ -55,6 +105,7 @@ namespace winusermgr
             }
             systemGroups = new string[listBoxSystemGroup.Items.Count];
             listBoxSystemGroup.Items.CopyTo(systemGroups, 0);
+            loadConfig();
             chkChange();
         }
 
@@ -157,6 +208,19 @@ namespace winusermgr
         private void textBoxCus_TextChanged(object sender, EventArgs e)
         {
             buttonAddCustom.Enabled = textBoxCustom.Text.Length > 0;
+        }
+        private void RemoveDuplicateItems()
+        {
+            for (int i = listBoxSelectedGroup.Items.Count - 1; i >= 0; i--)
+            {
+                for (int j = listBoxSystemGroup.Items.Count - 1; j >= 0; j--)
+                {
+                    if (listBoxSelectedGroup.Items[i].ToString() == listBoxSystemGroup.Items[j].ToString())
+                    {
+                        listBoxSystemGroup.Items.RemoveAt(j);
+                    }
+                }
+            }
         }
     }
 }
