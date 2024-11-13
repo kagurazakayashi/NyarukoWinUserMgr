@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGroupSelect));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listBoxSystemGroup = new System.Windows.Forms.ListBox();
@@ -157,14 +158,15 @@
             this.buttonAddCustom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonAddCustom.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonAddCustom.Enabled = false;
-            this.buttonAddCustom.Image = global::winusermgr.Properties.Resources.plus;
+            this.buttonAddCustom.Image = global::winusermgr.Properties.Resources.add_database;
             this.buttonAddCustom.Location = new System.Drawing.Point(242, 505);
             this.buttonAddCustom.Name = "buttonAddCustom";
             this.buttonAddCustom.Size = new System.Drawing.Size(185, 50);
             this.buttonAddCustom.TabIndex = 3;
-            this.buttonAddCustom.Text = "添加自定义(&A)";
+            this.buttonAddCustom.Text = "添加虚拟组名(&A)";
             this.buttonAddCustom.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonAddCustom.UseVisualStyleBackColor = true;
+            this.buttonAddCustom.Click += new System.EventHandler(this.buttonAddCustom_Click);
             // 
             // buttonOK
             // 
@@ -176,7 +178,7 @@
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(185, 50);
             this.buttonOK.TabIndex = 2;
-            this.buttonOK.Text = "确定(&O)";
+            this.buttonOK.Text = "保存列设置(&O)";
             this.buttonOK.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
@@ -204,7 +206,7 @@
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(154, 50);
             this.buttonCancel.TabIndex = 1;
-            this.buttonCancel.Text = "取消(&C)";
+            this.buttonCancel.Text = "放弃更改(&C)";
             this.buttonCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
@@ -220,6 +222,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.buttonCancel);
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormGroupSelect";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;

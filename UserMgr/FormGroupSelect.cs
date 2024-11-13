@@ -42,10 +42,18 @@ namespace winusermgr
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            if (saveConfig())
+            string[] removedGroups = chkSystemGroup();
+            if (removedGroups.Length > 0)
             {
-                DialogResult = DialogResult.OK;
-                Close();
+                if (MessageBox.Show($"有已经被移除的虚拟组名。\n如果这些虚拟组名不包含在此电脑的用户组列表中，它将被永久删除！\n以下是要永久删除的组名:\n\n{string.Join("\n", removedGroups)}\n\n是否继续？", $"永久删除 {removedGroups.Length} 个虚拟组名", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    return;
+                }
+                if (saveConfig())
+                {
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
             }
         }
 
@@ -109,9 +117,22 @@ namespace winusermgr
             chkChange();
         }
 
+        private string[] chkSystemGroup()
+        {
+            List<string> list = new List<string>();
+            foreach (var item in listBoxSystemGroup.Items)
+            {
+                if (!systemGroups.Contains(item.ToString()))
+                {
+                    list.Add(item.ToString());
+                }
+            }
+            return list.ToArray();
+        }
+
         private void chkChange()
         {
-            if (listBoxSystemGroup.Items.Count != systemGroups.Length)
+            if (listBoxSystemGroup.Items.Count != systemGroups.Length || chkSystemGroup().Length > 0)
             {
                 buttonOK.Enabled = true;
                 return;
@@ -221,6 +242,15 @@ namespace winusermgr
                     }
                 }
             }
+        }
+
+        private void buttonAddCustom_Click(object sender, EventArgs e)
+        {
+            listBoxSelectedGroup.Items.Add(textBoxCustom.Text);
+            textBoxCustom.Text = "";
+            RemoveDuplicateItems();
+            chkBtnEnable();
+            chkChange();
         }
     }
 }

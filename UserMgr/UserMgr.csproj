@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <None Include="Resources\add_database.png" />
     <None Include="Resources\app1.jpg" />
     <None Include="Resources\lock.png" />
     <None Include="Resources\unlock.png" />
