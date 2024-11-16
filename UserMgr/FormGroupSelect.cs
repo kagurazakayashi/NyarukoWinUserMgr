@@ -9,18 +9,24 @@ using System.Text;
 using System.Windows.Forms;
 using System.Management;
 using static System.Windows.Forms.ListBox;
+using UserInfoLoader;
 
 namespace winusermgr
 {
     public partial class FormGroupSelect : Form
     {
-        Bitmap flippedBitmap;
-        string[] systemGroups;
-        INI iniconf;
+        private Bitmap flippedBitmap;
+        private string[] systemGroups;
+        private INI iniconf;
+        private string linkMachineName = Environment.MachineName;
 
-        public FormGroupSelect()
+        public FormGroupSelect(string linkMachineName = "")
         {
             InitializeComponent();
+            if (!string.IsNullOrWhiteSpace(linkMachineName))
+            {
+                this.linkMachineName = linkMachineName;
+            }
             iniconf = new INI(Application.StartupPath + "\\config.ini");
             //Bitmap bitmap = Shell32IconHelper.GetBitmapFromSysImageres(137);
             //buttonAdd.Image = bitmap;
@@ -104,12 +110,11 @@ namespace winusermgr
 
         private void FormGroupSelect_Load(object sender, EventArgs e)
         {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Group");
-
-            foreach (ManagementObject group in searcher.Get())
+            string[][] groups = UserLoader.GetGroups(linkMachineName);
+            foreach (var group in groups)
             {
-                listBoxSystemGroup.Items.Add(group["Name"]);
-                //Console.WriteLine($"Group Name: {group["Name"]}, Domain: {group["Domain"]}");
+                listBoxSystemGroup.Items.Add(group[1]);
+                //Console.WriteLine($"Group Name: {group[1]}, Domain: {group[0]}");
             }
             systemGroups = new string[listBoxSystemGroup.Items.Count];
             listBoxSystemGroup.Items.CopyTo(systemGroups, 0);

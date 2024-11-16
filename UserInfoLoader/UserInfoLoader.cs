@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
+using System.Management;
+using System.Net;
 using System.Text;
 using UserInfoType;
 
@@ -15,6 +17,53 @@ namespace UserInfoLoader
     {
         // 初始化一個空的使用者列表
         public List<UserInfo> users = new List<UserInfo>();
+
+        /// <summary>
+        /// 從指定的計算機檢索所有使用者組。
+        /// </summary>
+        /// <param name="computerName">目標計算機的名稱或 IP 地址。如果為 null 或空，將使用當前計算機名稱。</param>
+        /// <returns>包含使用者組資訊的二維陣列，每行包括域名和組名。如果發生錯誤，返回包含錯誤資訊的特殊格式。</returns>
+        public static string[][] GetGroups(string computerName = "")
+        {
+            // 如果未提供計算機名稱，使用當前計算機名稱
+            if (string.IsNullOrWhiteSpace(computerName))
+            {
+                computerName = Dns.GetHostName();
+            }
+
+            // 構建 WMI 查詢路徑
+            string queryPath = $"\\\\{computerName}\\root\\cimv2";
+
+            // 初始化 WMI 作用域
+            ManagementScope scope = new ManagementScope(queryPath);
+            try
+            {
+                // 連線到指定計算機的 WMI
+                scope.Connect();
+
+                // 定義查詢語句以獲取使用者組資訊
+                ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_Group");
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+
+                // 用於儲存使用者組資訊的列表
+                List<string[]> groups = new List<string[]>();
+
+                // 遍歷查詢結果並提取使用者組資訊
+                foreach (ManagementObject group in searcher.Get())
+                {
+                    // 新增域名和組名至列表
+                    groups.Add(new string[] { group["Domain"].ToString(), group["Name"].ToString() });
+                }
+
+                // 返回使用者組資訊的陣列
+                return groups.ToArray();
+            }
+            catch (Exception ex)
+            {
+                // 返回包含錯誤資訊的特殊格式
+                return new string[][] { new string[] { "%E%", ex.Message } };
+            }
+        }
 
         /// <summary>
         /// 獲取本機電腦中的所有使用者資訊。
@@ -83,11 +132,6 @@ namespace UserInfoLoader
                 users.Clear();
                 users.Add(new UserInfo { ErrorInfo = ex.Message });
             }
-        }
-
-        public void GetLocalUsers()
-        {
-            GetLocalUsers("");
         }
     }
 }
