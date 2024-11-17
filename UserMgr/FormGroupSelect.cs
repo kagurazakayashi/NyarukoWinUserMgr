@@ -111,6 +111,17 @@ namespace winusermgr
         private void FormGroupSelect_Load(object sender, EventArgs e)
         {
             string[][] groups = UserLoader.GetGroups(linkMachineName);
+            if (groups.Length == 0 || (groups.Length == 1 && groups[0].Length >= 1 && groups[0][0] == "%E%"))
+            {
+                string errinfo = "无法获取系统用户组列表";
+                if (groups.Length == 1 && groups[0].Length >= 1 && groups[0][0].Length >= 2)
+                {
+                    errinfo = groups[0][1];
+                }
+                MessageBox.Show(errinfo, "无法获取系统用户组列表", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+                return;
+            }
             foreach (var group in groups)
             {
                 listBoxSystemGroup.Items.Add(group[1]);

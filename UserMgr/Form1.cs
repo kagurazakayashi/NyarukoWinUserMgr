@@ -13,9 +13,11 @@ namespace winusermgr
 {
     public partial class Form1 : Form
     {
-        UserLoader userLoader = new UserLoader();
-        SlbootAni slboot = new SlbootAni();
+        private UserLoader userLoader = new UserLoader();
+        private SlbootAni slboot = new SlbootAni();
         private int timerStopWaitAniEndMode = 0;
+        private string linkMachineName = Environment.MachineName;
+
         public Form1()
         {
             InitializeComponent();
@@ -29,14 +31,15 @@ namespace winusermgr
             toolStripLockON.Visible = !isAdmin;
             toolStripLockOFF.Visible = isAdmin;
             dataGridUsers.ReadOnly = !isAdmin;
+            dataGridUsers.AllowUserToAddRows = isAdmin;
+            dataGridUsers.AllowUserToDeleteRows = isAdmin;
             slboot.Init(20);
             if (slboot.aniFont != null)
             {
                 labelWait.Font = slboot.aniFont;
             }
-            string machineName = Environment.MachineName;
-            toolStripComboBoxMachine.Items.Add(machineName);
-            toolStripComboBoxMachine.Text = machineName;
+            toolStripComboBoxMachine.Items.Add(linkMachineName);
+            toolStripComboBoxMachine.Text = linkMachineName;
             reloadData();
         }
 
@@ -74,6 +77,7 @@ namespace winusermgr
 
         private void toolStripButtonReload_Click(object sender, EventArgs e)
         {
+            linkMachineName = toolStripComboBoxMachine.Text;
             reloadData();
         }
 
@@ -81,15 +85,17 @@ namespace winusermgr
         {
             waitAni(true);
             // 載入本地使用者資訊
-            userLoader.GetLocalUsers(toolStripComboBoxMachine.Text);
+            userLoader.GetLocalUsers(linkMachineName);
             // 檢查是否發生錯誤
             if (userLoader.users.Count == 1 && userLoader.users[0].ErrorInfo.Length > 0)
             {
                 MessageBox.Show(userLoader.users[0].ErrorInfo, "加载用户信息失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+                linkMachineName = Environment.MachineName;
+                userLoader.GetLocalUsers(linkMachineName);
             }
             dataGridUsers.Rows.Clear();
-            Text = toolStripComboBoxMachine.Text + " 的用户目录";
+            Text = linkMachineName + " 的用户目录";
             foreach (UserInfo user in userLoader.users)
             {
                 // $"⭐ Name: {user.Name}, FullName: {user.FullName}, Description: {user.Description}, AccountExpires: {user.AccountExpires}, Disabled: {user.Disabled}, PasswordNeverExpires: {user.PasswordNeverExpires}, UserMayNotChangePassword: {user.UserMayNotChangePassword}, Group: {string.Join(", ", user.Groups)}\n";
@@ -110,7 +116,7 @@ namespace winusermgr
 
         private void toolStripButtonGroups_Click(object sender, EventArgs e)
         {
-            FormGroupSelect formGroupSelect = new FormGroupSelect();
+            FormGroupSelect formGroupSelect = new FormGroupSelect(linkMachineName);
             if (formGroupSelect.ShowDialog() == DialogResult.OK)
             {
                 reloadData();
