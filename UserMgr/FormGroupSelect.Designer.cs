@@ -35,11 +35,11 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.listBoxSelectedGroup = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonRemove = new System.Windows.Forms.Button();
             this.textBoxCustom = new System.Windows.Forms.TextBox();
             this.buttonAddCustom = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
-            this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -80,6 +80,8 @@
             // 
             // listBoxSystemGroup
             // 
+            this.listBoxSystemGroup.BackColor = System.Drawing.SystemColors.Control;
+            this.listBoxSystemGroup.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBoxSystemGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxSystemGroup.FormattingEnabled = true;
             this.listBoxSystemGroup.ItemHeight = 21;
@@ -103,7 +105,10 @@
             // 
             // listBoxSelectedGroup
             // 
+            this.listBoxSelectedGroup.BackColor = System.Drawing.SystemColors.Control;
+            this.listBoxSelectedGroup.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBoxSelectedGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxSelectedGroup.ForeColor = System.Drawing.SystemColors.Highlight;
             this.listBoxSelectedGroup.FormattingEnabled = true;
             this.listBoxSelectedGroup.ItemHeight = 21;
             this.listBoxSelectedGroup.Location = new System.Drawing.Point(3, 24);
@@ -128,11 +133,25 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(65, 496);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAdd.Cursor = System.Windows.Forms.Cursors.PanEast;
+            this.buttonAdd.Enabled = false;
+            this.buttonAdd.Image = global::winusermgr.Properties.Resources.next;
+            this.buttonAdd.Location = new System.Drawing.Point(3, 195);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(59, 50);
+            this.buttonAdd.TabIndex = 0;
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            // 
             // buttonRemove
             // 
             this.buttonRemove.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonRemove.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonRemove.Cursor = System.Windows.Forms.Cursors.PanWest;
             this.buttonRemove.Enabled = false;
             this.buttonRemove.Location = new System.Drawing.Point(3, 251);
             this.buttonRemove.Name = "buttonRemove";
@@ -182,20 +201,6 @@
             this.buttonOK.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
-            // 
-            // buttonAdd
-            // 
-            this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAdd.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonAdd.Enabled = false;
-            this.buttonAdd.Image = global::winusermgr.Properties.Resources.next;
-            this.buttonAdd.Location = new System.Drawing.Point(3, 195);
-            this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(59, 50);
-            this.buttonAdd.TabIndex = 0;
-            this.buttonAdd.UseVisualStyleBackColor = true;
-            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
             // buttonCancel
             // 

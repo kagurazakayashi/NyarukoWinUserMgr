@@ -17,16 +17,23 @@ namespace winusermgr
         private SlbootAni slboot = new SlbootAni();
         private int timerStopWaitAniEndMode = 0;
         private string linkMachineName = Environment.MachineName;
+        private const int MoeWidth = 1500;
 
         public Form1()
         {
             InitializeComponent();
             //toolStripButtonReload.Image = Shell32IconHelper.GetBitmapFromSysImageres(176);
             //toolStripButtonGroups.Image = Shell32IconHelper.GetBitmapFromSysImageres(251);
+            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            if (screenWidth >= MoeWidth)
+            {
+                this.Width = MoeWidth;
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            AdjustPictureBox();
             bool isAdmin = UAC.IsRunAsAdministrator();
             toolStripLockON.Visible = !isAdmin;
             toolStripLockOFF.Visible = isAdmin;
@@ -90,7 +97,6 @@ namespace winusermgr
             if (userLoader.users.Count == 1 && userLoader.users[0].ErrorInfo.Length > 0)
             {
                 MessageBox.Show(userLoader.users[0].ErrorInfo, "加载用户信息失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
                 linkMachineName = Environment.MachineName;
                 userLoader.GetLocalUsers(linkMachineName);
             }
@@ -137,6 +143,37 @@ namespace winusermgr
                 timerStopWaitAniEndMode = 0;
                 waitAni(false);
             }
+        }
+
+        private void AdjustPictureBox()
+        {
+            int clientHeight = this.ClientSize.Height;
+            int clientWidth = this.ClientSize.Width;
+            pictureBoxBG.Height = clientHeight;
+            pictureBoxBG.Width = clientHeight;
+            pictureBoxBG.Left = this.ClientSize.Width - pictureBoxBG.Width;
+            if (this.Width < MoeWidth)
+            {
+                dataGridUsers.Width = clientWidth;
+                if (pictureBoxBG.Image == null)
+                {
+                    pictureBoxBG.Dispose();
+                    pictureBoxBG.Image = null;
+                }
+            }
+            else
+            {
+                dataGridUsers.Width = (int)(clientWidth * 0.8);
+                if (pictureBoxBG.Image == null)
+                {
+                    pictureBoxBG.Image = Properties.Resources.app1;
+                }
+            }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            AdjustPictureBox();
         }
     }
 }

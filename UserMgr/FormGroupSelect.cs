@@ -163,6 +163,14 @@ namespace winusermgr
                         return;
                     }
                 }
+                foreach (var item in listBoxSelectedGroup.Items)
+                {
+                    if (!systemGroups.Contains(item.ToString()))
+                    {
+                        buttonOK.Enabled = true;
+                        return;
+                    }
+                }
             }
             buttonOK.Enabled = false;
         }
