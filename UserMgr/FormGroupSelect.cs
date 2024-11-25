@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Management;
 using static System.Windows.Forms.ListBox;
 using UserInfoLoader;
+using System.Collections;
 
 namespace winusermgr
 {
@@ -19,6 +20,9 @@ namespace winusermgr
         private string[] systemGroups;
         private INI iniconf;
         private string linkMachineName = Environment.MachineName;
+        private string[] listBoxSystemGroupStartItems = null;
+        private string[] listBoxSelectedGroupStartItems = null;
+        private bool closeNow = false;
 
         public FormGroupSelect(string linkMachineName = "")
         {
@@ -43,6 +47,7 @@ namespace winusermgr
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+            closeNow = true;
             Close();
         }
 
@@ -53,11 +58,20 @@ namespace winusermgr
             {
                 if (MessageBox.Show($"有已经被移除的虚拟组名。\n如果这些虚拟组名不包含在此电脑的用户组列表中，它将被永久删除！\n以下是要永久删除的组名:\n\n{string.Join("\n", removedGroups)}\n\n是否继续？", $"永久删除 {removedGroups.Length} 个虚拟组名", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {
+                    if (e is FormClosingEventArgs)
+                    {
+                        closeNow = false;
+                        (e as FormClosingEventArgs).Cancel = true;
+                    }
                     return;
                 }
-                if (saveConfig())
+            }
+            if (saveConfig())
+            {
+                DialogResult = DialogResult.OK;
+                if (!(e is FormClosingEventArgs))
                 {
-                    DialogResult = DialogResult.OK;
+                    closeNow = true;
                     Close();
                 }
             }
@@ -119,6 +133,7 @@ namespace winusermgr
                     errinfo = groups[0][1];
                 }
                 MessageBox.Show(errinfo, "无法获取系统用户组列表", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                closeNow = true;
                 Close();
                 return;
             }
@@ -130,7 +145,20 @@ namespace winusermgr
             systemGroups = new string[listBoxSystemGroup.Items.Count];
             listBoxSystemGroup.Items.CopyTo(systemGroups, 0);
             loadConfig();
+            listBoxSystemGroupStartItems = listBoxSystemGroup.Items.Cast<string>().ToArray();
+            listBoxSelectedGroupStartItems = listBoxSelectedGroup.Items.Cast<string>().ToArray();
             chkChange();
+        }
+
+        private bool chkChange()
+        {
+            string[] listBoxSystemGroupNowItems = listBoxSystemGroup.Items.Cast<string>().ToArray();
+            string[] listBoxSelectedGroupNowItems = listBoxSelectedGroup.Items.Cast<string>().ToArray();
+            bool listBoxSystemGroupEqual = listBoxSystemGroupStartItems.SequenceEqual(listBoxSystemGroupNowItems);
+            bool listBoxSelectedGroupEqual = listBoxSelectedGroupStartItems.SequenceEqual(listBoxSelectedGroupNowItems);
+            bool allEqual = listBoxSystemGroupEqual && listBoxSelectedGroupEqual;
+            buttonOK.Enabled = !allEqual;
+            return allEqual;
         }
 
         private string[] chkSystemGroup()
@@ -144,35 +172,6 @@ namespace winusermgr
                 }
             }
             return list.ToArray();
-        }
-
-        private void chkChange()
-        {
-            if (listBoxSystemGroup.Items.Count != systemGroups.Length || chkSystemGroup().Length > 0)
-            {
-                buttonOK.Enabled = true;
-                return;
-            }
-            else
-            {
-                foreach (var item in listBoxSystemGroup.Items)
-                {
-                    if (!systemGroups.Contains(item.ToString()))
-                    {
-                        buttonOK.Enabled = true;
-                        return;
-                    }
-                }
-                foreach (var item in listBoxSelectedGroup.Items)
-                {
-                    if (!systemGroups.Contains(item.ToString()))
-                    {
-                        buttonOK.Enabled = true;
-                        return;
-                    }
-                }
-            }
-            buttonOK.Enabled = false;
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
@@ -275,6 +274,40 @@ namespace winusermgr
             RemoveDuplicateItems();
             chkBtnEnable();
             chkChange();
+        }
+
+        private void FormGroupSelect_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (closeNow)
+            {
+                e.Cancel = false;
+                return;
+            }
+            if (buttonOK.Enabled)
+            {
+                DialogResult = MessageBox.Show("更改尚未保存，是否要保存更改？", "更改未保存", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (DialogResult == DialogResult.Yes)
+                {
+                    closeNow = true;
+                    buttonOK_Click(sender, e);
+                }
+                else if (DialogResult == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void textBoxCustom_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) &&
+                !char.IsLetterOrDigit(e.KeyChar) &&
+                e.KeyChar != '-' &&
+                e.KeyChar != '_' &&
+                e.KeyChar != ' ')
+            {
+                e.Handled = true;
+            }
         }
     }
 }

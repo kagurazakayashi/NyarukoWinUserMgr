@@ -171,6 +171,7 @@
             this.textBoxCustom.TabIndex = 4;
             this.textBoxCustom.WordWrap = false;
             this.textBoxCustom.TextChanged += new System.EventHandler(this.textBoxCus_TextChanged);
+            this.textBoxCustom.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCustom_KeyPress);
             // 
             // buttonAddCustom
             // 
@@ -233,6 +234,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "选择用户组列（列表支持多选）";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGroupSelect_FormClosing);
             this.Load += new System.EventHandler(this.FormGroupSelect_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
