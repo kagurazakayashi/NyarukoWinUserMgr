@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLockOFF = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
@@ -42,10 +42,6 @@
             this.toolStripButtonGroups = new System.Windows.Forms.ToolStripButton();
             this.toolStripLockON = new System.Windows.Forms.ToolStripButton();
             this.dataGridUsers = new System.Windows.Forms.DataGridView();
-            this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
-            this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
-            this.pictureBoxBG = new System.Windows.Forms.PictureBox();
-            this.labelWait = new System.Windows.Forms.Label();
             this.udName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.udFullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.udDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -54,6 +50,10 @@
             this.udPasswordNeverExpires = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.udUserMayNotChangePassword = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.udGroups = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
+            this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
+            this.pictureBoxBG = new System.Windows.Forms.PictureBox();
+            this.labelWait = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBG)).BeginInit();
@@ -78,7 +78,7 @@
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(10, 5, 10, 5);
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(980, 38);
+            this.toolStrip1.Size = new System.Drawing.Size(1284, 38);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "主机";
             // 
@@ -144,22 +144,22 @@
             // 
             this.dataGridUsers.AllowUserToAddRows = false;
             this.dataGridUsers.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightBlue;
-            this.dataGridUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle25.BackColor = System.Drawing.Color.LightBlue;
+            this.dataGridUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle25;
             this.dataGridUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridUsers.BackgroundColor = System.Drawing.Color.LightBlue;
             this.dataGridUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridUsers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.SkyBlue;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle26.BackColor = System.Drawing.Color.SkyBlue;
+            dataGridViewCellStyle26.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle26;
             this.dataGridUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridUsers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.udName,
@@ -170,14 +170,14 @@
             this.udPasswordNeverExpires,
             this.udUserMayNotChangePassword,
             this.udGroups});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.PowderBlue;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridUsers.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle27.BackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle27.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            dataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridUsers.DefaultCellStyle = dataGridViewCellStyle27;
             this.dataGridUsers.EnableHeadersVisualStyles = false;
             this.dataGridUsers.GridColor = System.Drawing.Color.SkyBlue;
             this.dataGridUsers.Location = new System.Drawing.Point(0, 37);
@@ -186,42 +186,9 @@
             this.dataGridUsers.ReadOnly = true;
             this.dataGridUsers.RowTemplate.Height = 40;
             this.dataGridUsers.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridUsers.Size = new System.Drawing.Size(653, 664);
+            this.dataGridUsers.Size = new System.Drawing.Size(957, 524);
             this.dataGridUsers.TabIndex = 1;
             this.dataGridUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // timerStopWaitAni
-            // 
-            this.timerStopWaitAni.Interval = 1000;
-            this.timerStopWaitAni.Tick += new System.EventHandler(this.timerStopWaitAni_Tick);
-            // 
-            // timerWaitAni
-            // 
-            this.timerWaitAni.Interval = 33;
-            this.timerWaitAni.Tick += new System.EventHandler(this.timerWaitAni_Tick);
-            // 
-            // pictureBoxBG
-            // 
-            this.pictureBoxBG.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxBG.Location = new System.Drawing.Point(305, 37);
-            this.pictureBoxBG.Name = "pictureBoxBG";
-            this.pictureBoxBG.Size = new System.Drawing.Size(675, 664);
-            this.pictureBoxBG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxBG.TabIndex = 3;
-            this.pictureBoxBG.TabStop = false;
-            // 
-            // labelWait
-            // 
-            this.labelWait.BackColor = System.Drawing.Color.LightBlue;
-            this.labelWait.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelWait.Location = new System.Drawing.Point(0, 0);
-            this.labelWait.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelWait.Name = "labelWait";
-            this.labelWait.Size = new System.Drawing.Size(980, 701);
-            this.labelWait.TabIndex = 2;
-            this.labelWait.Text = "正在加载";
-            this.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // udName
             // 
@@ -283,12 +250,46 @@
             this.udGroups.Name = "udGroups";
             this.udGroups.ReadOnly = true;
             // 
+            // timerStopWaitAni
+            // 
+            this.timerStopWaitAni.Interval = 1000;
+            this.timerStopWaitAni.Tick += new System.EventHandler(this.timerStopWaitAni_Tick);
+            // 
+            // timerWaitAni
+            // 
+            this.timerWaitAni.Interval = 33;
+            this.timerWaitAni.Tick += new System.EventHandler(this.timerWaitAni_Tick);
+            // 
+            // pictureBoxBG
+            // 
+            this.pictureBoxBG.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxBG.BackColor = System.Drawing.Color.LightBlue;
+            this.pictureBoxBG.Location = new System.Drawing.Point(609, 37);
+            this.pictureBoxBG.Name = "pictureBoxBG";
+            this.pictureBoxBG.Size = new System.Drawing.Size(675, 524);
+            this.pictureBoxBG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxBG.TabIndex = 3;
+            this.pictureBoxBG.TabStop = false;
+            // 
+            // labelWait
+            // 
+            this.labelWait.BackColor = System.Drawing.Color.LightBlue;
+            this.labelWait.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelWait.Location = new System.Drawing.Point(0, 0);
+            this.labelWait.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelWait.Name = "labelWait";
+            this.labelWait.Size = new System.Drawing.Size(1284, 561);
+            this.labelWait.TabIndex = 2;
+            this.labelWait.Text = "正在加载";
+            this.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightBlue;
-            this.ClientSize = new System.Drawing.Size(980, 701);
+            this.ClientSize = new System.Drawing.Size(1284, 561);
             this.Controls.Add(this.dataGridUsers);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.labelWait);
@@ -298,8 +299,9 @@
             this.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.Name = "Form1";
             this.Text = "用户管理器";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.Resize += new System.EventHandler(this.Form1_Resize);
+            this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).EndInit();

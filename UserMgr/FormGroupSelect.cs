@@ -23,6 +23,7 @@ namespace winusermgr
         private string[] listBoxSystemGroupStartItems = null;
         private string[] listBoxSelectedGroupStartItems = null;
         private bool closeNow = false;
+        private bool isDragging = false;
 
         public FormGroupSelect(string linkMachineName = "")
         {
@@ -42,6 +43,29 @@ namespace winusermgr
             //cancelBitmap = Shell32IconHelper.GetBitmapFromSysImageres(131);
             //buttonCancel.Image = cancelBitmap;
             //Icon = Shell32IconHelper.GetIconFromSysImageres(111);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case 0x0112:
+                    if ((m.WParam.ToInt32() & 0xFFF0) == 0xF010)
+                    {
+                        isDragging = true;
+                        Opacity = 0.6;
+                    }
+                    break;
+                //case 0x0216: Dragging
+                case 0x0232:
+                    if (isDragging)
+                    {
+                        isDragging = false;
+                        Opacity = 1;
+                    }
+                    break;
+            }
+            base.WndProc(ref m);
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)

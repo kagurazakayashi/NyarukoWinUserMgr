@@ -17,23 +17,51 @@ namespace winusermgr
         private SlbootAni slboot = new SlbootAni();
         private int timerStopWaitAniEndMode = 0;
         private string linkMachineName = Environment.MachineName;
-        private const int MoeWidth = 1500;
+        private const int WidthMoe = 1300;
+        private const int WidthNormal = 800;
+        private bool resizeing = false;
+        private FormWindowState winState;
+        private bool isDragging = false;
 
         public Form1()
         {
             InitializeComponent();
+            winState = WindowState;
             //toolStripButtonReload.Image = Shell32IconHelper.GetBitmapFromSysImageres(176);
             //toolStripButtonGroups.Image = Shell32IconHelper.GetBitmapFromSysImageres(251);
             int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-            if (screenWidth >= MoeWidth)
+            if (screenWidth < WidthMoe)
             {
-                this.Width = MoeWidth;
+                this.Width = WidthNormal;
             }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case 0x0112:
+                    if ((m.WParam.ToInt32() & 0xFFF0) == 0xF010)
+                    {
+                        isDragging = true;
+                        Opacity = 0.6;
+                    }
+                    break;
+                //case 0x0216: Dragging
+                case 0x0232:
+                    if (isDragging)
+                    {
+                        isDragging = false;
+                        Opacity = 1;
+                    }
+                    break;
+            }
+            base.WndProc(ref m);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            AdjustPictureBox();
+            AdjustPictureBox(true);
             bool isAdmin = UAC.IsRunAsAdministrator();
             toolStripLockON.Visible = !isAdmin;
             toolStripLockOFF.Visible = isAdmin;
@@ -145,35 +173,41 @@ namespace winusermgr
             }
         }
 
-        private void AdjustPictureBox()
+        private void AdjustPictureBox(bool loadImg = true)
         {
             int clientHeight = this.ClientSize.Height;
             int clientWidth = this.ClientSize.Width;
             pictureBoxBG.Height = clientHeight;
             pictureBoxBG.Width = clientHeight;
             pictureBoxBG.Left = this.ClientSize.Width - pictureBoxBG.Width;
-            if (this.Width < MoeWidth)
+            if (this.Width < WidthMoe)
             {
                 dataGridUsers.Width = clientWidth;
-                if (pictureBoxBG.Image == null)
+                if (pictureBoxBG.Image != null)
                 {
-                    pictureBoxBG.Dispose();
                     pictureBoxBG.Image = null;
+                    pictureBoxBG.Visible = false;
                 }
             }
             else
             {
                 dataGridUsers.Width = (int)(clientWidth * 0.8);
-                if (pictureBoxBG.Image == null)
+                if (loadImg && pictureBoxBG.Image == null)
                 {
                     pictureBoxBG.Image = Properties.Resources.app1;
+                    pictureBoxBG.Visible = true;
                 }
             }
         }
 
-        private void Form1_Resize(object sender, EventArgs e)
+        private void Form1_SizeChanged(object sender, EventArgs e)
         {
             AdjustPictureBox();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            pictureBoxBG.Dispose();
         }
     }
 }
