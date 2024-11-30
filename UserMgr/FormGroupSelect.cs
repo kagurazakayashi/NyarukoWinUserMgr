@@ -11,6 +11,8 @@ using System.Management;
 using static System.Windows.Forms.ListBox;
 using UserInfoLoader;
 using System.Collections;
+using System.Threading;
+using System.Reflection;
 
 namespace winusermgr
 {
@@ -24,6 +26,9 @@ namespace winusermgr
         private string[] listBoxSelectedGroupStartItems = null;
         private bool closeNow = false;
         private bool isDragging = false;
+        private SlbootAni slboot = new SlbootAni();
+        private int timerStopWaitAniEndMode = 0;
+        private FormWindowState winState;
 
         public FormGroupSelect(string linkMachineName = "")
         {
@@ -64,6 +69,10 @@ namespace winusermgr
                         Opacity = 1;
                     }
                     break;
+            }
+            if (WindowState != FormWindowState.Normal)
+            {
+                Opacity = 1;
             }
             base.WndProc(ref m);
         }
@@ -148,30 +157,47 @@ namespace winusermgr
 
         private void FormGroupSelect_Load(object sender, EventArgs e)
         {
+            slboot.Init(20);
+            if (slboot.aniFont != null)
+            {
+                labelWait.Font = slboot.aniFont;
+            }
+            Thread thread = new Thread(getUserGroup);
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
+        private void getUserGroup()
+        {
             string[][] groups = UserLoader.GetGroups(linkMachineName);
-            if (groups.Length == 0 || (groups.Length == 1 && groups[0].Length >= 1 && groups[0][0] == "%E%"))
+            this.Invoke((Action)(() =>
             {
-                string errinfo = "无法获取系统用户组列表";
-                if (groups.Length == 1 && groups[0].Length >= 1 && groups[0][0].Length >= 2)
+                if (groups.Length == 0 || (groups.Length == 1 && groups[0].Length >= 1 && groups[0][0] == "%E%"))
                 {
-                    errinfo = groups[0][1];
+                    string errinfo = "无法获取系统用户组列表";
+                    if (groups.Length == 1 && groups[0].Length >= 1 && groups[0][0].Length >= 2)
+                    {
+                        errinfo = groups[0][1];
+                    }
+                    MessageBox.Show(errinfo, "无法获取系统用户组列表", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    closeNow = true;
+                    timerWaitAni.Enabled = false;
+                    this.Close();
+                    return;
                 }
-                MessageBox.Show(errinfo, "无法获取系统用户组列表", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                closeNow = true;
-                Close();
-                return;
-            }
-            foreach (var group in groups)
-            {
-                listBoxSystemGroup.Items.Add(group[1]);
-                //Console.WriteLine($"Group Name: {group[1]}, Domain: {group[0]}");
-            }
-            systemGroups = new string[listBoxSystemGroup.Items.Count];
-            listBoxSystemGroup.Items.CopyTo(systemGroups, 0);
-            loadConfig();
-            listBoxSystemGroupStartItems = listBoxSystemGroup.Items.Cast<string>().ToArray();
-            listBoxSelectedGroupStartItems = listBoxSelectedGroup.Items.Cast<string>().ToArray();
-            chkChange();
+                foreach (var group in groups)
+                {
+                    listBoxSystemGroup.Items.Add(group[1]);
+                    //Console.WriteLine($"Group Name: {group[1]}, Domain: {group[0]}");
+                }
+                systemGroups = new string[listBoxSystemGroup.Items.Count];
+                listBoxSystemGroup.Items.CopyTo(systemGroups, 0);
+                loadConfig();
+                listBoxSystemGroupStartItems = listBoxSystemGroup.Items.Cast<string>().ToArray();
+                listBoxSelectedGroupStartItems = listBoxSelectedGroup.Items.Cast<string>().ToArray();
+                chkChange();
+                timerStopWaitAni.Enabled = true;
+            }));
         }
 
         private bool chkChange()
@@ -331,6 +357,41 @@ namespace winusermgr
                 e.KeyChar != ' ')
             {
                 e.Handled = true;
+            }
+        }
+
+        private void timerStopWaitAni_Tick(object sender, EventArgs e)
+        {
+            waitAni(false);
+        }
+
+        private void timerWaitAni_Tick(object sender, EventArgs e)
+        {
+            labelWait.Text = slboot.UpdateChar();
+        }
+
+        private void waitAni(bool enable)
+        {
+            if (!enable && timerStopWaitAniEndMode == -1)
+            {
+                return;
+            }
+            if (!enable && timerStopWaitAniEndMode == 1)
+            {
+                Application.Exit();
+            }
+            UseWaitCursor = enable;
+            labelWait.Visible = enable;
+            if (enable && slboot.aniFont != null)
+            {
+                timerWaitAni.Enabled = enable;
+                timerStopWaitAni.Enabled = enable;
+            }
+            else
+            {
+                timerWaitAni.Enabled = false;
+                timerStopWaitAni.Enabled = false;
+                slboot.StopUpdateChar();
             }
         }
     }

@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using UserInfoType;
 using UserInfoLoader;
+using System.Threading;
+using System.Reflection;
 
 namespace winusermgr
 {
@@ -55,6 +57,10 @@ namespace winusermgr
                         Opacity = 1;
                     }
                     break;
+            }
+            if (WindowState != FormWindowState.Normal)
+            {
+                Opacity = 1;
             }
             base.WndProc(ref m);
         }
@@ -119,23 +125,33 @@ namespace winusermgr
         private void reloadData()
         {
             waitAni(true);
+            Thread thread = new Thread(reloadDataThread);
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
+        private void reloadDataThread()
+        {
             // 載入本地使用者資訊
             userLoader.GetLocalUsers(linkMachineName);
-            // 檢查是否發生錯誤
-            if (userLoader.users.Count == 1 && userLoader.users[0].ErrorInfo.Length > 0)
+            this.Invoke((Action)(() =>
             {
-                MessageBox.Show(userLoader.users[0].ErrorInfo, "加载用户信息失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                linkMachineName = Environment.MachineName;
-                userLoader.GetLocalUsers(linkMachineName);
-            }
-            dataGridUsers.Rows.Clear();
-            Text = linkMachineName + " 的用户目录";
-            foreach (UserInfo user in userLoader.users)
-            {
-                // $"⭐ Name: {user.Name}, FullName: {user.FullName}, Description: {user.Description}, AccountExpires: {user.AccountExpires}, Disabled: {user.Disabled}, PasswordNeverExpires: {user.PasswordNeverExpires}, UserMayNotChangePassword: {user.UserMayNotChangePassword}, Group: {string.Join(", ", user.Groups)}\n";
-                dataGridUsers.Rows.Add(user.Name, user.FullName, user.Description, user.AccountExpires, user.Disabled, user.PasswordNeverExpires, user.UserMayNotChangePassword, string.Join(", ", user.Groups));
-            }
-            timerStopWaitAni.Enabled = true;
+                // 檢查是否發生錯誤
+                if (userLoader.users.Count == 1 && userLoader.users[0].ErrorInfo.Length > 0)
+                {
+                    MessageBox.Show(userLoader.users[0].ErrorInfo, "加载用户信息失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    linkMachineName = Environment.MachineName;
+                    userLoader.GetLocalUsers(linkMachineName);
+                }
+                dataGridUsers.Rows.Clear();
+                Text = linkMachineName + " 的用户目录";
+                foreach (UserInfo user in userLoader.users)
+                {
+                    // $"⭐ Name: {user.Name}, FullName: {user.FullName}, Description: {user.Description}, AccountExpires: {user.AccountExpires}, Disabled: {user.Disabled}, PasswordNeverExpires: {user.PasswordNeverExpires}, UserMayNotChangePassword: {user.UserMayNotChangePassword}, Group: {string.Join(", ", user.Groups)}\n";
+                    dataGridUsers.Rows.Add(user.Name, user.FullName, user.Description, user.AccountExpires, user.Disabled, user.PasswordNeverExpires, user.UserMayNotChangePassword, string.Join(", ", user.Groups));
+                }
+                timerStopWaitAni.Enabled = true;
+            }));
         }
 
         private void timerWaitAni_Tick(object sender, EventArgs e)
@@ -151,6 +167,7 @@ namespace winusermgr
         private void toolStripButtonGroups_Click(object sender, EventArgs e)
         {
             FormGroupSelect formGroupSelect = new FormGroupSelect(linkMachineName);
+            //FormGroupSelect formGroupSelect = new FormGroupSelect(toolStripComboBoxMachine.Text); //DEBUG
             if (formGroupSelect.ShowDialog() == DialogResult.OK)
             {
                 reloadData();
@@ -161,16 +178,26 @@ namespace winusermgr
         {
             timerStopWaitAniEndMode = -1;
             waitAni(true);
-            if (UAC.RestartAsAdministrator())
+            Thread thread = new Thread(getAdmin);
+            thread.IsBackground = true;
+            thread.Start();
+        }
+        private void getAdmin()
+        {
+            bool toAdmin = UAC.RestartAsAdministrator();
+            this.Invoke((Action)(() =>
             {
-                timerStopWaitAni.Interval = 3000;
-                timerStopWaitAniEndMode = 1;
-            }
-            else
-            {
-                timerStopWaitAniEndMode = 0;
-                waitAni(false);
-            }
+                if (toAdmin)
+                {
+                    timerStopWaitAni.Interval = 3000;
+                    timerStopWaitAniEndMode = 1;
+                }
+                else
+                {
+                    timerStopWaitAniEndMode = 0;
+                    waitAni(false);
+                }
+            }));
         }
 
         private void AdjustPictureBox(bool loadImg = true)
@@ -208,6 +235,7 @@ namespace winusermgr
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             pictureBoxBG.Dispose();
+            pictureBoxBG = null;
         }
     }
 }

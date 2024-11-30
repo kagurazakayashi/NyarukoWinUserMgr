@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGroupSelect));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -41,6 +42,9 @@
             this.buttonAddCustom = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.labelWait = new System.Windows.Forms.Label();
+            this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
+            this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -217,11 +221,35 @@
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
+            // labelWait
+            // 
+            this.labelWait.BackColor = System.Drawing.SystemColors.Control;
+            this.labelWait.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelWait.Location = new System.Drawing.Point(0, 0);
+            this.labelWait.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelWait.Name = "labelWait";
+            this.labelWait.Size = new System.Drawing.Size(784, 561);
+            this.labelWait.TabIndex = 5;
+            this.labelWait.Text = "正在加载";
+            this.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // timerStopWaitAni
+            // 
+            this.timerStopWaitAni.Interval = 1000;
+            this.timerStopWaitAni.Tick += new System.EventHandler(this.timerStopWaitAni_Tick);
+            // 
+            // timerWaitAni
+            // 
+            this.timerWaitAni.Enabled = true;
+            this.timerWaitAni.Interval = 33;
+            this.timerWaitAni.Tick += new System.EventHandler(this.timerWaitAni_Tick);
+            // 
             // FormGroupSelect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.labelWait);
             this.Controls.Add(this.textBoxCustom);
             this.Controls.Add(this.buttonAddCustom);
             this.Controls.Add(this.buttonOK);
@@ -259,5 +287,8 @@
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonAddCustom;
         private System.Windows.Forms.TextBox textBoxCustom;
+        private System.Windows.Forms.Label labelWait;
+        private System.Windows.Forms.Timer timerStopWaitAni;
+        private System.Windows.Forms.Timer timerWaitAni;
     }
 }
