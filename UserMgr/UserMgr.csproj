@@ -8,9 +8,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>winusermgr</RootNamespace>
     <AssemblyName>winusermgr</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>app.ico</ApplicationIcon>
@@ -48,11 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="FormGroupSelectFunc.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="FormGroupSelect.cs">
       <SubType>Form</SubType>
@@ -60,11 +66,14 @@
     <Compile Include="FormGroupSelect.Designer.cs">
       <DependentUpon>FormGroupSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainWindowFunc.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UAC.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormGroupSelect.resx">
       <DependentUpon>FormGroupSelect.cs</DependentUpon>
@@ -79,6 +88,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -94,13 +104,9 @@
       <Project>{00e6561b-c3eb-4cae-a294-7f70c6d185d8}</Project>
       <Name>SystemRes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UserInfoLoader\UserInfoLoader.csproj">
-      <Project>{7eaa4071-debe-43fa-ae56-7eea97517196}</Project>
-      <Name>UserInfoLoader</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UserInfoType\UserInfoType.csproj">
-      <Project>{c48ecb0b-0d6c-4e50-97a7-7d62cbe8504e}</Project>
-      <Name>UserInfoType</Name>
+    <ProjectReference Include="..\UserInfo\UserInfo.csproj">
+      <Project>{c3e37c3b-f48d-45aa-8134-9f61f6f96500}</Project>
+      <Name>UserInfo</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

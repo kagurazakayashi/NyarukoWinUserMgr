@@ -2,10 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
-using System.Linq;
 using System.Management;
 using System.Net;
-using System.Text;
 using UserInfoType;
 
 namespace UserInfoLoader
