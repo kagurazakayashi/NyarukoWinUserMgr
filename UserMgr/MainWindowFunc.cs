@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using UserInfo;
-namespace winusermgr
+namespace WinUserMgr
 {
     public partial class MainWindow : Form
     {
@@ -54,6 +57,82 @@ namespace winusermgr
             Thread thread = new Thread(reloadDataThread);
             thread.IsBackground = true; // 設定執行緒為後臺執行緒
             thread.Start(); // 啟動執行緒
+        }
+
+        private void openGroupSelectThread()
+        {
+            // 获取当前程序所在的文件夹路径
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            // 拼接 exe 的完整路径
+            string programPath = Path.Combine(currentDirectory, "GroupMgr.exe");
+            Point currentPosition = new Point();
+            Size currentSize = new Size();
+            this.Invoke((Action)(() =>
+            {
+                currentPosition = this.Location;
+                currentSize = this.Size;
+            }));
+            string arguments = $"{linkMachineName} {currentPosition.X},{currentPosition.Y},{currentSize.Width},{currentSize.Height}";
+            // 创建 ProcessStartInfo 实例
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = programPath,
+                Arguments = arguments,
+                RedirectStandardOutput = false, // 如果需要读取标准输出
+                RedirectStandardError = false,  // 如果需要读取标准错误
+                UseShellExecute = false,        // 必须为 false 以重定向输出
+                CreateNoWindow = false          // 不显示窗口
+            };
+
+            try
+            {
+                using (Process process = new Process())
+                {
+                    process.StartInfo = startInfo;
+                    // 启动进程
+                    process.Start();
+                    // 等待进程完成
+                    process.WaitForExit();
+                    // 获取退出代码
+                    int exitCode = process.ExitCode;
+
+                    // 读取标准输出和标准错误
+                    //string output = process.StandardOutput.ReadToEnd();
+                    //string error = process.StandardError.ReadToEnd();
+                    //Console.WriteLine("Output: " + output);
+                    //Console.WriteLine("Error: " + error);
+
+                    // 退出代码
+                    //MessageBox.Show("Exit Code: " + exitCode); // 0取消 1错误 2确定
+                    if (exitCode == 2)
+                    {
+                        //如果使用者組選擇視窗的對話方塊返回結果為“確定”，重新載入資料。
+                        this.Invoke((Action)(() =>
+                        {
+                            reloadData();
+                        }));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Invoke((Action)(() =>
+                {
+                    if (MessageBox.Show(ex.Message, "未能打开对话框", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
+                    {
+                        toolStripButtonGroups_Click(null, null);
+                    }
+                }));
+            }
+            this.Invoke((Action)(() =>
+            {
+                toolStrip1.Enabled = true;
+                ControlBox = true;
+                if (isAdmin)
+                {
+                    dataGridUsers.ReadOnly = false;
+                }
+            }));
         }
 
         /// <summary>

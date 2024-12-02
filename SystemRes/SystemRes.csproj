@@ -49,7 +49,7 @@
     <Compile Include="Shell32IconHelper.cs" />
     <Compile Include="SlbootAni.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WndProc.cs" />
+    <Compile Include="DraggingOpacity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

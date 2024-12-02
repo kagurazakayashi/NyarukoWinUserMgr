@@ -1,4 +1,4 @@
-﻿namespace winusermgr
+﻿namespace WinUserMgr
 {
     partial class MainWindow
     {
@@ -86,7 +86,7 @@
             // 
             this.toolStripLockOFF.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripLockOFF.Enabled = false;
-            this.toolStripLockOFF.Image = global::winusermgr.Properties.Resources.unlock;
+            this.toolStripLockOFF.Image = global::WinUserMgr.Properties.Resources.unlock;
             this.toolStripLockOFF.Name = "toolStripLockOFF";
             this.toolStripLockOFF.Size = new System.Drawing.Size(154, 25);
             this.toolStripLockOFF.Text = "已使用管理员身份";
@@ -94,7 +94,7 @@
             // 
             // toolStripLabel1
             // 
-            this.toolStripLabel1.Image = global::winusermgr.Properties.Resources.data_configuration;
+            this.toolStripLabel1.Image = global::WinUserMgr.Properties.Resources.data_configuration;
             this.toolStripLabel1.Name = "toolStripLabel1";
             this.toolStripLabel1.Size = new System.Drawing.Size(62, 25);
             this.toolStripLabel1.Text = "主机:";
@@ -121,7 +121,7 @@
             // 
             // toolStripButtonGroups
             // 
-            this.toolStripButtonGroups.Image = global::winusermgr.Properties.Resources.data_sheet;
+            this.toolStripButtonGroups.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonGroups.Image")));
             this.toolStripButtonGroups.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonGroups.Name = "toolStripButtonGroups";
             this.toolStripButtonGroups.Size = new System.Drawing.Size(145, 25);
@@ -132,7 +132,7 @@
             // 
             this.toolStripLockON.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripLockON.ForeColor = System.Drawing.Color.Crimson;
-            this.toolStripLockON.Image = global::winusermgr.Properties.Resources._lock;
+            this.toolStripLockON.Image = global::WinUserMgr.Properties.Resources._lock;
             this.toolStripLockON.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripLockON.Name = "toolStripLockON";
             this.toolStripLockON.Size = new System.Drawing.Size(179, 25);
@@ -284,7 +284,7 @@
             this.labelWait.Text = "正在加载";
             this.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Form1
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -297,11 +297,12 @@
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
-            this.Name = "Form1";
+            this.Name = "MainWindow";
             this.Text = "用户管理器";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
+            this.Move += new System.EventHandler(this.MainWindow_Move);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).EndInit();

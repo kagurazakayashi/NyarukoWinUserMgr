@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace winusermgr
+namespace WinUserMgr
 {
     /// <summary>
     /// 定義應用程式的名稱空間和入口類。

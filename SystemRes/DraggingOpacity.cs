@@ -8,14 +8,49 @@ using System.Windows.Forms;
 
 namespace SystemRes
 {
+    /// <summary>
+    /// 用於實現窗體拖動時調整不透明度的功能。
+    /// </summary>
     public class DraggingOpacity
     {
+        // 表示是否正在拖動窗體的標誌
         private bool isDragging = false;
+
+        // 需要調整不透明度的目標窗體
         private Form window;
 
+        // 用於標記是否是第一次移動窗體
+        public bool firstMove = true;
+
+        /// <summary>
+        /// 初始化 DraggingOpacity 類的新例項。
+        /// </summary>
+        /// <param name="window">需要調整不透明度的窗體物件。</param>
         public DraggingOpacity(Form window)
         {
+            // 初始化窗体引用
             this.window = window;
+        }
+
+        /// <summary>
+        /// 調整窗體不透明度的方法。
+        /// 如果是第一次移動，不會改變窗體的不透明度；
+        /// 否則設定窗體的不透明度
+        /// </summary>
+        public void winMove()
+        {
+            // 判斷是否是第一次移動窗體
+            if (firstMove)
+            {
+                // 第一次移動，設定標誌位為 false
+                firstMove = false;
+            }
+            else
+            {
+                // 如果當前窗體不透明度不是 0.6，則將其設定為 0.6
+                if (this.window.Opacity != 0.6)
+                    this.window.Opacity = 0.6;
+            }
         }
 
         /// <summary>
@@ -33,7 +68,6 @@ namespace SystemRes
                     if ((m.WParam.ToInt32() & 0xFFF0) == 0xF010)
                     {
                         isDragging = true; // 設定正在拖動的標誌。
-                        this.window.Opacity = 0.6;    // 將視窗透明度設為 0.6。
                     }
                     break;
 

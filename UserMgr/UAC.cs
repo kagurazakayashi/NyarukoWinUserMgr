@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Security.Principal;
 using System.Windows.Forms;
 
-namespace winusermgr
+namespace WinUserMgr
 {
     /// <summary>
     /// 檢查是否以管理員身份執行程式和重新以管理員許可權啟動程式。

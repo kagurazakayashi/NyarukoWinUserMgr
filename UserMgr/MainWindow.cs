@@ -3,18 +3,21 @@ using System.Windows.Forms;
 using UserInfo;
 using System.Threading;
 using SystemRes;
+using System.Diagnostics;
+using System.IO;
 
-namespace winusermgr
+namespace WinUserMgr
 {
     public partial class MainWindow : Form
     {
         private UserLoader userLoader = new UserLoader();
         private SlbootAni slboot = new SlbootAni();
         private int timerStopWaitAniEndMode = 0;
-        private string linkMachineName = Environment.MachineName;
+        private string linkMachineName = "";
         private const int WidthMoe = 1300;
         private const int WidthNormal = 800;
         private DraggingOpacity draggingOpacity;
+        bool isAdmin;
 
         /// <summary>
         /// 表示主窗體的建構函式。
@@ -51,10 +54,11 @@ namespace winusermgr
         /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
+            linkMachineName = Environment.MachineName;
             AdjustPictureBox(true); // 調整圖片框的顯示狀態
 
             // 檢查當前執行程式是否具有管理員許可權
-            bool isAdmin = UAC.IsRunAsAdministrator();
+            isAdmin = UAC.IsRunAsAdministrator();
             toolStripLockON.Visible = !isAdmin; // 如果不是管理員，顯示鎖定按鈕
             toolStripLockOFF.Visible = isAdmin; // 如果是管理員，顯示解鎖按鈕
 
@@ -125,18 +129,12 @@ namespace winusermgr
         /// <param name="e">事件引數。</param>
         private void toolStripButtonGroups_Click(object sender, EventArgs e)
         {
-            // 建立 FormGroupSelect 物件，用於選擇使用者組。
-            // 引數 linkMachineName 表示關聯的機器名稱。
-            FormGroupSelect formGroupSelect = new FormGroupSelect(linkMachineName);
-
-            // 除錯時可使用以下程式碼：透過工具條組合框的文字設定使用者組選擇視窗。
-            // FormGroupSelect formGroupSelect = new FormGroupSelect(toolStripComboBoxMachine.Text); //DEBUG
-
-            // 如果使用者組選擇視窗的對話方塊返回結果為“確定”，重新載入資料。
-            if (formGroupSelect.ShowDialog() == DialogResult.OK)
-            {
-                reloadData();
-            }
+            toolStrip1.Enabled = false;
+            dataGridUsers.ReadOnly = true;
+            ControlBox = false;
+            Thread thread = new Thread(openGroupSelectThread);
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         /// <summary>
@@ -169,6 +167,18 @@ namespace winusermgr
         {
             // 调整 PictureBox
             AdjustPictureBox();
+            draggingOpacity.firstMove = true;
+        }
+
+        /// <summary>
+        /// 處理主視窗移動事件的方法。
+        /// 當主視窗移動時，通知透明度控制。
+        /// </summary>
+        /// <param name="sender">事件的傳送者（主視窗）</param>
+        /// <param name="e">事件引數。</param>
+        private void MainWindow_Move(object sender, EventArgs e)
+        {
+            draggingOpacity.winMove();
         }
 
         /// <summary>
