@@ -5,6 +5,7 @@ using System.Threading;
 using SystemRes;
 using System.Diagnostics;
 using System.IO;
+using System.Collections.Generic;
 
 namespace WinUserMgr
 {
@@ -12,11 +13,14 @@ namespace WinUserMgr
     {
         private UserLoader userLoader = new UserLoader();
         private SlbootAni slboot = new SlbootAni();
+        private INI iniconf;
         private int timerStopWaitAniEndMode = 0;
         private string linkMachineName = "";
         private const int WidthMoe = 1300;
         private const int WidthNormal = 800;
         private DraggingOpacity draggingOpacity;
+        private string[] groupList = new string[0];
+        private int defaultDataGridUsersColumnsCount = 0;
         bool isAdmin;
 
         /// <summary>
@@ -27,6 +31,7 @@ namespace WinUserMgr
         {
             InitializeComponent(); // 初始化窗體元件
             draggingOpacity = new DraggingOpacity(this);
+            iniconf = new INI(Application.StartupPath + "\\config.ini");
 
             // 根據螢幕寬度調整窗體的寬度
             int screenWidth = Screen.PrimaryScreen.Bounds.Width;
@@ -76,6 +81,7 @@ namespace WinUserMgr
             // 初始化機器名稱選擇框
             toolStripComboBoxMachine.Items.Add(linkMachineName);
             toolStripComboBoxMachine.Text = linkMachineName;
+            defaultDataGridUsersColumnsCount = dataGridUsers.Columns.Count;
 
             reloadData(); // 載入資料
         }
@@ -130,7 +136,10 @@ namespace WinUserMgr
         private void toolStripButtonGroups_Click(object sender, EventArgs e)
         {
             toolStrip1.Enabled = false;
+            toolStrip1.UseWaitCursor = true;
             dataGridUsers.ReadOnly = true;
+            toolStripButtonGroups.Text = "请稍候...";
+            timerOpenGroup.Enabled = true;
             ControlBox = false;
             Thread thread = new Thread(openGroupSelectThread);
             thread.IsBackground = true;
@@ -192,6 +201,17 @@ namespace WinUserMgr
             // 釋放 PictureBox 的資源並置空引用
             pictureBoxBG.Dispose();
             pictureBoxBG = null;
+        }
+
+        /// <summary>
+        /// 按下工具條按鈕“選擇使用者組列”時，提示請稍候。
+        /// </summary>
+        /// <param name="sender">事件的傳送者。</param>
+        /// <param name="e">事件引數。</param>
+        private void timerOpenGroup_Tick(object sender, EventArgs e)
+        {
+            toolStripButtonGroups.Text = "选择用户组列(&S)";
+            timerOpenGroup.Enabled = false;
         }
     }
 }

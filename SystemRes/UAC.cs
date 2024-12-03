@@ -3,12 +3,12 @@ using System.Diagnostics;
 using System.Security.Principal;
 using System.Windows.Forms;
 
-namespace WinUserMgr
+namespace SystemRes
 {
     /// <summary>
     /// 檢查是否以管理員身份執行程式和重新以管理員許可權啟動程式。
     /// </summary>
-    internal class UAC
+    public class UAC
     {
         /// <summary>
         /// 檢查當前程序是否以管理員許可權執行。

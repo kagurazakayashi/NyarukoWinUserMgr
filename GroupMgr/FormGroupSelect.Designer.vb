@@ -22,7 +22,6 @@ Partial Class FormGroupSelect
     '不要使用代码编辑器修改它。
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormGroupSelect))
         Me.listBoxSystemGroup = New System.Windows.Forms.ListBox()
         Me.tableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
@@ -34,8 +33,8 @@ Partial Class FormGroupSelect
         Me.buttonRemove = New System.Windows.Forms.Button()
         Me.textBoxCustom = New System.Windows.Forms.TextBox()
         Me.labelWait = New System.Windows.Forms.Label()
-        Me.timerStopWaitAni = New System.Windows.Forms.Timer(Me.components)
-        Me.timerWaitAni = New System.Windows.Forms.Timer(Me.components)
+        Me.timerStopWaitAni = New System.Windows.Forms.Timer()
+        Me.timerWaitAni = New System.Windows.Forms.Timer()
         Me.buttonAddCustom = New System.Windows.Forms.Button()
         Me.buttonOK = New System.Windows.Forms.Button()
         Me.buttonCancel = New System.Windows.Forms.Button()
@@ -176,6 +175,7 @@ Partial Class FormGroupSelect
         Me.labelWait.TabIndex = 11
         Me.labelWait.Text = "正在加载"
         Me.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.labelWait.UseWaitCursor = True
         '
         'timerStopWaitAni
         '

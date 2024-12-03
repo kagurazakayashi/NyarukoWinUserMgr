@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLockOFF = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
@@ -42,18 +42,20 @@
             this.toolStripButtonGroups = new System.Windows.Forms.ToolStripButton();
             this.toolStripLockON = new System.Windows.Forms.ToolStripButton();
             this.dataGridUsers = new System.Windows.Forms.DataGridView();
-            this.udName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.udFullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.udDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.udAccountExpires = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.udDisabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.udPasswordNeverExpires = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.udUserMayNotChangePassword = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.udGroups = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
             this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
             this.pictureBoxBG = new System.Windows.Forms.PictureBox();
             this.labelWait = new System.Windows.Forms.Label();
+            this.timerOpenGroup = new System.Windows.Forms.Timer(this.components);
+            this.udName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.udFullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.udDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.udAccountExpires = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chpwd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.udDisabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.udPasswordNeverExpires = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.udUserMayNotChangePassword = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.AllGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBG)).BeginInit();
@@ -144,40 +146,41 @@
             // 
             this.dataGridUsers.AllowUserToAddRows = false;
             this.dataGridUsers.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle25.BackColor = System.Drawing.Color.LightBlue;
-            this.dataGridUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightBlue;
+            this.dataGridUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridUsers.BackgroundColor = System.Drawing.Color.LightBlue;
             this.dataGridUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridUsers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle26.BackColor = System.Drawing.Color.SkyBlue;
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
-            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle26;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.SkyBlue;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridUsers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.udName,
             this.udFullName,
             this.udDescription,
             this.udAccountExpires,
+            this.chpwd,
             this.udDisabled,
             this.udPasswordNeverExpires,
             this.udUserMayNotChangePassword,
-            this.udGroups});
-            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle27.BackColor = System.Drawing.Color.PowderBlue;
-            dataGridViewCellStyle27.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
-            dataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridUsers.DefaultCellStyle = dataGridViewCellStyle27;
+            this.AllGroup});
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridUsers.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridUsers.EnableHeadersVisualStyles = false;
             this.dataGridUsers.GridColor = System.Drawing.Color.SkyBlue;
             this.dataGridUsers.Location = new System.Drawing.Point(0, 37);
@@ -189,66 +192,6 @@
             this.dataGridUsers.Size = new System.Drawing.Size(957, 524);
             this.dataGridUsers.TabIndex = 1;
             this.dataGridUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // udName
-            // 
-            this.udName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.udName.HeaderText = "用户名";
-            this.udName.Name = "udName";
-            this.udName.ReadOnly = true;
-            // 
-            // udFullName
-            // 
-            this.udFullName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.udFullName.HeaderText = "全名";
-            this.udFullName.Name = "udFullName";
-            this.udFullName.ReadOnly = true;
-            // 
-            // udDescription
-            // 
-            this.udDescription.HeaderText = "描述";
-            this.udDescription.Name = "udDescription";
-            this.udDescription.ReadOnly = true;
-            // 
-            // udAccountExpires
-            // 
-            this.udAccountExpires.HeaderText = "有效期";
-            this.udAccountExpires.Name = "udAccountExpires";
-            this.udAccountExpires.ReadOnly = true;
-            // 
-            // udDisabled
-            // 
-            this.udDisabled.HeaderText = "禁用";
-            this.udDisabled.Name = "udDisabled";
-            this.udDisabled.ReadOnly = true;
-            this.udDisabled.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.udDisabled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.udDisabled.Width = 70;
-            // 
-            // udPasswordNeverExpires
-            // 
-            this.udPasswordNeverExpires.HeaderText = "不过期";
-            this.udPasswordNeverExpires.Name = "udPasswordNeverExpires";
-            this.udPasswordNeverExpires.ReadOnly = true;
-            this.udPasswordNeverExpires.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.udPasswordNeverExpires.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.udPasswordNeverExpires.Width = 70;
-            // 
-            // udUserMayNotChangePassword
-            // 
-            this.udUserMayNotChangePassword.HeaderText = "禁改密";
-            this.udUserMayNotChangePassword.Name = "udUserMayNotChangePassword";
-            this.udUserMayNotChangePassword.ReadOnly = true;
-            this.udUserMayNotChangePassword.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.udUserMayNotChangePassword.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.udUserMayNotChangePassword.Width = 70;
-            // 
-            // udGroups
-            // 
-            this.udGroups.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.udGroups.HeaderText = "用户组";
-            this.udGroups.Name = "udGroups";
-            this.udGroups.ReadOnly = true;
             // 
             // timerStopWaitAni
             // 
@@ -283,6 +226,86 @@
             this.labelWait.TabIndex = 2;
             this.labelWait.Text = "正在加载";
             this.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelWait.UseWaitCursor = true;
+            // 
+            // timerOpenGroup
+            // 
+            this.timerOpenGroup.Interval = 3000;
+            this.timerOpenGroup.Tick += new System.EventHandler(this.timerOpenGroup_Tick);
+            // 
+            // udName
+            // 
+            this.udName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.udName.HeaderText = "用户名";
+            this.udName.Name = "udName";
+            this.udName.ReadOnly = true;
+            this.udName.Width = 83;
+            // 
+            // udFullName
+            // 
+            this.udFullName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.udFullName.HeaderText = "全名";
+            this.udFullName.Name = "udFullName";
+            this.udFullName.ReadOnly = true;
+            this.udFullName.Width = 67;
+            // 
+            // udDescription
+            // 
+            this.udDescription.HeaderText = "描述";
+            this.udDescription.Name = "udDescription";
+            this.udDescription.ReadOnly = true;
+            // 
+            // udAccountExpires
+            // 
+            this.udAccountExpires.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.udAccountExpires.HeaderText = "有效期";
+            this.udAccountExpires.Name = "udAccountExpires";
+            this.udAccountExpires.ReadOnly = true;
+            this.udAccountExpires.Width = 83;
+            // 
+            // chpwd
+            // 
+            this.chpwd.HeaderText = "改密";
+            this.chpwd.Name = "chpwd";
+            this.chpwd.ReadOnly = true;
+            this.chpwd.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.chpwd.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.chpwd.Width = 80;
+            // 
+            // udDisabled
+            // 
+            this.udDisabled.HeaderText = "禁用";
+            this.udDisabled.Name = "udDisabled";
+            this.udDisabled.ReadOnly = true;
+            this.udDisabled.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.udDisabled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.udDisabled.Width = 80;
+            // 
+            // udPasswordNeverExpires
+            // 
+            this.udPasswordNeverExpires.HeaderText = "不过期";
+            this.udPasswordNeverExpires.Name = "udPasswordNeverExpires";
+            this.udPasswordNeverExpires.ReadOnly = true;
+            this.udPasswordNeverExpires.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.udPasswordNeverExpires.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.udPasswordNeverExpires.Width = 80;
+            // 
+            // udUserMayNotChangePassword
+            // 
+            this.udUserMayNotChangePassword.HeaderText = "禁改密";
+            this.udUserMayNotChangePassword.Name = "udUserMayNotChangePassword";
+            this.udUserMayNotChangePassword.ReadOnly = true;
+            this.udUserMayNotChangePassword.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.udUserMayNotChangePassword.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.udUserMayNotChangePassword.Width = 80;
+            // 
+            // AllGroup
+            // 
+            this.AllGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.AllGroup.HeaderText = "所属全部用户组";
+            this.AllGroup.Name = "AllGroup";
+            this.AllGroup.ReadOnly = true;
+            this.AllGroup.Width = 147;
             // 
             // MainWindow
             // 
@@ -327,14 +350,16 @@
         private System.Windows.Forms.ToolStripLabel toolStripLockOFF;
         private System.Windows.Forms.PictureBox pictureBoxBG;
         private System.Windows.Forms.Label labelWait;
+        private System.Windows.Forms.Timer timerOpenGroup;
         private System.Windows.Forms.DataGridViewTextBoxColumn udName;
         private System.Windows.Forms.DataGridViewTextBoxColumn udFullName;
         private System.Windows.Forms.DataGridViewTextBoxColumn udDescription;
         private System.Windows.Forms.DataGridViewTextBoxColumn udAccountExpires;
+        private System.Windows.Forms.DataGridViewTextBoxColumn chpwd;
         private System.Windows.Forms.DataGridViewCheckBoxColumn udDisabled;
         private System.Windows.Forms.DataGridViewCheckBoxColumn udPasswordNeverExpires;
         private System.Windows.Forms.DataGridViewCheckBoxColumn udUserMayNotChangePassword;
-        private System.Windows.Forms.DataGridViewTextBoxColumn udGroups;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AllGroup;
     }
 }
 

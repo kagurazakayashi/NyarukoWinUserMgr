@@ -62,7 +62,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UAC.cs" />
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -115,6 +114,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>DEL /Q "$(TargetDir)\GroupMgr.exe"
-COPY /Y "$(SolutionDir)GroupMgr\bin\$(Configuration)\GroupMgr.exe" "$(TargetDir)\"</PostBuildEvent>
+
+COPY /Y "$(SolutionDir)GroupMgr\bin\$(Configuration)\GroupMgr.exe" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -120,7 +120,7 @@ Partial Public Class FormGroupSelect
         End If
 
         ' 保存配置并检查保存是否成功
-        If SaveConfig() Then
+        If saveConfig() Then
             ' 设置对话框结果为确定
             DialogResult = DialogResult.OK
             ' 如果事件不是窗口关闭事件，关闭当前窗口
@@ -201,9 +201,9 @@ Partial Public Class FormGroupSelect
         End If
 
         ' 檢查按鈕狀態
-        ChkBtnEnable()
+        chkBtnEnable()
         ' 檢查狀態改變
-        ChkChange()
+        chkChange()
     End Sub
 
     ''' <summary>
@@ -211,10 +211,10 @@ Partial Public Class FormGroupSelect
     ''' 用於更新按鈕的啟用狀態。
     ''' </summary>
     Private Sub listBoxSystemGroup_SelectedIndexChanged(sender As Object, e As EventArgs) Handles listBoxSystemGroup.SelectedIndexChanged
-        ChkBtnEnable()
+        chkBtnEnable()
     End Sub
     Private Sub listBoxSelectedGroup_SelectedIndexChanged(sender As Object, e As EventArgs) Handles listBoxSelectedGroup.SelectedIndexChanged
-        ChkBtnEnable()
+        chkBtnEnable()
     End Sub
 
     ''' <summary>
@@ -251,9 +251,9 @@ Partial Public Class FormGroupSelect
         End If
 
         ' 檢查按鈕狀態
-        ChkBtnEnable()
+        chkBtnEnable()
         ' 檢查狀態改變
-        ChkChange()
+        chkChange()
     End Sub
 
     ''' <summary>
@@ -296,11 +296,11 @@ Partial Public Class FormGroupSelect
         ' 清空文字框內容
         textBoxCustom.Text = ""
         ' 移除重複專案
-        RemoveDuplicateItems()
+        removeDuplicateItems()
         ' 檢查按鈕是否應啟用
-        ChkBtnEnable()
+        chkBtnEnable()
         ' 檢查是否有更改
-        ChkChange()
+        chkChange()
     End Sub
 
     ''' <summary>
@@ -340,7 +340,7 @@ Partial Public Class FormGroupSelect
     ''' <param name="e">事件引數。</param>
     Private Sub timerStopWaitAni_Tick(sender As Object, e As EventArgs) Handles timerStopWaitAni.Tick
         ' 停止等待动画
-        WaitAni(False)
+        waitAni(False)
     End Sub
 
     ''' <summary>

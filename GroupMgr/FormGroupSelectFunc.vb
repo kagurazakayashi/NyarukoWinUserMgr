@@ -11,7 +11,7 @@ Partial Public Class FormGroupSelect
     ''' 儲存當前配置到 INI 檔案。
     ''' </summary>
     ''' <returns>儲存成功返回 true，失敗返回 false。</returns>
-    Private Function SaveConfig() As Boolean
+    Private Function saveConfig() As Boolean
         Try
             ' 寫入組數量到 INI 檔案
             iniconf.IniWriteValue("Config", "GroupsCount", listBoxSelectedGroup.Items.Count.ToString())
@@ -23,7 +23,7 @@ Partial Public Class FormGroupSelect
         Catch ex As Exception
             ' 彈出錯誤提示並允許使户者试試儲配置
             If MessageBox.Show(ex.Message, "配置写入失败", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) = DialogResult.Retry Then
-                Return SaveConfig()
+                Return saveConfig()
             End If
         End Try
         Return False
@@ -32,7 +32,7 @@ Partial Public Class FormGroupSelect
     ''' <summary>
     ''' 從 INI 檔案載入配置。
     ''' </summary>
-    Private Sub LoadConfig()
+    Private Sub loadConfig()
         ' 檢查 INI 檔案是否存在
         If Not iniconf.ExistINIFile() Then
             Return
@@ -40,16 +40,20 @@ Partial Public Class FormGroupSelect
 
         Try
             ' 讀取組數量並載入每個組名到列表框
-            Dim count As Integer = Integer.Parse(iniconf.IniReadValue("Config", "GroupsCount"))
+            Dim countS As String = iniconf.IniReadValue("Config", "GroupsCount")
+            If countS.Length = 0 Then
+                Return
+            End If
+            Dim count As Integer = Integer.Parse(countS)
             For i As Integer = 0 To count - 1
                 listBoxSelectedGroup.Items.Add(iniconf.IniReadValue("Groups", $"G{i}"))
             Next
             ' 移除重複的組名
-            RemoveDuplicateItems()
+            removeDuplicateItems()
         Catch ex As Exception
             ' 彈出錯誤提示
             If MessageBox.Show(ex.Message, "配置读取失败", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) = DialogResult.Retry Then
-                LoadConfig()
+                loadConfig()
             End If
         End Try
     End Sub
@@ -58,7 +62,7 @@ Partial Public Class FormGroupSelect
     ''' 獲取系統使用者組的方法，執行在單獨的執行緒中。
     ''' 獲取完成後，透過 Invoke 方法更新 UI。
     ''' </summary>
-    Private Sub GetUserGroup()
+    Private Sub getUserGroup()
         ' 呼叫 UserLoader 獲取系統使用者組資訊
         Dim groups As String()() = UserLoader.GetGroups(linkMachineName)
 
@@ -87,14 +91,14 @@ Partial Public Class FormGroupSelect
                             listBoxSystemGroup.Items.CopyTo(systemGroups, 0)
 
                             ' 載入配置
-                            LoadConfig()
+                            loadConfig()
 
                             ' 儲存初始的列表框狀態
                             listBoxSystemGroupStartItems = listBoxSystemGroup.Items.Cast(Of String)().ToArray()
                             listBoxSelectedGroupStartItems = listBoxSelectedGroup.Items.Cast(Of String)().ToArray()
 
                             ' 檢查是否發生更改
-                            ChkChange()
+                            chkChange()
 
                             ' 啟用停止動畫的計時器
                             timerStopWaitAni.Enabled = True
@@ -105,7 +109,7 @@ Partial Public Class FormGroupSelect
     ''' 檢查使用者組列表框是否有更改，並啟用/禁用確定按鈕。
     ''' </summary>
     ''' <returns>返回所有列表框是否都未更改</returns>
-    Private Function ChkChange() As Boolean
+    Private Function chkChange() As Boolean
         ' 獲取當前列表框的專案
         Dim listBoxSystemGroupNowItems As String() = listBoxSystemGroup.Items.Cast(Of String)().ToArray()
         Dim listBoxSelectedGroupNowItems As String() = listBoxSelectedGroup.Items.Cast(Of String)().ToArray()
@@ -126,7 +130,7 @@ Partial Public Class FormGroupSelect
     ''' 檢查當前系統使用者組列表框中新增的使用者組。
     ''' </summary>
     ''' <returns>返回新增使用者組的字串陣列</returns>
-    Private Function ChkSystemGroup() As String()
+    Private Function chkSystemGroup() As String()
         ' 建立一個列表用於儲存新增的使用者組
         Dim list As New List(Of String)()
 
@@ -145,7 +149,7 @@ Partial Public Class FormGroupSelect
     ''' <summary>
     ''' 檢查並更新新增和移除按鈕的啟用狀態。
     ''' </summary>
-    Private Sub ChkBtnEnable()
+    Private Sub chkBtnEnable()
         ' 如果已選組列表框中有選中項，則啟用移除按鈕
         buttonRemove.Enabled = listBoxSelectedGroup.SelectedIndex <> -1
         ' 如果系統組列表框中有選中項，則啟用新增按鈕
@@ -156,7 +160,7 @@ Partial Public Class FormGroupSelect
     ''' 移除在列表框中重複的專案。
     ''' 從 listBoxSelectedGroup 中的專案中查詢，並刪除 listBoxSystemGroup 中的重複項。
     ''' </summary>
-    Private Sub RemoveDuplicateItems()
+    Private Sub removeDuplicateItems()
         ' 遍歷 listBoxSelectedGroup 的所有專案
         For i As Integer = listBoxSelectedGroup.Items.Count - 1 To 0 Step -1
             ' 遍歷 listBoxSystemGroup 的所有專案
@@ -173,7 +177,7 @@ Partial Public Class FormGroupSelect
     ''' 控制等待動畫的啟用或禁用。
     ''' </summary>
     ''' <param name="enable">是否啟用等待動畫。true 表示啟用，false 表示禁用。</param>
-    Private Sub WaitAni(enable As Boolean)
+    Private Sub waitAni(enable As Boolean)
         ' 如果禁用動畫並且結束模式為 -1，則直接返回
         If Not enable AndAlso timerStopWaitAniEndMode = -1 Then
             Return
