@@ -61,6 +61,12 @@ namespace WinUserMgr
         {
             linkMachineName = Environment.MachineName;
             AdjustPictureBox(true); // 調整圖片框的顯示狀態
+            for (int i = 4; i <= 127; i++)
+            {
+                toolStripComboBoxPwdCount.Items.Add(i);
+            }
+            toolStripComboBoxPwdCount.SelectedIndex = 16 - int.Parse(toolStripComboBoxPwdCount.Items[0].ToString());
+            toolStripComboBoxPwdType.SelectedIndex = 1;
 
             // 檢查當前執行程式是否具有管理員許可權
             isAdmin = UAC.IsRunAsAdministrator();
@@ -212,6 +218,70 @@ namespace WinUserMgr
         {
             toolStripButtonGroups.Text = "选择用户组列(&S)";
             timerOpenGroup.Enabled = false;
+        }
+
+        private void toolStripButtonPWGen_Click(object sender, EventArgs e)
+        {
+            int pwdCount = int.Parse(toolStripComboBoxPwdCount.Text);
+            string[] types = toolStripComboBoxPwdType.Text.Split(',');
+            string pwdChars = "";
+            foreach (string type in types)
+            {
+                switch (type)
+                {
+                    case "0-9":
+                        for (int i = 0; i < 10; i++)
+                        {
+                            pwdChars += i.ToString();
+                        }
+                        break;
+                    case "a-z":
+                        for (int i = 0; i < 26; i++)
+                        {
+                            pwdChars += (char)('a' + i);
+                        }
+                        break;
+                    case "A-Z":
+                        for (int i = 0; i < 26; i++)
+                        {
+                            pwdChars += (char)('A' + i);
+                        }
+                        break;
+                    case "sym":
+                        pwdChars += "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+                        break;
+                }
+            }
+            if (pwdChars.Length == 0)
+            {
+                MessageBox.Show("请选择密码类型！", "密码生成器", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            Random random = new Random();
+            string pwd = "";
+            for (int i = 0; i < pwdCount; i++)
+            {
+                pwd += pwdChars[random.Next(pwdChars.Length)];
+            }
+            //MessageBox.Show("生成的密码为：" + pwd, "密码生成器", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            dataGridUsers.CurrentCell.Value = pwd;
+        }
+
+        private void dataGridUsers_CurrentCellChanged(object sender, EventArgs e)
+        {
+            if (dataGridUsers.CurrentCell == null)
+            {
+                return;
+            }
+            // 獲取當前單元格的列索引
+            int columnIndex = dataGridUsers.CurrentCell.ColumnIndex;
+            // 獲取當前單元格的行索引
+            //int rowIndex = dataGridUsers.CurrentCell.RowIndex;
+            //MessageBox.Show($"当前单元格位于：列 {columnIndex}, 行 {rowIndex}");
+            if (!dataGridUsers.ReadOnly)
+            {
+                toolStripButtonPWGen.Enabled = columnIndex == 4;
+            }
         }
     }
 }

@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <None Include="Resources\key.png" />
     <None Include="Resources\data_sheet1.png" />
     <None Include="Resources\add_database.png" />
     <None Include="Resources\app1.jpg" />

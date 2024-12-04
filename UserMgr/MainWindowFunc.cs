@@ -231,12 +231,12 @@ namespace WinUserMgr
             // 更新視窗標題為當前機器名
             Text = linkMachineName + " 的用户目录";
 
-            // 準備填充表格的一行資料
-            List<object> newRow = new List<object>();
 
             // 遍歷使用者列表，填充使用者資訊到表格
             foreach (UserInfoType user in userLoader.users)
             {
+                // 準備填充表格的一行資料
+                List<object> newRow = new List<object>();
                 newRow.Add(user.Name);                       // 使用者名稱
                 newRow.Add(user.FullName);                   // 全名
                 newRow.Add(user.Description);                // 描述
@@ -256,10 +256,10 @@ namespace WinUserMgr
                         newRow.Add(user.Groups.Contains(groupName)); // 添加布爾值表示是否屬於使用者組
                     }
                 }
-            }
 
-            // 將準備好的資料新增到表格中
-            dataGridUsers.Rows.Add(newRow.ToArray());
+                // 將準備好的資料新增到表格中
+                dataGridUsers.Rows.Add(newRow.ToArray());
+            }
 
             // 啟動停止等待動畫的計時器
             timerStopWaitAni.Enabled = true;

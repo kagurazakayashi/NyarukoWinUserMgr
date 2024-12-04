@@ -29,22 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripLockOFF = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripComboBoxMachine = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripButtonReload = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonGroups = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLockON = new System.Windows.Forms.ToolStripButton();
             this.dataGridUsers = new System.Windows.Forms.DataGridView();
             this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
             this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
-            this.pictureBoxBG = new System.Windows.Forms.PictureBox();
             this.labelWait = new System.Windows.Forms.Label();
             this.timerOpenGroup = new System.Windows.Forms.Timer(this.components);
             this.udName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,6 +50,18 @@
             this.udPasswordNeverExpires = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.udUserMayNotChangePassword = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.AllGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripComboBoxPwdCount = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripComboBoxPwdType = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripLockOFF = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripButtonReload = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonGroups = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLockON = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonPWGen = new System.Windows.Forms.ToolStripButton();
+            this.pictureBoxBG = new System.Windows.Forms.PictureBox();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBG)).BeginInit();
@@ -75,7 +81,13 @@
             this.toolStripButtonReload,
             this.toolStripSeparator1,
             this.toolStripButtonGroups,
-            this.toolStripLockON});
+            this.toolStripLockON,
+            this.toolStripSeparator2,
+            this.toolStripLabel2,
+            this.toolStripComboBoxPwdCount,
+            this.toolStripLabel3,
+            this.toolStripComboBoxPwdType,
+            this.toolStripButtonPWGen});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(10, 5, 10, 5);
@@ -84,84 +96,37 @@
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "主机";
             // 
-            // toolStripLockOFF
-            // 
-            this.toolStripLockOFF.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripLockOFF.Enabled = false;
-            this.toolStripLockOFF.Image = global::WinUserMgr.Properties.Resources.unlock;
-            this.toolStripLockOFF.Name = "toolStripLockOFF";
-            this.toolStripLockOFF.Size = new System.Drawing.Size(154, 25);
-            this.toolStripLockOFF.Text = "已使用管理员身份";
-            this.toolStripLockOFF.Visible = false;
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Image = global::WinUserMgr.Properties.Resources.data_configuration;
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(62, 25);
-            this.toolStripLabel1.Text = "主机:";
-            // 
             // toolStripComboBoxMachine
             // 
             this.toolStripComboBoxMachine.Name = "toolStripComboBoxMachine";
             this.toolStripComboBoxMachine.Size = new System.Drawing.Size(150, 28);
             this.toolStripComboBoxMachine.Text = "localhost";
             // 
-            // toolStripButtonReload
-            // 
-            this.toolStripButtonReload.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReload.Image")));
-            this.toolStripButtonReload.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonReload.Name = "toolStripButtonReload";
-            this.toolStripButtonReload.Size = new System.Drawing.Size(82, 25);
-            this.toolStripButtonReload.Text = "加载(&R)";
-            this.toolStripButtonReload.Click += new System.EventHandler(this.toolStripButtonReload_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
             // 
-            // toolStripButtonGroups
-            // 
-            this.toolStripButtonGroups.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonGroups.Image")));
-            this.toolStripButtonGroups.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonGroups.Name = "toolStripButtonGroups";
-            this.toolStripButtonGroups.Size = new System.Drawing.Size(145, 25);
-            this.toolStripButtonGroups.Text = "选择用户组列(&S)";
-            this.toolStripButtonGroups.Click += new System.EventHandler(this.toolStripButtonGroups_Click);
-            // 
-            // toolStripLockON
-            // 
-            this.toolStripLockON.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripLockON.ForeColor = System.Drawing.Color.Crimson;
-            this.toolStripLockON.Image = global::WinUserMgr.Properties.Resources._lock;
-            this.toolStripLockON.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripLockON.Name = "toolStripLockON";
-            this.toolStripLockON.Size = new System.Drawing.Size(179, 25);
-            this.toolStripLockON.Text = "解锁不可用的设置(&A)";
-            this.toolStripLockON.ToolTipText = "解锁设置(&U)";
-            this.toolStripLockON.Click += new System.EventHandler(this.toolStripLockON_Click);
-            // 
             // dataGridUsers
             // 
             this.dataGridUsers.AllowUserToAddRows = false;
             this.dataGridUsers.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightBlue;
-            this.dataGridUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightBlue;
+            this.dataGridUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridUsers.BackgroundColor = System.Drawing.Color.LightBlue;
             this.dataGridUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridUsers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.SkyBlue;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.SkyBlue;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridUsers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.udName,
@@ -173,14 +138,14 @@
             this.udPasswordNeverExpires,
             this.udUserMayNotChangePassword,
             this.AllGroup});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.PowderBlue;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridUsers.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridUsers.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridUsers.EnableHeadersVisualStyles = false;
             this.dataGridUsers.GridColor = System.Drawing.Color.SkyBlue;
             this.dataGridUsers.Location = new System.Drawing.Point(0, 37);
@@ -192,6 +157,7 @@
             this.dataGridUsers.Size = new System.Drawing.Size(957, 524);
             this.dataGridUsers.TabIndex = 1;
             this.dataGridUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridUsers.CurrentCellChanged += new System.EventHandler(this.dataGridUsers_CurrentCellChanged);
             // 
             // timerStopWaitAni
             // 
@@ -202,18 +168,6 @@
             // 
             this.timerWaitAni.Interval = 33;
             this.timerWaitAni.Tick += new System.EventHandler(this.timerWaitAni_Tick);
-            // 
-            // pictureBoxBG
-            // 
-            this.pictureBoxBG.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxBG.BackColor = System.Drawing.Color.LightBlue;
-            this.pictureBoxBG.Location = new System.Drawing.Point(609, 37);
-            this.pictureBoxBG.Name = "pictureBoxBG";
-            this.pictureBoxBG.Size = new System.Drawing.Size(675, 524);
-            this.pictureBoxBG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxBG.TabIndex = 3;
-            this.pictureBoxBG.TabStop = false;
             // 
             // labelWait
             // 
@@ -307,6 +261,107 @@
             this.AllGroup.ReadOnly = true;
             this.AllGroup.Width = 147;
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 28);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(42, 25);
+            this.toolStripLabel2.Text = "密码";
+            // 
+            // toolStripComboBoxPwdCount
+            // 
+            this.toolStripComboBoxPwdCount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.toolStripComboBoxPwdCount.Name = "toolStripComboBoxPwdCount";
+            this.toolStripComboBoxPwdCount.Size = new System.Drawing.Size(75, 28);
+            // 
+            // toolStripLabel3
+            // 
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            this.toolStripLabel3.Size = new System.Drawing.Size(26, 25);
+            this.toolStripLabel3.Text = "位";
+            // 
+            // toolStripComboBoxPwdType
+            // 
+            this.toolStripComboBoxPwdType.Items.AddRange(new object[] {
+            "a-z,0-9",
+            "A-Z,a-z,0-9",
+            "A-Z,a-z,0-9,sym"});
+            this.toolStripComboBoxPwdType.Name = "toolStripComboBoxPwdType";
+            this.toolStripComboBoxPwdType.Size = new System.Drawing.Size(121, 28);
+            // 
+            // toolStripLockOFF
+            // 
+            this.toolStripLockOFF.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripLockOFF.Enabled = false;
+            this.toolStripLockOFF.Image = global::WinUserMgr.Properties.Resources.unlock;
+            this.toolStripLockOFF.Name = "toolStripLockOFF";
+            this.toolStripLockOFF.Size = new System.Drawing.Size(154, 25);
+            this.toolStripLockOFF.Text = "已使用管理员身份";
+            this.toolStripLockOFF.Visible = false;
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Image = global::WinUserMgr.Properties.Resources.data_configuration;
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(62, 25);
+            this.toolStripLabel1.Text = "主机:";
+            // 
+            // toolStripButtonReload
+            // 
+            this.toolStripButtonReload.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReload.Image")));
+            this.toolStripButtonReload.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReload.Name = "toolStripButtonReload";
+            this.toolStripButtonReload.Size = new System.Drawing.Size(82, 25);
+            this.toolStripButtonReload.Text = "加载(&R)";
+            this.toolStripButtonReload.Click += new System.EventHandler(this.toolStripButtonReload_Click);
+            // 
+            // toolStripButtonGroups
+            // 
+            this.toolStripButtonGroups.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonGroups.Image")));
+            this.toolStripButtonGroups.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonGroups.Name = "toolStripButtonGroups";
+            this.toolStripButtonGroups.Size = new System.Drawing.Size(145, 25);
+            this.toolStripButtonGroups.Text = "选择用户组列(&S)";
+            this.toolStripButtonGroups.Click += new System.EventHandler(this.toolStripButtonGroups_Click);
+            // 
+            // toolStripLockON
+            // 
+            this.toolStripLockON.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripLockON.ForeColor = System.Drawing.Color.Crimson;
+            this.toolStripLockON.Image = global::WinUserMgr.Properties.Resources._lock;
+            this.toolStripLockON.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripLockON.Name = "toolStripLockON";
+            this.toolStripLockON.Size = new System.Drawing.Size(179, 25);
+            this.toolStripLockON.Text = "解锁不可用的设置(&A)";
+            this.toolStripLockON.ToolTipText = "解锁设置(&U)";
+            this.toolStripLockON.Click += new System.EventHandler(this.toolStripLockON_Click);
+            // 
+            // toolStripButtonPWGen
+            // 
+            this.toolStripButtonPWGen.Enabled = false;
+            this.toolStripButtonPWGen.Image = global::WinUserMgr.Properties.Resources.key;
+            this.toolStripButtonPWGen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonPWGen.Name = "toolStripButtonPWGen";
+            this.toolStripButtonPWGen.Size = new System.Drawing.Size(94, 25);
+            this.toolStripButtonPWGen.Text = "建立密码";
+            this.toolStripButtonPWGen.Click += new System.EventHandler(this.toolStripButtonPWGen_Click);
+            // 
+            // pictureBoxBG
+            // 
+            this.pictureBoxBG.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxBG.BackColor = System.Drawing.Color.LightBlue;
+            this.pictureBoxBG.Location = new System.Drawing.Point(609, 37);
+            this.pictureBoxBG.Name = "pictureBoxBG";
+            this.pictureBoxBG.Size = new System.Drawing.Size(675, 524);
+            this.pictureBoxBG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxBG.TabIndex = 3;
+            this.pictureBoxBG.TabStop = false;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
@@ -360,6 +415,12 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn udPasswordNeverExpires;
         private System.Windows.Forms.DataGridViewCheckBoxColumn udUserMayNotChangePassword;
         private System.Windows.Forms.DataGridViewTextBoxColumn AllGroup;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxPwdCount;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxPwdType;
+        private System.Windows.Forms.ToolStripButton toolStripButtonPWGen;
     }
 }
 
