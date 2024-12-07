@@ -263,8 +263,102 @@ namespace WinUserMgr
 
             // 啟動停止等待動畫的計時器
             timerStopWaitAni.Enabled = true;
+            saveDataGridOriginalData();
         }
 
+        private void saveDataGridOriginalData()
+        {
+            originalData.Clear();
+            foreach (DataGridViewRow row in dataGridUsers.Rows)
+            {
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    originalData[(cell.RowIndex, cell.ColumnIndex)] = cell.Value;
+                }
+            }
+            updateChgList();
+        }
+
+        private void updateChgList()
+        {
+            List<DataGridChange> changes = new List<DataGridChange>();
+
+            foreach (DataGridViewRow row in dataGridUsers.Rows)
+            {
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.RowIndex < 0 || cell.ColumnIndex < 0)
+                        continue;
+
+                    var originalValue = originalData[(cell.RowIndex, cell.ColumnIndex)];
+                    var newValue = cell.Value;
+                    bool isBothNullOrEmpty = (originalValue == null || string.IsNullOrEmpty(originalValue.ToString())) &&
+                                     (newValue == null || string.IsNullOrEmpty(newValue.ToString()));
+                    if (!isBothNullOrEmpty && !Equals(originalValue, newValue))
+                    {
+                        changes.Add(new DataGridChange
+                        {
+                            OriginalValue = originalValue,
+                            NewValue = newValue,
+                            RowIndex = cell.RowIndex,
+                            ColumnIndex = cell.ColumnIndex,
+                            RowFirstColumnValue = (string)row.Cells[0].Value,
+                            Title = dataGridUsers.Columns[cell.ColumnIndex].HeaderText
+                        });
+                    }
+                }
+            }
+
+            if (confirmWindow == null)
+            {
+                return;
+            }
+            confirmWindow.listBoxTasks.Items.Clear();
+            for (int i = 0; i < changes.Count; i++)
+            {
+                DataGridChange change = changes[i];
+                string originalValue = viewTaskStrConv(change.OriginalValue.ToString());
+                string newValue = viewTaskStrConv(change.NewValue.ToString());
+                string info = "";
+                if (change.ColumnIndex == 4)
+                {
+                    info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 的密码重置为 \"{newValue}\" \n 注意";
+                }
+                else if (change.ColumnIndex >= defaultDataGridUsersColumnsCount)
+                {
+                    if (change.NewValue.ToString() == "False")
+                    {
+                        info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 从用户组 \"{change.Title}\" 中移除";
+                    }
+                    else
+                    {
+                        info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 添加到用户组 \"{change.Title}\"";
+                    }
+                }
+                else
+                {
+                    info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 的 \"{change.Title}\" 从 \"{originalValue}\" 改为 \"{newValue}\"";
+                }
+                confirmWindow.listBoxTasks.Items.Add(info);
+            }
+        }
+
+        private string viewTaskStrConv(string info)
+        {
+            if (info == null || info.Length == 0)
+            {
+                return "（空）";
+            }
+            else if(info == "True")
+            {
+                return "是";
+            }
+            else if (info == "False")
+            {
+                return "否";
+            }
+            return info;
+        }
 
         /// <summary>
         /// 獲取管理員許可權。

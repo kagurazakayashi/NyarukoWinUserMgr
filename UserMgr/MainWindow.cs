@@ -21,6 +21,9 @@ namespace WinUserMgr
         private DraggingOpacity draggingOpacity;
         private string[] groupList = new string[0];
         private int defaultDataGridUsersColumnsCount = 0;
+        private ConfirmWindow confirmWindow;
+        private bool confirmWindowOpened = false;
+        private Dictionary<(int row, int col), object> originalData = new Dictionary<(int row, int col), object>();
         bool isAdmin;
 
         /// <summary>
@@ -282,6 +285,39 @@ namespace WinUserMgr
             {
                 toolStripButtonPWGen.Enabled = columnIndex == 4;
             }
+        }
+
+        private void toolStripButtonOK_Click(object sender, EventArgs e)
+        {
+            if (confirmWindowOpened)
+            {
+                if (confirmWindow != null)
+                {
+                    confirmWindow.Close();
+                    confirmWindow = null; // 释放资源
+                }
+                toolStripButtonOK.Checked = false;
+            }
+            else
+            {
+                confirmWindow = new ConfirmWindow();
+                confirmWindow.FormClosed += ConfirmWindow_FormClosed;
+                confirmWindow.Show();
+                toolStripButtonOK.Checked = true;
+            }
+            confirmWindowOpened = !confirmWindowOpened;
+            updateChgList();
+        }
+
+        private void ConfirmWindow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            confirmWindowOpened = false;
+            toolStripButtonOK.Checked = false;
+        }
+
+        private void dataGridUsers_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            updateChgList();
         }
     }
 }
