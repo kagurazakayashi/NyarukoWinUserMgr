@@ -24,7 +24,9 @@ namespace WinUserMgr
         private ConfirmWindow confirmWindow;
         private bool confirmWindowOpened = false;
         private Dictionary<(int row, int col), object> originalData = new Dictionary<(int row, int col), object>();
-        bool isAdmin;
+        private List<DataGridChange> changes = new List<DataGridChange>();
+        bool changesDO = false;
+        bool isAdmin = false;
 
         /// <summary>
         /// 表示主窗體的建構函式。
@@ -303,6 +305,7 @@ namespace WinUserMgr
                 confirmWindow = new ConfirmWindow();
                 confirmWindow.FormClosed += ConfirmWindow_FormClosed;
                 confirmWindow.Show();
+                confirmWindow.StartButtonClicked += StartButtonClicked;
                 toolStripButtonOK.Checked = true;
             }
             confirmWindowOpened = !confirmWindowOpened;

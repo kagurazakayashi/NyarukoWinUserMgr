@@ -32,6 +32,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonOK = new System.Windows.Forms.ToolStripButton();
             this.listBoxTasks = new System.Windows.Forms.ListBox();
+            this.toolStripLabelStatus = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,7 +45,8 @@
             this.toolStrip1.GripMargin = new System.Windows.Forms.Padding(0);
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonOK});
+            this.toolStripButtonOK,
+            this.toolStripLabelStatus});
             this.toolStrip1.Location = new System.Drawing.Point(0, 403);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(10, 5, 10, 5);
@@ -60,7 +62,8 @@
             this.toolStripButtonOK.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonOK.Name = "toolStripButtonOK";
             this.toolStripButtonOK.Size = new System.Drawing.Size(113, 25);
-            this.toolStripButtonOK.Text = "开始执行(E)";
+            this.toolStripButtonOK.Text = "开始执行(&E)";
+            this.toolStripButtonOK.Click += new System.EventHandler(this.toolStripButtonOK_Click);
             // 
             // listBoxTasks
             // 
@@ -73,8 +76,14 @@
             this.listBoxTasks.Margin = new System.Windows.Forms.Padding(10);
             this.listBoxTasks.Name = "listBoxTasks";
             this.listBoxTasks.ScrollAlwaysVisible = true;
+            this.listBoxTasks.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.listBoxTasks.Size = new System.Drawing.Size(984, 403);
             this.listBoxTasks.TabIndex = 2;
+            // 
+            // toolStripLabelStatus
+            // 
+            this.toolStripLabelStatus.Name = "toolStripLabelStatus";
+            this.toolStripLabelStatus.Size = new System.Drawing.Size(0, 25);
             // 
             // ConfirmWindow
             // 
@@ -86,9 +95,12 @@
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(5);
+            this.MinimizeBox = false;
             this.Name = "ConfirmWindow";
             this.Text = "任务确认（实时更新）";
             this.Load += new System.EventHandler(this.ConfirmWindow_Load);
+            this.SizeChanged += new System.EventHandler(this.ConfirmWindow_SizeChanged);
+            this.Move += new System.EventHandler(this.ConfirmWindow_Move);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -101,5 +113,6 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButtonOK;
         public System.Windows.Forms.ListBox listBoxTasks;
+        public System.Windows.Forms.ToolStripLabel toolStripLabelStatus;
     }
 }

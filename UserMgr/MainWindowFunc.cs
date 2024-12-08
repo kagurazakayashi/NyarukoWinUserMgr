@@ -97,7 +97,6 @@ namespace WinUserMgr
             }
         }
 
-
         private void openGroupSelectThread()
         {
             // 获取当前程序所在的文件夹路径
@@ -281,8 +280,7 @@ namespace WinUserMgr
 
         private void updateChgList()
         {
-            List<DataGridChange> changes = new List<DataGridChange>();
-
+            changes.RemoveAll(x => true);
             foreach (DataGridViewRow row in dataGridUsers.Rows)
             {
                 foreach (DataGridViewCell cell in row.Cells)
@@ -308,39 +306,12 @@ namespace WinUserMgr
                     }
                 }
             }
-
             if (confirmWindow == null)
             {
                 return;
             }
-            confirmWindow.listBoxTasks.Items.Clear();
-            for (int i = 0; i < changes.Count; i++)
-            {
-                DataGridChange change = changes[i];
-                string originalValue = viewTaskStrConv(change.OriginalValue.ToString());
-                string newValue = viewTaskStrConv(change.NewValue.ToString());
-                string info = "";
-                if (change.ColumnIndex == 4)
-                {
-                    info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 的密码重置为 \"{newValue}\" \n 注意";
-                }
-                else if (change.ColumnIndex >= defaultDataGridUsersColumnsCount)
-                {
-                    if (change.NewValue.ToString() == "False")
-                    {
-                        info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 从用户组 \"{change.Title}\" 中移除";
-                    }
-                    else
-                    {
-                        info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 添加到用户组 \"{change.Title}\"";
-                    }
-                }
-                else
-                {
-                    info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 的 \"{change.Title}\" 从 \"{originalValue}\" 改为 \"{newValue}\"";
-                }
-                confirmWindow.listBoxTasks.Items.Add(info);
-            }
+            changesDO = false;
+            run();
         }
 
         private string viewTaskStrConv(string info)
@@ -349,7 +320,7 @@ namespace WinUserMgr
             {
                 return "（空）";
             }
-            else if(info == "True")
+            else if (info == "True")
             {
                 return "是";
             }
@@ -431,6 +402,114 @@ namespace WinUserMgr
                     pictureBoxBG.Visible = true;
                 }
             }
+        }
+
+        public void StartButtonClicked()
+        {
+            MessageBox.Show("TODO: 执行任务");
+        }
+
+        private void run()
+        {
+            // 先改 List<DataGridChange> changes 和 bool changesDO 再 run()
+            Thread thread = new Thread(runT);
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
+        private void runT()
+        {
+            this.Invoke((Action)(() =>
+            {
+                confirmWindow.listBoxTasks.Items.Clear();
+            }));
+            bool hasChPwd = false;
+            for (int i = 0; i < changes.Count; i++)
+            {
+                DataGridChange change = changes[i];
+                string originalValue = viewTaskStrConv(change.OriginalValue.ToString());
+                string newValue = viewTaskStrConv(change.NewValue.ToString());
+                string info = "";
+                string ii = (i + 1).ToString();
+                if (change.ColumnIndex == 1)
+                {
+                    info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的全名从 \"{originalValue}\" 改为 \"{newValue}\"";
+                }
+                else if (change.ColumnIndex == 2)
+                {
+                    info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的描述从 \"{originalValue}\" 改为 \"{newValue}\"";
+                }
+                else if (change.ColumnIndex == 4)
+                {
+                    //string passwd = "";
+                    //for (int j = 0; j < newValue.Length; j++)
+                    //{
+                    //    passwd += "*";
+                    //}
+                    info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码重置为 \"{newValue}\"";
+                    hasChPwd = true;
+                }
+                else if (change.ColumnIndex == 5)
+                {
+                    if (change.NewValue.ToString() == "False")
+                    {
+                        info = $"{ii}. 禁用用户 \"{change.RowFirstColumnValue}\"";
+                    }
+                    else
+                    {
+                        info = $"{ii}. 启用用户 \"{change.RowFirstColumnValue}\"";
+                    }
+                }
+                else if (change.ColumnIndex == 6)
+                {
+                    if (change.NewValue.ToString() == "False")
+                    {
+                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为永不过期";
+                    }
+                    else
+                    {
+                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为需要定期更改";
+                    }
+                }
+                else if (change.ColumnIndex == 7)
+                {
+                    if (change.NewValue.ToString() == "False")
+                    {
+                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为可以由用户更改";
+                    }
+                    else
+                    {
+                        info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为不允许用户更改";
+                    }
+                }
+                else if (change.ColumnIndex >= defaultDataGridUsersColumnsCount)
+                {
+                    if (change.NewValue.ToString() == "False")
+                    {
+                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 从用户组 \"{change.Title}\" 中移除";
+                    }
+                    else
+                    {
+                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 添加到用户组 \"{change.Title}\"";
+                    }
+                }
+                else
+                {
+                    info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的 \"{change.Title}\" 从 \"{originalValue}\" 改为 \"{newValue}\"";
+                }
+                this.Invoke((Action)(() =>
+                {
+                    confirmWindow.listBoxTasks.Items.Add(info);
+                }));
+            }
+            this.Invoke((Action)(() =>
+            {
+                confirmWindow.toolStripLabelStatus.Text = $"{confirmWindow.listBoxTasks.Items.Count} 个修改项。";
+                if (hasChPwd)
+                {
+                    confirmWindow.toolStripLabelStatus.Text += "注意：直接修改密码会导致未备份私钥的 EFS 加密文件失效。";
+                }
+            }));
         }
     }
 }
