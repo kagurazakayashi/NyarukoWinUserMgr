@@ -21,6 +21,21 @@ namespace UserInfo
         }
 
         /// <summary>
+        /// 獲取指定使用者名稱的目錄條目。
+        /// </summary>
+        /// <param name="username">使用者名稱，表示要查詢的使用者。</param>
+        /// <returns>返回與指定使用者名稱關聯的目錄條目。</returns>
+        private DirectoryEntry GetUserEntry(string username)
+        {
+            // 定義使用者路徑，使用 WinNT 提供的路徑格式。
+            // domain 是當前類中定義的域名變數，username 是方法引數。
+            string userPath = $"WinNT://{domain}/{username},user";
+
+            // 建立並返回一個新的 DirectoryEntry 物件，表示指定使用者的目錄條目。
+            return new DirectoryEntry(userPath);
+        }
+
+        /// <summary>
         /// 建立一個新使用者並設定其密碼。
         /// </summary>
         /// <param name="username">新使用者的使用者名稱。</param>
@@ -78,6 +93,65 @@ namespace UserInfo
             catch (Exception ex)
             {
                 // 捕獲異常並返回異常訊息。
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 設定指定使用者的全名。
+        /// </summary>
+        /// <param name="username">要設定全名的使用者名稱。</param>
+        /// <param name="fullName">要設定的全名。</param>
+        /// <returns>返回操作結果："Success" 表示成功，否則返回異常訊息。</returns>
+        public string SetFullName(string username, string fullName)
+        {
+            try
+            {
+                // 使用 GetUserEntry 方法獲取指定使用者名稱的使用者條目。
+                using (var userEntry = GetUserEntry(username))
+                {
+                    // 設定使用者條目中的 "FullName" 屬性的值。
+                    userEntry.Properties["FullName"].Value = fullName;
+
+                    // 提交更改以儲存修改。
+                    userEntry.CommitChanges();
+                }
+
+                // 如果成功執行，返回 "Success"。
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 捕獲異常並返回異常訊息。
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 設定指定使用者的描述資訊。
+        /// </summary>
+        /// <param name="username">使用者名稱。</param>
+        /// <param name="description">要設定的描述資訊。</param>
+        /// <returns>返回操作結果。如果成功，返回 "Success"；如果失敗，返回錯誤資訊。</returns>
+        public string SetDescription(string username, string description)
+        {
+            try
+            {
+                // 獲取指定使用者的條目。
+                using (var userEntry = GetUserEntry(username))
+                {
+                    // 設定使用者條目的 "Description" 屬性值。
+                    userEntry.Properties["Description"].Value = description;
+
+                    // 提交更改以儲存設定。
+                    userEntry.CommitChanges();
+                }
+                // 如果操作成功，返回 "Success"。
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 如果操作失敗，返回異常的訊息。
                 return ex.Message;
             }
         }
