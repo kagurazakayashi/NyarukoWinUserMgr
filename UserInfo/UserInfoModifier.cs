@@ -155,5 +155,123 @@ namespace UserInfo
                 return ex.Message;
             }
         }
+
+        /// <summary>
+        /// 設定使用者下次登入時是否需要更改密碼。
+        /// </summary>
+        /// <param name="username">使用者名稱。</param>
+        /// <param name="required">布林值，指示是否要求更改密碼。如果為 true，則設定為需要更改密碼；如果為 false，則取消該要求。</param>
+        /// <returns>返回操作結果。如果成功返回 "Success"，否則返回異常訊息。</returns>
+        public string SetPasswordChangeOnNextLogon(string username, bool required)
+        {
+            try
+            {
+                // 獲取使用者的目錄條目（如 Active Directory 條目）
+                using (var userEntry = GetUserEntry(username))
+                {
+                    // 獲取使用者標誌屬性值
+                    int userFlags = (int)userEntry.Properties["UserFlags"].Value;
+
+                    // 如果 required 為 true，則設定標誌位（0x1000）表示需要更改密碼
+                    if (required)
+                        userFlags |= 0x1000; // 按位或操作，設定特定位為 1
+                    else
+                        userFlags &= ~0x1000; // 按位與和按位取反操作，清除特定位
+
+                    // 更新使用者標誌屬性值
+                    userEntry.Properties["UserFlags"].Value = userFlags;
+
+                    // 提交更改到目錄
+                    userEntry.CommitChanges();
+                }
+
+                // 返回操作成功
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 捕獲異常並返回異常訊息
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 設定使用者密碼是否不能被更改。
+        /// </summary>
+        /// <param name="username">使用者名稱。</param>
+        /// <param name="cannotChange">指示密碼是否不能被更改的布林值。傳遞 true 表示密碼不能被更改，false 表示可以更改。</param>
+        /// <returns>返回操作結果。如果成功返回 "Success"，如果失敗返回異常訊息。</returns>
+        public string SetPasswordCannotBeChanged(string username, bool cannotChange)
+        {
+            try
+            {
+                // 使用使用者條目進行操作
+                using (var userEntry = GetUserEntry(username))
+                {
+                    // 獲取使用者標誌（UserFlags）屬性值
+                    int userFlags = (int)userEntry.Properties["UserFlags"].Value;
+
+                    // 如果 cannotChange 為 true，設定標誌位 0x40（禁止更改密碼）
+                    if (cannotChange)
+                        userFlags |= 0x40; // 按位或操作，啟用標誌位
+                    else
+                        userFlags &= ~0x40; // 按位與操作，清除標誌位
+
+                    // 更新使用者標誌屬性
+                    userEntry.Properties["UserFlags"].Value = userFlags;
+
+                    // 提交更改到目錄
+                    userEntry.CommitChanges();
+                }
+
+                // 返回操作成功訊息
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 捕獲異常並返回異常訊息
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 設定使用者密碼是否永不過期。
+        /// </summary>
+        /// <param name="username">使用者的使用者名稱。</param>
+        /// <param name="neverExpires">一個布林值，指示密碼是否應設定為永不過期。
+        /// 如果為 true，則設定為永不過期；否則，取消該設定。</param>
+        /// <returns>返回操作結果字串。"Success" 表示成功，否則返回錯誤資訊。</returns>
+        public string SetPasswordNeverExpires(string username, bool neverExpires)
+        {
+            try
+            {
+                // 使用 GetUserEntry 方法獲取指定使用者的目錄條目
+                using (var userEntry = GetUserEntry(username))
+                {
+                    // 獲取使用者的 UserFlags 屬性值，並轉換為整數
+                    int userFlags = (int)userEntry.Properties["UserFlags"].Value;
+
+                    // 如果需要設定密碼永不過期，則將標誌位 0x10000 設定為 1
+                    if (neverExpires)
+                        userFlags |= 0x10000; // 使用按位或運算子設定標誌位
+                    else
+                        userFlags &= ~0x10000; // 使用按位與和取反運算子清除標誌位
+
+                    // 將更新後的標誌位值寫回 UserFlags 屬性
+                    userEntry.Properties["UserFlags"].Value = userFlags;
+
+                    // 提交對目錄條目的更改
+                    userEntry.CommitChanges();
+                }
+
+                // 如果操作成功，返回 "Success"
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 如果發生異常，返回異常訊息
+                return ex.Message;
+            }
+        }
     }
 }
