@@ -273,5 +273,74 @@ namespace UserInfo
                 return ex.Message;
             }
         }
+
+        /// <summary>
+        /// 設定使用者賬戶的啟用或停用狀態。
+        /// </summary>
+        /// <param name="username">要操作的使用者名稱。</param>
+        /// <param name="disabled">一個布林值，指示賬戶是否應被停用（true 表示停用，false 表示啟用）。</param>
+        /// <returns>操作結果的字串。如果成功，返回 "Success"；如果發生異常，返回異常訊息。</returns>
+        public string SetAccountDisabled(string username, bool disabled)
+        {
+            try
+            {
+                // 使用 GetUserEntry 方法獲取指定使用者名稱的使用者條目。
+                using (var userEntry = GetUserEntry(username))
+                {
+                    // 獲取使用者當前的 UserFlags 屬性值。
+                    int userFlags = (int)userEntry.Properties["UserFlags"].Value;
+
+                    // 如果需要停用賬戶，將 UserFlags 的第 1 位設定為 1。
+                    if (disabled)
+                        userFlags |= 0x2; // 透過按位或操作設定第 1 位。
+                    else
+                        userFlags &= ~0x2; // 透過按位與操作清除第 1 位。
+
+                    // 更新使用者條目的 UserFlags 屬性值。
+                    userEntry.Properties["UserFlags"].Value = userFlags;
+
+                    // 提交對使用者條目的更改。
+                    userEntry.CommitChanges();
+                }
+
+                // 返回操作成功的訊息。
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 捕獲異常並返回異常訊息。
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 設定使用者賬號是否被鎖定。
+        /// </summary>
+        /// <param name="username">要操作的使用者名稱。</param>
+        /// <param name="locked">指定是否鎖定賬號。如果需要重置密碼，傳入 false。</param>
+        /// <returns>操作結果字串。如果成功返回"Success"，否則返回異常資訊。</returns>
+        public string SetAccountLocked(string username, bool locked)
+        {
+            try
+            {
+                // 使用 GetUserEntry 方法獲取使用者條目物件。
+                using (var userEntry = GetUserEntry(username))
+                {
+                    // 呼叫使用者條目的 SetPassword 方法，設定密碼為 null，解除可能存在的鎖定。
+                    userEntry.Invoke("SetPassword", new object[] { null });
+
+                    // 提交更改以應用更新。
+                    userEntry.CommitChanges();
+                }
+
+                // 返回操作成功的訊息。
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 捕獲異常並返回異常資訊。
+                return ex.Message;
+            }
+        }
     }
 }
