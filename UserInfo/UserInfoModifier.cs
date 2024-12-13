@@ -342,5 +342,62 @@ namespace UserInfo
                 return ex.Message;
             }
         }
+
+        /// <summary>
+        /// 將指定的使用者新增到指定的組。
+        /// </summary>
+        /// <param name="username">使用者名稱，表示要新增的使用者。</param>
+        /// <param name="groupName">組名，表示使用者要加入的組。</param>
+        /// <returns>如果成功返回 "Success"，如果失敗返回異常訊息。</returns>
+        public string AddToGroup(string username, string groupName)
+        {
+            try
+            {
+                // 使用 GetUserEntry 方法獲取使用者條目。
+                // 透過 using 語句確保在使用完後資源會被自動釋放。
+                using (var userEntry = GetUserEntry(username))
+                // 建立一個目錄條目物件，表示指定的組。
+                using (var groupEntry = new DirectoryEntry($"WinNT://{domain}/{groupName},group"))
+                {
+                    // 呼叫組的 Add 方法，將使用者條目的路徑新增到組。
+                    groupEntry.Invoke("Add", new object[] { userEntry.Path });
+                }
+                // 如果成功，返回 "Success"。
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 如果發生異常，返回異常的訊息。
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 從指定的組中移除使用者。
+        /// </summary>
+        /// <param name="username">要移除的使用者名稱。</param>
+        /// <param name="groupName">組的名稱。</param>
+        /// <returns>返回操作結果，如果成功返回 "Success"，否則返回異常訊息。</returns>
+        public string RemoveFromGroup(string username, string groupName)
+        {
+            try
+            {
+                // 獲取使用者的目錄條目
+                using (var userEntry = GetUserEntry(username))
+                // 獲取組的目錄條目
+                using (var groupEntry = new DirectoryEntry($"WinNT://{domain}/{groupName},group"))
+                {
+                    // 呼叫組條目的 Remove 方法，移除指定使用者
+                    groupEntry.Invoke("Remove", new object[] { userEntry.Path });
+                }
+                // 如果成功，返回 "Success"
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 捕獲異常並返回異常訊息
+                return ex.Message;
+            }
+        }
     }
 }
