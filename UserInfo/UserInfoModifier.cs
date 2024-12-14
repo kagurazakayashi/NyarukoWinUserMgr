@@ -40,7 +40,7 @@ namespace UserInfo
         /// </summary>
         /// <param name="username">新使用者的使用者名稱。</param>
         /// <param name="password">新使用者的密碼。</param>
-        /// <returns>返回使用者建立成功的訊息或錯誤訊息。</returns>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
         public string CreateUser(string username, string password)
         {
             try
@@ -59,7 +59,7 @@ namespace UserInfo
                 }
 
                 // 返回建立使用者成功的訊息。
-                return "User created successfully.";
+                return "";
             }
             catch (Exception ex)
             {
@@ -72,7 +72,7 @@ namespace UserInfo
         /// 刪除指定使用者名稱的使用者。
         /// </summary>
         /// <param name="username">要刪除的使用者名稱。</param>
-        /// <returns>返回操作結果的訊息字串。如果成功，則返回 "User deleted successfully."；如果失敗，則返回異常訊息。</returns>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
         public string DeleteUser(string username)
         {
             try
@@ -88,7 +88,7 @@ namespace UserInfo
                 }
 
                 // 返回成功刪除使用者的訊息。
-                return "User deleted successfully.";
+                return "";
             }
             catch (Exception ex)
             {
@@ -102,7 +102,7 @@ namespace UserInfo
         /// </summary>
         /// <param name="username">要設定全名的使用者名稱。</param>
         /// <param name="fullName">要設定的全名。</param>
-        /// <returns>返回操作結果："Success" 表示成功，否則返回異常訊息。</returns>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
         public string SetFullName(string username, string fullName)
         {
             try
@@ -117,7 +117,7 @@ namespace UserInfo
                     userEntry.CommitChanges();
                 }
 
-                // 如果成功執行，返回 "Success"。
+                // 如果成功執行，返回 ""。
                 return "";
             }
             catch (Exception ex)
@@ -132,7 +132,7 @@ namespace UserInfo
         /// </summary>
         /// <param name="username">使用者名稱。</param>
         /// <param name="description">要設定的描述資訊。</param>
-        /// <returns>返回操作結果。如果成功，返回 "Success"；如果失敗，返回錯誤資訊。</returns>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
         public string SetDescription(string username, string description)
         {
             try
@@ -146,7 +146,7 @@ namespace UserInfo
                     // 提交更改以儲存設定。
                     userEntry.CommitChanges();
                 }
-                // 如果操作成功，返回 "Success"。
+                // 如果操作成功，返回 ""。
                 return "";
             }
             catch (Exception ex)
@@ -161,7 +161,7 @@ namespace UserInfo
         /// </summary>
         /// <param name="username">使用者名稱。</param>
         /// <param name="required">布林值，指示是否要求更改密碼。如果為 true，則設定為需要更改密碼；如果為 false，則取消該要求。</param>
-        /// <returns>返回操作結果。如果成功返回 "Success"，否則返回異常訊息。</returns>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
         public string SetPasswordChangeOnNextLogon(string username, bool required)
         {
             try
@@ -200,7 +200,7 @@ namespace UserInfo
         /// </summary>
         /// <param name="username">使用者名稱。</param>
         /// <param name="cannotChange">指示密碼是否不能被更改的布林值。傳遞 true 表示密碼不能被更改，false 表示可以更改。</param>
-        /// <returns>返回操作結果。如果成功返回 "Success"，如果失敗返回異常訊息。</returns>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
         public string SetPasswordCannotBeChanged(string username, bool cannotChange)
         {
             try
@@ -240,7 +240,7 @@ namespace UserInfo
         /// <param name="username">使用者的使用者名稱。</param>
         /// <param name="neverExpires">一個布林值，指示密碼是否應設定為永不過期。
         /// 如果為 true，則設定為永不過期；否則，取消該設定。</param>
-        /// <returns>返回操作結果字串。"Success" 表示成功，否則返回錯誤資訊。</returns>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
         public string SetPasswordNeverExpires(string username, bool neverExpires)
         {
             try
@@ -264,7 +264,7 @@ namespace UserInfo
                     userEntry.CommitChanges();
                 }
 
-                // 如果操作成功，返回 "Success"
+                // 如果操作成功，返回 ""
                 return "";
             }
             catch (Exception ex)
@@ -279,7 +279,7 @@ namespace UserInfo
         /// </summary>
         /// <param name="username">要操作的使用者名稱。</param>
         /// <param name="disabled">一個布林值，指示賬戶是否應被停用（true 表示停用，false 表示啟用）。</param>
-        /// <returns>操作結果的字串。如果成功，返回 "Success"；如果發生異常，返回異常訊息。</returns>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
         public string SetAccountDisabled(string username, bool disabled)
         {
             try
@@ -318,7 +318,7 @@ namespace UserInfo
         /// </summary>
         /// <param name="username">要操作的使用者名稱。</param>
         /// <param name="locked">指定是否鎖定賬號。如果需要重置密碼，傳入 false。</param>
-        /// <returns>操作結果字串。如果成功返回"Success"，否則返回異常資訊。</returns>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
         public string SetAccountLocked(string username, bool locked)
         {
             try
@@ -348,7 +348,7 @@ namespace UserInfo
         /// </summary>
         /// <param name="username">使用者名稱，表示要新增的使用者。</param>
         /// <param name="groupName">組名，表示使用者要加入的組。</param>
-        /// <returns>如果成功返回 "Success"，如果失敗返回異常訊息。</returns>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
         public string AddToGroup(string username, string groupName)
         {
             try
@@ -362,7 +362,39 @@ namespace UserInfo
                     // 呼叫組的 Add 方法，將使用者條目的路徑新增到組。
                     groupEntry.Invoke("Add", new object[] { userEntry.Path });
                 }
-                // 如果成功，返回 "Success"。
+                // 如果成功，返回 ""。
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 如果發生異常，返回異常的訊息。
+                return ex.Message;
+            }
+        }
+
+
+
+        /// <summary>
+        /// 設定使用者密碼。
+        /// </summary>
+        /// <param name="username">使用者名稱。</param>
+        /// <param name="newPassword">新密碼。</param>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
+        public string SetUserPassword(string username, string newPassword)
+        {
+            try
+            {
+                // 使用 GetUserEntry 方法獲取使用者條目。
+                using (var userEntry = GetUserEntry(username))
+                {
+                    // 呼叫 SetPassword 方法設定使用者密碼。
+                    userEntry.Invoke("SetPassword", new object[] { newPassword });
+
+                    // 提交更改以儲存密碼。
+                    userEntry.CommitChanges();
+                }
+
+                // 如果成功，返回空字符串。
                 return "";
             }
             catch (Exception ex)
@@ -377,7 +409,7 @@ namespace UserInfo
         /// </summary>
         /// <param name="username">要移除的使用者名稱。</param>
         /// <param name="groupName">組的名稱。</param>
-        /// <returns>返回操作結果，如果成功返回 "Success"，否則返回異常訊息。</returns>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
         public string RemoveFromGroup(string username, string groupName)
         {
             try
@@ -390,7 +422,7 @@ namespace UserInfo
                     // 呼叫組條目的 Remove 方法，移除指定使用者
                     groupEntry.Invoke("Remove", new object[] { userEntry.Path });
                 }
-                // 如果成功，返回 "Success"
+                // 如果成功，返回 ""
                 return "";
             }
             catch (Exception ex)
@@ -399,5 +431,6 @@ namespace UserInfo
                 return ex.Message;
             }
         }
+
     }
 }
