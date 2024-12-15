@@ -432,5 +432,60 @@ namespace UserInfo
             }
         }
 
+        /// <summary>
+        /// 建立一個組。
+        /// </summary>
+        /// <param name="groupName">組名稱。</param>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
+        public string CreateGroup(string groupName)
+        {
+            try
+            {
+                // 透過 WinNT 協議連線到指定域的目錄。
+                using (var entry = new DirectoryEntry($"WinNT://{domain}"))
+                {
+                    // 建立一個新的群組節點。
+                    var group = entry.Children.Add(groupName, "group");
+                    // 提交變更以生效。
+                    group.CommitChanges();
+                }
+                // 返回建立成功的資訊。
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 如果發生異常，返回異常資訊。
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 刪除指定名稱的組。
+        /// </summary>
+        /// <param name="groupName">要刪除的組名。</param>
+        /// <returns>操作結果的字串。如果成功，返回 ""；如果發生異常，返回異常訊息。</returns>
+        public string DeleteGroup(string groupName)
+        {
+            try
+            {
+                // 使用 DirectoryEntry 对象连接到指定域（WinNT:// 格式用于访问 Windows NT 域）。
+                using (var entry = new DirectoryEntry($"WinNT://{domain}"))
+                {
+                    // 查找具有指定名称的组对象。
+                    var group = entry.Children.Find(groupName, "group");
+
+                    // 从 DirectoryEntry 的子对象集合中移除该组。
+                    entry.Children.Remove(group);
+                }
+                // 如果删除成功，返回空字符串。
+                return "";
+            }
+            catch (Exception ex)
+            {
+                // 捕获异常并返回异常消息。
+                return ex.Message;
+            }
+        }
+
     }
 }
