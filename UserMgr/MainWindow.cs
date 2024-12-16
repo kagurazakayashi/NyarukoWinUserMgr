@@ -22,7 +22,6 @@ namespace WinUserMgr
         private string[] groupList = new string[0];
         private int defaultDataGridUsersColumnsCount = 0;
         private ConfirmWindow confirmWindow;
-        private bool confirmWindowOpened = false;
         private Dictionary<(int row, int col), object> originalData = new Dictionary<(int row, int col), object>();
         private List<DataGridChange> changes = new List<DataGridChange>();
         bool changesDO = false;
@@ -146,8 +145,8 @@ namespace WinUserMgr
         /// <param name="e">事件引數。</param>
         private void toolStripButtonGroups_Click(object sender, EventArgs e)
         {
-            toolStrip1.Enabled = false;
-            toolStrip1.UseWaitCursor = true;
+            menuStrip.Enabled = false;
+            menuStrip.UseWaitCursor = true;
             dataGridUsers.ReadOnly = true;
             toolStripButtonGroups.Text = "请稍候...";
             timerOpenGroup.Enabled = true;
@@ -227,49 +226,11 @@ namespace WinUserMgr
 
         private void toolStripButtonPWGen_Click(object sender, EventArgs e)
         {
-            int pwdCount = int.Parse(toolStripComboBoxPwdCount.Text);
-            string[] types = toolStripComboBoxPwdType.Text.Split(',');
-            string pwdChars = "";
-            foreach (string type in types)
+            string pw = pwgen();
+            if (pw.Length > 0 && dataGridUsers.CurrentCell != null)
             {
-                switch (type)
-                {
-                    case "0-9":
-                        for (int i = 0; i < 10; i++)
-                        {
-                            pwdChars += i.ToString();
-                        }
-                        break;
-                    case "a-z":
-                        for (int i = 0; i < 26; i++)
-                        {
-                            pwdChars += (char)('a' + i);
-                        }
-                        break;
-                    case "A-Z":
-                        for (int i = 0; i < 26; i++)
-                        {
-                            pwdChars += (char)('A' + i);
-                        }
-                        break;
-                    case "sym":
-                        pwdChars += "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
-                        break;
-                }
+                dataGridUsers.CurrentCell.Value = pw;
             }
-            if (pwdChars.Length == 0)
-            {
-                MessageBox.Show("请选择密码类型！", "密码生成器", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            Random random = new Random();
-            string pwd = "";
-            for (int i = 0; i < pwdCount; i++)
-            {
-                pwd += pwdChars[random.Next(pwdChars.Length)];
-            }
-            //MessageBox.Show("生成的密码为：" + pwd, "密码生成器", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            dataGridUsers.CurrentCell.Value = pwd;
         }
 
         private void dataGridUsers_CurrentCellChanged(object sender, EventArgs e)
@@ -281,26 +242,28 @@ namespace WinUserMgr
             // 獲取當前單元格的列索引
             int columnIndex = dataGridUsers.CurrentCell.ColumnIndex;
             // 獲取當前單元格的行索引
-            //int rowIndex = dataGridUsers.CurrentCell.RowIndex;
+            int rowIndex = dataGridUsers.CurrentCell.RowIndex;
             //MessageBox.Show($"当前单元格位于：列 {columnIndex}, 行 {rowIndex}");
             if (!dataGridUsers.ReadOnly)
             {
                 toolStripButtonPWGen.Enabled = columnIndex == 4;
             }
+            if (columnIndex == 0)
+            {
+                if (dataGridUsers.Rows[rowIndex].IsNewRow)
+                {
+                    dataGridUsers.Columns[0].ReadOnly = false;
+                }
+                else
+                {
+                    dataGridUsers.Columns[0].ReadOnly = true;
+                }
+            }
         }
 
         private void toolStripButtonOK_Click(object sender, EventArgs e)
         {
-            if (confirmWindowOpened)
-            {
-                if (confirmWindow != null)
-                {
-                    confirmWindow.Close();
-                    confirmWindow = null; // 释放资源
-                }
-                toolStripButtonOK.Checked = false;
-            }
-            else
+            if (confirmWindow == null)
             {
                 confirmWindow = new ConfirmWindow();
                 confirmWindow.FormClosed += ConfirmWindow_FormClosed;
@@ -308,19 +271,67 @@ namespace WinUserMgr
                 confirmWindow.StartButtonClicked += StartButtonClicked;
                 toolStripButtonOK.Checked = true;
             }
-            confirmWindowOpened = !confirmWindowOpened;
+            else
+            {
+                confirmWindow.Close();
+                confirmWindow = null;
+                toolStripButtonOK.Checked = false;
+            }
             updateChgList();
         }
 
         private void ConfirmWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
-            confirmWindowOpened = false;
+            confirmWindow = null;
             toolStripButtonOK.Checked = false;
         }
 
         private void dataGridUsers_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             updateChgList();
+        }
+
+        private void ToolStripMenuItemOpenAccL_Click(object sender, EventArgs e)
+        {
+            startEXE("control", "userpasswords2");
+        }
+
+        private void ToolStripMenuItemOpenAccM_Click(object sender, EventArgs e)
+        {
+            startEXE("ms-settings:otherusers");
+        }
+
+        private void ToolStripMenuItemOpenAccC_Click(object sender, EventArgs e)
+        {
+            startEXE("lusrmgr.msc");
+        }
+
+        private void toolStripButtonPWGenC_Click(object sender, EventArgs e)
+        {
+            string pw = pwgen();
+            if (pw.Length > 0)
+            {
+                try
+                {
+                    Clipboard.SetText(pw);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "剪贴板操作失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void toolStripButtonUDIDGen_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Clipboard.SetText(Guid.NewGuid().ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "生成失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

@@ -29,32 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButtonOK = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLockOFF = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripComboBoxMachine = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripButtonReload = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonGroups = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLockON = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripComboBoxPwdCount = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripComboBoxPwdType = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripButtonPWGen = new System.Windows.Forms.ToolStripButton();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.dataGridUsers = new System.Windows.Forms.DataGridView();
-            this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
-            this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
-            this.labelWait = new System.Windows.Forms.Label();
-            this.timerOpenGroup = new System.Windows.Forms.Timer(this.components);
-            this.pictureBoxBG = new System.Windows.Forms.PictureBox();
             this.udName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.udFullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.udDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,155 +43,42 @@
             this.udPasswordNeverExpires = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.udUserMayNotChangePassword = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.AllGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.toolStrip1.SuspendLayout();
+            this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
+            this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
+            this.labelWait = new System.Windows.Forms.Label();
+            this.timerOpenGroup = new System.Windows.Forms.Timer(this.components);
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.toolStripButtonOK = new System.Windows.Forms.ToolStripMenuItem();
+            this.连接到ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.主机名ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBoxMachine = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonReload2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButtonReload = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButtonGroups = new System.Windows.Forms.ToolStripMenuItem();
+            this.密码生成器PToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.密码位数ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBoxPwdCount = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.密码构成ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBoxPwdType = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonPWGen = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButtonPWGenC = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonUDIDGen = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripLockOFF = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripLockON = new System.Windows.Forms.ToolStripMenuItem();
+            this.新建或删除账户UToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemOpenAccL = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemOpenAccM = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.ToolStripMenuItemOpenAccC = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBoxBG = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).BeginInit();
+            this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBG)).BeginInit();
             this.SuspendLayout();
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.AllowMerge = false;
-            this.toolStrip1.BackColor = System.Drawing.Color.SkyBlue;
-            this.toolStrip1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
-            this.toolStrip1.GripMargin = new System.Windows.Forms.Padding(0);
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonOK,
-            this.toolStripSeparator3,
-            this.toolStripLockOFF,
-            this.toolStripLabel1,
-            this.toolStripComboBoxMachine,
-            this.toolStripButtonReload,
-            this.toolStripSeparator1,
-            this.toolStripButtonGroups,
-            this.toolStripLockON,
-            this.toolStripSeparator2,
-            this.toolStripLabel2,
-            this.toolStripComboBoxPwdCount,
-            this.toolStripLabel3,
-            this.toolStripComboBoxPwdType,
-            this.toolStripButtonPWGen});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Padding = new System.Windows.Forms.Padding(10, 5, 10, 5);
-            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(1284, 38);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "主机";
-            // 
-            // toolStripButtonOK
-            // 
-            this.toolStripButtonOK.Image = global::WinUserMgr.Properties.Resources.paid;
-            this.toolStripButtonOK.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonOK.Name = "toolStripButtonOK";
-            this.toolStripButtonOK.Size = new System.Drawing.Size(113, 25);
-            this.toolStripButtonOK.Text = "核对变更(E)";
-            this.toolStripButtonOK.Click += new System.EventHandler(this.toolStripButtonOK_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 28);
-            // 
-            // toolStripLockOFF
-            // 
-            this.toolStripLockOFF.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripLockOFF.Enabled = false;
-            this.toolStripLockOFF.Image = global::WinUserMgr.Properties.Resources.unlock;
-            this.toolStripLockOFF.Name = "toolStripLockOFF";
-            this.toolStripLockOFF.Size = new System.Drawing.Size(154, 25);
-            this.toolStripLockOFF.Text = "已使用管理员身份";
-            this.toolStripLockOFF.Visible = false;
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(42, 25);
-            this.toolStripLabel1.Text = "主机";
-            // 
-            // toolStripComboBoxMachine
-            // 
-            this.toolStripComboBoxMachine.Name = "toolStripComboBoxMachine";
-            this.toolStripComboBoxMachine.Size = new System.Drawing.Size(150, 28);
-            this.toolStripComboBoxMachine.Text = "localhost";
-            // 
-            // toolStripButtonReload
-            // 
-            this.toolStripButtonReload.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReload.Image")));
-            this.toolStripButtonReload.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonReload.Name = "toolStripButtonReload";
-            this.toolStripButtonReload.Size = new System.Drawing.Size(82, 25);
-            this.toolStripButtonReload.Text = "加载(&R)";
-            this.toolStripButtonReload.Click += new System.EventHandler(this.toolStripButtonReload_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
-            // 
-            // toolStripButtonGroups
-            // 
-            this.toolStripButtonGroups.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonGroups.Image")));
-            this.toolStripButtonGroups.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonGroups.Name = "toolStripButtonGroups";
-            this.toolStripButtonGroups.Size = new System.Drawing.Size(145, 25);
-            this.toolStripButtonGroups.Text = "选择用户组列(&S)";
-            this.toolStripButtonGroups.Click += new System.EventHandler(this.toolStripButtonGroups_Click);
-            // 
-            // toolStripLockON
-            // 
-            this.toolStripLockON.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripLockON.ForeColor = System.Drawing.Color.Crimson;
-            this.toolStripLockON.Image = global::WinUserMgr.Properties.Resources._lock;
-            this.toolStripLockON.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripLockON.Name = "toolStripLockON";
-            this.toolStripLockON.Size = new System.Drawing.Size(179, 25);
-            this.toolStripLockON.Text = "解锁不可用的设置(&A)";
-            this.toolStripLockON.ToolTipText = "解锁设置(&U)";
-            this.toolStripLockON.Click += new System.EventHandler(this.toolStripLockON_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 28);
-            // 
-            // toolStripLabel2
-            // 
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(42, 25);
-            this.toolStripLabel2.Text = "密码";
-            // 
-            // toolStripComboBoxPwdCount
-            // 
-            this.toolStripComboBoxPwdCount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.toolStripComboBoxPwdCount.Name = "toolStripComboBoxPwdCount";
-            this.toolStripComboBoxPwdCount.Size = new System.Drawing.Size(75, 28);
-            // 
-            // toolStripLabel3
-            // 
-            this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(26, 25);
-            this.toolStripLabel3.Text = "位";
-            // 
-            // toolStripComboBoxPwdType
-            // 
-            this.toolStripComboBoxPwdType.Items.AddRange(new object[] {
-            "a-z,0-9",
-            "A-Z,a-z,0-9",
-            "A-Z,a-z,0-9,sym"});
-            this.toolStripComboBoxPwdType.Name = "toolStripComboBoxPwdType";
-            this.toolStripComboBoxPwdType.Size = new System.Drawing.Size(121, 28);
-            // 
-            // toolStripButtonPWGen
-            // 
-            this.toolStripButtonPWGen.Enabled = false;
-            this.toolStripButtonPWGen.Image = global::WinUserMgr.Properties.Resources.key;
-            this.toolStripButtonPWGen.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonPWGen.Name = "toolStripButtonPWGen";
-            this.toolStripButtonPWGen.Size = new System.Drawing.Size(94, 25);
-            this.toolStripButtonPWGen.Text = "建立密码";
-            this.toolStripButtonPWGen.Click += new System.EventHandler(this.toolStripButtonPWGen_Click);
             // 
             // dataGridUsers
             // 
@@ -255,56 +121,16 @@
             this.dataGridUsers.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridUsers.EnableHeadersVisualStyles = false;
             this.dataGridUsers.GridColor = System.Drawing.Color.SkyBlue;
-            this.dataGridUsers.Location = new System.Drawing.Point(0, 37);
+            this.dataGridUsers.Location = new System.Drawing.Point(0, 29);
             this.dataGridUsers.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.dataGridUsers.Name = "dataGridUsers";
             this.dataGridUsers.RowTemplate.Height = 40;
             this.dataGridUsers.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridUsers.Size = new System.Drawing.Size(957, 524);
+            this.dataGridUsers.Size = new System.Drawing.Size(957, 532);
             this.dataGridUsers.TabIndex = 1;
             this.dataGridUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridUsers.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridUsers_CellValueChanged);
             this.dataGridUsers.CurrentCellChanged += new System.EventHandler(this.dataGridUsers_CurrentCellChanged);
-            // 
-            // timerStopWaitAni
-            // 
-            this.timerStopWaitAni.Interval = 1000;
-            this.timerStopWaitAni.Tick += new System.EventHandler(this.timerStopWaitAni_Tick);
-            // 
-            // timerWaitAni
-            // 
-            this.timerWaitAni.Interval = 33;
-            this.timerWaitAni.Tick += new System.EventHandler(this.timerWaitAni_Tick);
-            // 
-            // labelWait
-            // 
-            this.labelWait.BackColor = System.Drawing.Color.LightBlue;
-            this.labelWait.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelWait.Location = new System.Drawing.Point(0, 0);
-            this.labelWait.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelWait.Name = "labelWait";
-            this.labelWait.Size = new System.Drawing.Size(1284, 561);
-            this.labelWait.TabIndex = 2;
-            this.labelWait.Text = "正在加载";
-            this.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelWait.UseWaitCursor = true;
-            // 
-            // timerOpenGroup
-            // 
-            this.timerOpenGroup.Interval = 3000;
-            this.timerOpenGroup.Tick += new System.EventHandler(this.timerOpenGroup_Tick);
-            // 
-            // pictureBoxBG
-            // 
-            this.pictureBoxBG.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxBG.BackColor = System.Drawing.Color.LightBlue;
-            this.pictureBoxBG.Location = new System.Drawing.Point(609, 37);
-            this.pictureBoxBG.Name = "pictureBoxBG";
-            this.pictureBoxBG.Size = new System.Drawing.Size(675, 524);
-            this.pictureBoxBG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxBG.TabIndex = 3;
-            this.pictureBoxBG.TabStop = false;
             // 
             // udName
             // 
@@ -374,6 +200,279 @@
             this.AllGroup.ReadOnly = true;
             this.AllGroup.Width = 147;
             // 
+            // timerStopWaitAni
+            // 
+            this.timerStopWaitAni.Interval = 1000;
+            this.timerStopWaitAni.Tick += new System.EventHandler(this.timerStopWaitAni_Tick);
+            // 
+            // timerWaitAni
+            // 
+            this.timerWaitAni.Interval = 33;
+            this.timerWaitAni.Tick += new System.EventHandler(this.timerWaitAni_Tick);
+            // 
+            // labelWait
+            // 
+            this.labelWait.BackColor = System.Drawing.Color.LightBlue;
+            this.labelWait.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelWait.Location = new System.Drawing.Point(0, 0);
+            this.labelWait.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelWait.Name = "labelWait";
+            this.labelWait.Size = new System.Drawing.Size(1284, 561);
+            this.labelWait.TabIndex = 2;
+            this.labelWait.Text = "正在加载";
+            this.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelWait.UseWaitCursor = true;
+            // 
+            // timerOpenGroup
+            // 
+            this.timerOpenGroup.Interval = 3000;
+            this.timerOpenGroup.Tick += new System.EventHandler(this.timerOpenGroup_Tick);
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonOK,
+            this.连接到ToolStripMenuItem,
+            this.toolStripButtonReload,
+            this.toolStripButtonGroups,
+            this.密码生成器PToolStripMenuItem,
+            this.toolStripLockOFF,
+            this.toolStripLockON,
+            this.新建或删除账户UToolStripMenuItem});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(1284, 29);
+            this.menuStrip.TabIndex = 4;
+            this.menuStrip.Text = "menuStrip1";
+            // 
+            // toolStripButtonOK
+            // 
+            this.toolStripButtonOK.Image = global::WinUserMgr.Properties.Resources.paid;
+            this.toolStripButtonOK.Name = "toolStripButtonOK";
+            this.toolStripButtonOK.ShortcutKeys = System.Windows.Forms.Keys.F10;
+            this.toolStripButtonOK.Size = new System.Drawing.Size(139, 25);
+            this.toolStripButtonOK.Text = "核对变更(F10)";
+            this.toolStripButtonOK.Click += new System.EventHandler(this.toolStripButtonOK_Click);
+            // 
+            // 连接到ToolStripMenuItem
+            // 
+            this.连接到ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.主机名ToolStripMenuItem,
+            this.toolStripComboBoxMachine,
+            this.toolStripSeparator4,
+            this.toolStripButtonReload2});
+            this.连接到ToolStripMenuItem.Image = global::WinUserMgr.Properties.Resources.self_service_kiosk;
+            this.连接到ToolStripMenuItem.Name = "连接到ToolStripMenuItem";
+            this.连接到ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
+            this.连接到ToolStripMenuItem.Size = new System.Drawing.Size(146, 25);
+            this.连接到ToolStripMenuItem.Text = "连接计算机(F4)";
+            // 
+            // 主机名ToolStripMenuItem
+            // 
+            this.主机名ToolStripMenuItem.Enabled = false;
+            this.主机名ToolStripMenuItem.Name = "主机名ToolStripMenuItem";
+            this.主机名ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.主机名ToolStripMenuItem.Text = "主机名";
+            // 
+            // toolStripComboBoxMachine
+            // 
+            this.toolStripComboBoxMachine.BackColor = System.Drawing.SystemColors.Control;
+            this.toolStripComboBoxMachine.Name = "toolStripComboBoxMachine";
+            this.toolStripComboBoxMachine.Size = new System.Drawing.Size(121, 25);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(178, 6);
+            // 
+            // toolStripButtonReload2
+            // 
+            this.toolStripButtonReload2.Image = global::WinUserMgr.Properties.Resources.refresh;
+            this.toolStripButtonReload2.Name = "toolStripButtonReload2";
+            this.toolStripButtonReload2.Size = new System.Drawing.Size(181, 26);
+            this.toolStripButtonReload2.Text = "开始连接";
+            this.toolStripButtonReload2.Click += new System.EventHandler(this.toolStripButtonReload_Click);
+            // 
+            // toolStripButtonReload
+            // 
+            this.toolStripButtonReload.Image = global::WinUserMgr.Properties.Resources.refresh;
+            this.toolStripButtonReload.Name = "toolStripButtonReload";
+            this.toolStripButtonReload.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.toolStripButtonReload.Size = new System.Drawing.Size(130, 25);
+            this.toolStripButtonReload.Text = "重新载入(F5)";
+            this.toolStripButtonReload.Click += new System.EventHandler(this.toolStripButtonReload_Click);
+            // 
+            // toolStripButtonGroups
+            // 
+            this.toolStripButtonGroups.Image = global::WinUserMgr.Properties.Resources.data_sheet;
+            this.toolStripButtonGroups.Name = "toolStripButtonGroups";
+            this.toolStripButtonGroups.ShortcutKeys = System.Windows.Forms.Keys.F6;
+            this.toolStripButtonGroups.Size = new System.Drawing.Size(162, 25);
+            this.toolStripButtonGroups.Text = "选择用户组列(F6)";
+            this.toolStripButtonGroups.Click += new System.EventHandler(this.toolStripButtonGroups_Click);
+            // 
+            // 密码生成器PToolStripMenuItem
+            // 
+            this.密码生成器PToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.密码位数ToolStripMenuItem,
+            this.toolStripComboBoxPwdCount,
+            this.toolStripSeparator5,
+            this.密码构成ToolStripMenuItem,
+            this.toolStripComboBoxPwdType,
+            this.toolStripSeparator6,
+            this.toolStripButtonPWGen,
+            this.toolStripButtonPWGenC,
+            this.toolStripSeparator1,
+            this.toolStripButtonUDIDGen});
+            this.密码生成器PToolStripMenuItem.Image = global::WinUserMgr.Properties.Resources.key;
+            this.密码生成器PToolStripMenuItem.Name = "密码生成器PToolStripMenuItem";
+            this.密码生成器PToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
+            this.密码生成器PToolStripMenuItem.Size = new System.Drawing.Size(146, 25);
+            this.密码生成器PToolStripMenuItem.Text = "密码生成器(F7)";
+            // 
+            // 密码位数ToolStripMenuItem
+            // 
+            this.密码位数ToolStripMenuItem.Enabled = false;
+            this.密码位数ToolStripMenuItem.Name = "密码位数ToolStripMenuItem";
+            this.密码位数ToolStripMenuItem.Size = new System.Drawing.Size(233, 26);
+            this.密码位数ToolStripMenuItem.Text = "密码位数";
+            // 
+            // toolStripComboBoxPwdCount
+            // 
+            this.toolStripComboBoxPwdCount.BackColor = System.Drawing.SystemColors.Control;
+            this.toolStripComboBoxPwdCount.Name = "toolStripComboBoxPwdCount";
+            this.toolStripComboBoxPwdCount.Size = new System.Drawing.Size(121, 25);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(230, 6);
+            // 
+            // 密码构成ToolStripMenuItem
+            // 
+            this.密码构成ToolStripMenuItem.Enabled = false;
+            this.密码构成ToolStripMenuItem.Name = "密码构成ToolStripMenuItem";
+            this.密码构成ToolStripMenuItem.Size = new System.Drawing.Size(233, 26);
+            this.密码构成ToolStripMenuItem.Text = "密码构成";
+            // 
+            // toolStripComboBoxPwdType
+            // 
+            this.toolStripComboBoxPwdType.BackColor = System.Drawing.SystemColors.Control;
+            this.toolStripComboBoxPwdType.Items.AddRange(new object[] {
+            "a-z,0-9",
+            "A-Z,a-z,0-9",
+            "A-Z,a-z,0-9,sym"});
+            this.toolStripComboBoxPwdType.Name = "toolStripComboBoxPwdType";
+            this.toolStripComboBoxPwdType.Size = new System.Drawing.Size(121, 25);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(230, 6);
+            // 
+            // toolStripButtonPWGen
+            // 
+            this.toolStripButtonPWGen.Image = global::WinUserMgr.Properties.Resources.key;
+            this.toolStripButtonPWGen.Name = "toolStripButtonPWGen";
+            this.toolStripButtonPWGen.Size = new System.Drawing.Size(233, 26);
+            this.toolStripButtonPWGen.Text = "填入生成的密码(&P)";
+            this.toolStripButtonPWGen.Click += new System.EventHandler(this.toolStripButtonPWGen_Click);
+            // 
+            // toolStripButtonPWGenC
+            // 
+            this.toolStripButtonPWGenC.Image = global::WinUserMgr.Properties.Resources.inspection;
+            this.toolStripButtonPWGenC.Name = "toolStripButtonPWGenC";
+            this.toolStripButtonPWGenC.Size = new System.Drawing.Size(233, 26);
+            this.toolStripButtonPWGenC.Text = "复制生成的密码(&C)";
+            this.toolStripButtonPWGenC.Click += new System.EventHandler(this.toolStripButtonPWGenC_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(230, 6);
+            // 
+            // toolStripButtonUDIDGen
+            // 
+            this.toolStripButtonUDIDGen.Image = global::WinUserMgr.Properties.Resources.portrait_mode;
+            this.toolStripButtonUDIDGen.Name = "toolStripButtonUDIDGen";
+            this.toolStripButtonUDIDGen.Size = new System.Drawing.Size(233, 26);
+            this.toolStripButtonUDIDGen.Text = "生成并复制 UDID (&U)";
+            this.toolStripButtonUDIDGen.Click += new System.EventHandler(this.toolStripButtonUDIDGen_Click);
+            // 
+            // toolStripLockOFF
+            // 
+            this.toolStripLockOFF.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripLockOFF.Enabled = false;
+            this.toolStripLockOFF.Image = global::WinUserMgr.Properties.Resources.unlock;
+            this.toolStripLockOFF.Name = "toolStripLockOFF";
+            this.toolStripLockOFF.Size = new System.Drawing.Size(166, 25);
+            this.toolStripLockOFF.Text = "已使用管理员身份";
+            // 
+            // toolStripLockON
+            // 
+            this.toolStripLockON.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripLockON.Image = global::WinUserMgr.Properties.Resources._lock;
+            this.toolStripLockON.Name = "toolStripLockON";
+            this.toolStripLockON.ShortcutKeys = System.Windows.Forms.Keys.F11;
+            this.toolStripLockON.Size = new System.Drawing.Size(203, 25);
+            this.toolStripLockON.Text = "解锁不可用的设置(F11)";
+            this.toolStripLockON.Click += new System.EventHandler(this.toolStripLockON_Click);
+            // 
+            // 新建或删除账户UToolStripMenuItem
+            // 
+            this.新建或删除账户UToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemOpenAccL,
+            this.ToolStripMenuItemOpenAccM,
+            this.toolStripSeparator3,
+            this.ToolStripMenuItemOpenAccC});
+            this.新建或删除账户UToolStripMenuItem.Image = global::WinUserMgr.Properties.Resources.portrait_mode;
+            this.新建或删除账户UToolStripMenuItem.Name = "新建或删除账户UToolStripMenuItem";
+            this.新建或删除账户UToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F12;
+            this.新建或删除账户UToolStripMenuItem.Size = new System.Drawing.Size(139, 25);
+            this.新建或删除账户UToolStripMenuItem.Text = "快捷访问(F12)";
+            // 
+            // ToolStripMenuItemOpenAccL
+            // 
+            this.ToolStripMenuItemOpenAccL.Image = global::WinUserMgr.Properties.Resources.shell32_220_16;
+            this.ToolStripMenuItemOpenAccL.Name = "ToolStripMenuItemOpenAccL";
+            this.ToolStripMenuItemOpenAccL.Size = new System.Drawing.Size(288, 26);
+            this.ToolStripMenuItemOpenAccL.Text = "本地账户(&L)";
+            this.ToolStripMenuItemOpenAccL.Click += new System.EventHandler(this.ToolStripMenuItemOpenAccL_Click);
+            // 
+            // ToolStripMenuItemOpenAccM
+            // 
+            this.ToolStripMenuItemOpenAccM.Image = global::WinUserMgr.Properties.Resources.shell32_279;
+            this.ToolStripMenuItemOpenAccM.Name = "ToolStripMenuItemOpenAccM";
+            this.ToolStripMenuItemOpenAccM.Size = new System.Drawing.Size(288, 26);
+            this.ToolStripMenuItemOpenAccM.Text = "Microsoft 账户(&M)";
+            this.ToolStripMenuItemOpenAccM.Click += new System.EventHandler(this.ToolStripMenuItemOpenAccM_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(285, 6);
+            // 
+            // ToolStripMenuItemOpenAccC
+            // 
+            this.ToolStripMenuItemOpenAccC.Image = global::WinUserMgr.Properties.Resources.mmc_128;
+            this.ToolStripMenuItemOpenAccC.Name = "ToolStripMenuItemOpenAccC";
+            this.ToolStripMenuItemOpenAccC.Size = new System.Drawing.Size(288, 26);
+            this.ToolStripMenuItemOpenAccC.Text = "本地用户和组MMC控制台(&C)";
+            this.ToolStripMenuItemOpenAccC.Click += new System.EventHandler(this.ToolStripMenuItemOpenAccC_Click);
+            // 
+            // pictureBoxBG
+            // 
+            this.pictureBoxBG.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxBG.BackColor = System.Drawing.Color.LightBlue;
+            this.pictureBoxBG.Location = new System.Drawing.Point(609, 29);
+            this.pictureBoxBG.Name = "pictureBoxBG";
+            this.pictureBoxBG.Size = new System.Drawing.Size(675, 532);
+            this.pictureBoxBG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxBG.TabIndex = 3;
+            this.pictureBoxBG.TabStop = false;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
@@ -381,11 +480,12 @@
             this.BackColor = System.Drawing.Color.LightBlue;
             this.ClientSize = new System.Drawing.Size(1284, 561);
             this.Controls.Add(this.dataGridUsers);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.labelWait);
             this.Controls.Add(this.pictureBoxBG);
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip;
             this.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.Name = "MainWindow";
             this.Text = "用户管理器";
@@ -393,9 +493,9 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             this.Move += new System.EventHandler(this.MainWindow_Move);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).EndInit();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBG)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -403,29 +503,12 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButtonReload;
         private System.Windows.Forms.DataGridView dataGridUsers;
         private System.Windows.Forms.Timer timerStopWaitAni;
         private System.Windows.Forms.Timer timerWaitAni;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxMachine;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton toolStripButtonGroups;
-        private System.Windows.Forms.ToolStripButton toolStripLockON;
-        private System.Windows.Forms.ToolStripLabel toolStripLockOFF;
         private System.Windows.Forms.PictureBox pictureBoxBG;
         private System.Windows.Forms.Label labelWait;
         private System.Windows.Forms.Timer timerOpenGroup;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxPwdCount;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxPwdType;
-        private System.Windows.Forms.ToolStripButton toolStripButtonPWGen;
-        private System.Windows.Forms.ToolStripButton toolStripButtonOK;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.DataGridViewTextBoxColumn udName;
         private System.Windows.Forms.DataGridViewTextBoxColumn udFullName;
         private System.Windows.Forms.DataGridViewTextBoxColumn udDescription;
@@ -435,6 +518,33 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn udPasswordNeverExpires;
         private System.Windows.Forms.DataGridViewCheckBoxColumn udUserMayNotChangePassword;
         private System.Windows.Forms.DataGridViewTextBoxColumn AllGroup;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem toolStripButtonOK;
+        private System.Windows.Forms.ToolStripMenuItem 连接到ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 主机名ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxMachine;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripButtonReload2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripButtonReload;
+        private System.Windows.Forms.ToolStripMenuItem 密码生成器PToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 密码位数ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxPwdCount;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem 密码构成ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxPwdType;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripMenuItem toolStripButtonPWGen;
+        private System.Windows.Forms.ToolStripMenuItem toolStripLockOFF;
+        private System.Windows.Forms.ToolStripMenuItem toolStripLockON;
+        private System.Windows.Forms.ToolStripMenuItem 新建或删除账户UToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpenAccL;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpenAccM;
+        private System.Windows.Forms.ToolStripMenuItem toolStripButtonGroups;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpenAccC;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem toolStripButtonPWGenC;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripButtonUDIDGen;
     }
 }
 

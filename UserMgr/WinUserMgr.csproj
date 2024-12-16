@@ -115,6 +115,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <None Include="Resources\inspection.png" />
+    <None Include="Resources\mmc_128.png" />
+    <None Include="Resources\shell32_220_16.png" />
+    <None Include="Resources\shell32_220.png" />
+    <None Include="Resources\shell32_279.png" />
+    <None Include="Resources\portrait_mode.png" />
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\self_service_kiosk.png" />
     <None Include="Resources\flash_on.png" />
     <None Include="Resources\electricity.png" />
     <None Include="Resources\undo.png" />

@@ -29,7 +29,7 @@ namespace WinUserMgr
                 Application.Exit();
             }
 
-            toolStrip1.Enabled = !enable; // 停用或啟用工具欄
+            menuStrip.Enabled = !enable; // 停用或啟用工具欄
             labelWait.Visible = enable; // 顯示或隱藏等待標籤
             dataGridUsers.Visible = !enable; // 顯示或隱藏資料表格
 
@@ -161,8 +161,8 @@ namespace WinUserMgr
             }
             this.Invoke((Action)(() =>
             {
-                toolStrip1.Enabled = true;
-                toolStrip1.UseWaitCursor = false;
+                menuStrip.Enabled = true;
+                menuStrip.UseWaitCursor = false;
                 ControlBox = true;
                 if (isAdmin)
                 {
@@ -285,9 +285,14 @@ namespace WinUserMgr
             {
                 foreach (DataGridViewCell cell in row.Cells)
                 {
-                    if (cell.RowIndex < 0 || cell.ColumnIndex < 0)
+                    if (cell.RowIndex < 0 || cell.ColumnIndex < 0 || cell.RowIndex >= dataGridUsers.Rows.Count || cell.ColumnIndex >= dataGridUsers.Columns.Count)
+                    {
                         continue;
-
+                    }
+                    if (!originalData.ContainsKey((cell.RowIndex, cell.ColumnIndex)))
+                    {
+                        originalData[(cell.RowIndex, cell.ColumnIndex)] = cell.Value;
+                    }
                     var originalValue = originalData[(cell.RowIndex, cell.ColumnIndex)];
                     var newValue = cell.Value;
                     bool isBothNullOrEmpty = (originalValue == null || string.IsNullOrEmpty(originalValue.ToString())) &&
@@ -495,7 +500,8 @@ namespace WinUserMgr
                 }
                 else
                 {
-                    info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的 \"{change.Title}\" 从 \"{originalValue}\" 改为 \"{newValue}\"";
+                    //info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的 \"{change.Title}\" 从 \"{originalValue}\" 改为 \"{newValue}\"";
+                    continue;
                 }
                 this.Invoke((Action)(() =>
                 {
@@ -510,6 +516,72 @@ namespace WinUserMgr
                     confirmWindow.toolStripLabelStatus.Text += "注意：直接修改密码会导致未备份私钥的 EFS 加密文件失效。";
                 }
             }));
+        }
+
+        private void startEXE(string path, string arguments = "")
+        {
+            try
+            {
+                if (arguments.Length == 0)
+                {
+                    Process.Start(path);
+                }
+                else
+                {
+                    Process.Start(path, arguments);
+                }
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.Message, "无法执行此命令", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private string pwgen()
+        {
+            int pwdCount = int.Parse(toolStripComboBoxPwdCount.Text);
+            string[] types = toolStripComboBoxPwdType.Text.Split(',');
+            string pwdChars = "";
+            foreach (string type in types)
+            {
+                switch (type)
+                {
+                    case "0-9":
+                        for (int i = 0; i < 10; i++)
+                        {
+                            pwdChars += i.ToString();
+                        }
+                        break;
+                    case "a-z":
+                        for (int i = 0; i < 26; i++)
+                        {
+                            pwdChars += (char)('a' + i);
+                        }
+                        break;
+                    case "A-Z":
+                        for (int i = 0; i < 26; i++)
+                        {
+                            pwdChars += (char)('A' + i);
+                        }
+                        break;
+                    case "sym":
+                        pwdChars += "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+                        break;
+                }
+            }
+            if (pwdChars.Length == 0)
+            {
+                MessageBox.Show("请选择密码类型！", "密码生成器", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "";
+            }
+            Random random = new Random();
+            string pwd = "";
+            for (int i = 0; i < pwdCount; i++)
+            {
+                pwd += pwdChars[random.Next(pwdChars.Length)];
+            }
+            //MessageBox.Show("生成的密码为：" + pwd, "密码生成器", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return pwd;
         }
     }
 }
