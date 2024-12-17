@@ -6,6 +6,7 @@ using SystemRes;
 using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace WinUserMgr
 {
@@ -24,8 +25,11 @@ namespace WinUserMgr
         private ConfirmWindow confirmWindow;
         private Dictionary<(int row, int col), object> originalData = new Dictionary<(int row, int col), object>();
         private List<DataGridChange> changes = new List<DataGridChange>();
+        private static Color[] addDelColor = new Color[] { Color.LightGreen, Color.LightCoral };
         bool changesDO = false;
         bool isAdmin = false;
+        bool rowCodeAdding = false;
+        int loadCount = 0;
 
         /// <summary>
         /// 表示主窗體的建構函式。
@@ -250,13 +254,20 @@ namespace WinUserMgr
             }
             if (columnIndex == 0)
             {
-                if (dataGridUsers.Rows[rowIndex].IsNewRow)
+                if ((dataGridUsers.CurrentCell.Value == null || dataGridUsers.CurrentCell.Value.ToString().Length == 0))
                 {
                     dataGridUsers.Columns[0].ReadOnly = false;
                 }
                 else
                 {
-                    dataGridUsers.Columns[0].ReadOnly = true;
+                    if (dataGridUsers.Rows[rowIndex].IsNewRow)
+                    {
+                        dataGridUsers.Columns[0].ReadOnly = false;
+                    }
+                    else
+                    {
+                        dataGridUsers.Columns[0].ReadOnly = true;
+                    }
                 }
             }
         }
@@ -332,6 +343,99 @@ namespace WinUserMgr
             {
                 MessageBox.Show(ex.Message, "生成失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void dataGridUsers_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            DataGridViewRow currentRow = e.Row;
+            // 允许删除绿色的行
+            string firstCell = currentRow.Cells[0].Value?.ToString();
+            if (currentRow.DefaultCellStyle.BackColor == addDelColor[0])
+            {
+                e.Cancel = !confirmDelete(firstCell);
+                return; // 允许删除
+            }
+            HandleRowMarking(currentRow);
+            // 取消刪除操作
+            e.Cancel = true;
+        }
+
+        private void dataGridUsers_KeyDown(object sender, KeyEventArgs e)
+        {
+            DataGridViewRow currentRow = dataGridUsers.CurrentRow;
+            string firstCell = currentRow.Cells[0].Value?.ToString();
+            if (currentRow.DefaultCellStyle.BackColor == addDelColor[0])
+            {
+                if (confirmDelete(firstCell))
+                {
+                    dataGridUsers.Rows.Remove(currentRow);
+                }
+                return;
+            }
+            // 檢測 Delete 鍵是否被按下，並標記當前行
+            if (e.KeyCode == Keys.Delete && currentRow != null)
+            {
+                HandleRowMarking(currentRow);
+                e.Handled = true; // 防止其他預設刪除操作
+            }
+            updateChgList();
+        }
+
+        private void dataGridUsers_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridViewRow row = dataGridUsers.Rows[e.RowIndex];
+            // 檢查當前行是否包含非空資料
+            bool hasData = false;
+            foreach (DataGridViewCell cell in row.Cells)
+            {
+                if (cell.Value != null && !string.IsNullOrWhiteSpace(cell.Value.ToString()))
+                {
+                    hasData = true;
+                    break;
+                }
+            }
+            // 检查当前行 Index 是否超过 loadCount
+            bool hasOriginalData = e.RowIndex < loadCount;
+            // 如果當前行有資料並且還沒有顏色，標記為綠色
+            if (hasData && row.DefaultCellStyle.BackColor != addDelColor[0] && !hasOriginalData)
+            {
+                row.DefaultCellStyle.BackColor = addDelColor[0];
+            }
+            updateChgList();
+            menuStrip.Enabled = true;
+        }
+
+        private void dataGridUsers_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            updateChgList();
+        }
+
+        private void dataGridUsers_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            // 檢查是否是第一列（索引 0）
+            if (e.ColumnIndex == 0)
+            {
+                string newValue = e.FormattedValue.ToString();
+                // 遍歷 DataGridView 檢查重複資料
+                foreach (DataGridViewRow row in dataGridUsers.Rows)
+                {
+                    if (row.Index != e.RowIndex && row.Cells[0].Value != null)
+                    {
+                        string existingValue = row.Cells[0].Value.ToString();
+                        if (existingValue == newValue)
+                        {
+                            MessageBox.Show("这个用户名已经存在了，请取个别的用户名吧。", "输入错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            e.Cancel = true; // 取消輸入
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void dataGridUsers_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            menuStrip.Enabled = false;
         }
     }
 }

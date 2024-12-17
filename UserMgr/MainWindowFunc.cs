@@ -232,6 +232,8 @@ namespace WinUserMgr
 
 
             // 遍歷使用者列表，填充使用者資訊到表格
+            rowCodeAdding = true;
+            loadCount = 0;
             foreach (UserInfoType user in userLoader.users)
             {
                 // 準備填充表格的一行資料
@@ -258,7 +260,9 @@ namespace WinUserMgr
 
                 // 將準備好的資料新增到表格中
                 dataGridUsers.Rows.Add(newRow.ToArray());
+                loadCount++;
             }
+            rowCodeAdding = false;
 
             // 啟動停止等待動畫的計時器
             timerStopWaitAni.Enabled = true;
@@ -281,6 +285,7 @@ namespace WinUserMgr
         private void updateChgList()
         {
             changes.RemoveAll(x => true);
+            RemoveEmptyRows();
             foreach (DataGridViewRow row in dataGridUsers.Rows)
             {
                 foreach (DataGridViewCell cell in row.Cells)
@@ -289,7 +294,8 @@ namespace WinUserMgr
                     {
                         continue;
                     }
-                    if (!originalData.ContainsKey((cell.RowIndex, cell.ColumnIndex)))
+                    bool isNewRow = !originalData.ContainsKey((cell.RowIndex, cell.ColumnIndex));
+                    if (isNewRow)
                     {
                         originalData[(cell.RowIndex, cell.ColumnIndex)] = cell.Value;
                     }
@@ -301,12 +307,13 @@ namespace WinUserMgr
                     {
                         changes.Add(new DataGridChange
                         {
-                            OriginalValue = originalValue,
+                            OriginalValue = originalValue ?? "",
                             NewValue = newValue,
                             RowIndex = cell.RowIndex,
                             ColumnIndex = cell.ColumnIndex,
                             RowFirstColumnValue = (string)row.Cells[0].Value,
-                            Title = dataGridUsers.Columns[cell.ColumnIndex].HeaderText
+                            Title = dataGridUsers.Columns[cell.ColumnIndex].HeaderText,
+                            isNewRow = isNewRow
                         });
                     }
                 }
@@ -317,6 +324,25 @@ namespace WinUserMgr
             }
             changesDO = false;
             run();
+        }
+
+        private void RemoveEmptyRows()
+        {
+            // 遍歷 DataGridView 中的所有行
+            for (int i = dataGridUsers.Rows.Count - 1; i >= 0; i--) // 從後向前刪除，避免索引問題
+            {
+                DataGridViewRow row = dataGridUsers.Rows[i];
+
+                // 檢查第一列的單元格是否為空或為 null
+                if (row.Cells[0].Value == null || string.IsNullOrWhiteSpace(row.Cells[0].Value.ToString()))
+                {
+                    // 刪除當前行
+                    if (!row.IsNewRow) // 確保不刪除新行
+                    {
+                        dataGridUsers.Rows.RemoveAt(i);
+                    }
+                }
+            }
         }
 
         private string viewTaskStrConv(string info)
@@ -429,14 +455,24 @@ namespace WinUserMgr
                 confirmWindow.listBoxTasks.Items.Clear();
             }));
             bool hasChPwd = false;
+            int ii = 0;
             for (int i = 0; i < changes.Count; i++)
             {
                 DataGridChange change = changes[i];
                 string originalValue = viewTaskStrConv(change.OriginalValue.ToString());
                 string newValue = viewTaskStrConv(change.NewValue.ToString());
                 string info = "";
-                string ii = (i + 1).ToString();
-                if (change.ColumnIndex == 1)
+                string name = change.RowFirstColumnValue;
+                if (name == null || name.Length == 0)
+                {
+                    continue;
+                }
+                ii++;
+                if (change.ColumnIndex == 0)
+                {
+                    info = $"{ii}. 创建新用户 \"{change.RowFirstColumnValue}\"";
+                }
+                else if (change.ColumnIndex == 1)
                 {
                     info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的全名从 \"{originalValue}\" 改为 \"{newValue}\"";
                 }
@@ -505,11 +541,24 @@ namespace WinUserMgr
                 }
                 this.Invoke((Action)(() =>
                 {
-                    confirmWindow.listBoxTasks.Items.Add(info);
+                    if (!confirmWindow.listBoxTasks.Items.Contains(info))
+                    {
+                        confirmWindow.listBoxTasks.Items.Add(info);
+                    }
                 }));
             }
+            // 收集删除项
+            List<string> delRows = GetMarkedDelRowsFirstColumn();
             this.Invoke((Action)(() =>
             {
+                for (int i = 0; i < delRows.Count; i++) {
+                    ii++;
+                    string info = $"{ii}. 删除用户 \"{delRows[i]}\"";
+                    if (!confirmWindow.listBoxTasks.Items.Contains(info))
+                    {
+                        confirmWindow.listBoxTasks.Items.Add(info);
+                    }
+                }
                 confirmWindow.toolStripLabelStatus.Text = $"{confirmWindow.listBoxTasks.Items.Count} 个修改项。";
                 if (hasChPwd)
                 {
@@ -582,6 +631,46 @@ namespace WinUserMgr
             }
             //MessageBox.Show("生成的密码为：" + pwd, "密码生成器", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return pwd;
+        }
+
+        private void HandleRowMarking(DataGridViewRow row)
+        {
+            // 檢查行是否已被標記刪除
+            if (row.DefaultCellStyle.BackColor == addDelColor[1])
+            {
+                // 恢復顏色
+                row.DefaultCellStyle.BackColor = default;
+                row.ReadOnly = false;
+            }
+            else
+            {
+                // 標記行顏色為紅色
+                row.DefaultCellStyle.BackColor = addDelColor[1];
+                row.ReadOnly = true;
+            }
+            // 取消行的選中狀態
+            dataGridUsers.ClearSelection();
+        }
+
+        private bool confirmDelete(string user)
+        {
+            return MessageBox.Show($"放弃新建用户 \"{user}\" 吗？", "删除用户", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+        }
+
+        private List<string> GetMarkedDelRowsFirstColumn()
+        {
+            List<string> markedRows = new List<string>();
+            foreach (DataGridViewRow row in dataGridUsers.Rows)
+            {
+                if (row.DefaultCellStyle.BackColor == addDelColor[1])
+                {
+                    if (row.Cells[0].Value != null)
+                    {
+                        markedRows.Add(row.Cells[0].Value.ToString());
+                    }
+                }
+            }
+            return markedRows;
         }
     }
 }

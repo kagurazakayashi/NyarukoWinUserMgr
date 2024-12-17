@@ -14,5 +14,6 @@ namespace WinUserMgr
         public int ColumnIndex { get; set; }
         public string RowFirstColumnValue { get; set; }
         public string Title { get; set; }
+        public bool isNewRow { get; set; }
     }
 }
