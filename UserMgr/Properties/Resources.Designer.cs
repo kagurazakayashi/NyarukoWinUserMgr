@@ -93,6 +93,16 @@ namespace WinUserMgr.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap app1_512 {
+            get {
+                object obj = ResourceManager.GetObject("app1_512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap data_configuration {
             get {
                 object obj = ResourceManager.GetObject("data_configuration", resourceCulture);

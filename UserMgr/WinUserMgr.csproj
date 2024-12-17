@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <None Include="Resources\app1-512.png" />
     <None Include="Resources\inspection.png" />
     <None Include="Resources\mmc_128.png" />
     <None Include="Resources\shell32_220_16.png" />
