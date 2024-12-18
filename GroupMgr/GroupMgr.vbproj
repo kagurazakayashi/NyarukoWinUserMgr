@@ -157,6 +157,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="data_sheet.ico" />
+    <None Include="Resources\full_trash.png" />
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\reuse.png" />
+    <None Include="Resources\conference_call.png" />
+    <None Include="Resources\podium_with_audience.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

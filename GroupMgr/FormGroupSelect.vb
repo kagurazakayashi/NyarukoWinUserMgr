@@ -4,17 +4,19 @@ Imports SystemRes
 Partial Public Class FormGroupSelect
     Inherits Form
 
-    Private flippedBitmap As Bitmap
     Private systemGroups As String()
     Private iniconf As INI
     Private linkMachineName As String = ""
     Private listBoxSystemGroupStartItems As String() = Nothing
     Private listBoxSelectedGroupStartItems As String() = Nothing
     Private closeNow As Boolean = False
+    Private closeNO As Boolean = False
     Private slboot As New SlbootAni()
     Private timerStopWaitAniEndMode As Integer = 0
     Private draggingOpacity As DraggingOpacity = Nothing
     Private mainWinPS As String = ""
+    Private imgLeft As Bitmap
+    Private imgDel As Bitmap
 
     ''' <summary>
     ''' 表单群组选择 (FormGroupSelect) 的构造函数。
@@ -56,13 +58,16 @@ Partial Public Class FormGroupSelect
 
         ' 获取按钮 "Add" 的影像，并翻转以供 "Remove" 按钮使用。
         ' 使用原始 "Add" 按钮的影像，创建翻转后的影像对象。
-        flippedBitmap = New Bitmap(buttonAdd.Image)
+        imgLeft = New Bitmap(buttonAdd.Image)
 
         ' 将影像左右翻转。
-        flippedBitmap.RotateFlip(RotateFlipType.RotateNoneFlipX)
+        imgLeft.RotateFlip(RotateFlipType.RotateNoneFlipX)
 
         ' 设置 "Remove" 按钮的影像为翻转后的影像。
-        buttonRemove.Image = flippedBitmap
+        buttonRemove.Image = imgLeft
+
+        ' 读取资源文件中的 full_trash
+        imgDel = My.Resources.full_trash
     End Sub
 
     ''' <summary>
@@ -96,38 +101,17 @@ Partial Public Class FormGroupSelect
     ''' <param name="sender">事件的傳送者物件。</param>
     ''' <param name="e">事件引數。</param>
     Private Sub buttonOK_Click(sender As Object, e As EventArgs) Handles buttonOK.Click
-        ' 检查是否有被移除的虚拟组
-        Dim removedGroups As String() = ChkSystemGroup()
-        If removedGroups.Length > 0 Then
-            ' 弹出确认对话框，提示用户永久删除这些虚拟组
-            If MessageBox.Show(
-                    $"有已经被移除的虚拟组名。" & vbCrLf &
-                    $"如果这些虚拟组名不包含在此电脑的用户组列表中，它将被永久删除！" & vbCrLf &
-                    $"以下是要永久删除的组名:" & vbCrLf & vbCrLf &
-                    $"{String.Join(vbCrLf, removedGroups)}" & vbCrLf & vbCrLf &
-                    "是否继续？",
-                    $"永久删除 {removedGroups.Length} 个虚拟组名",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning) = DialogResult.No Then
-
-                ' 如果用户选择取消，且事件为 FormClosingEventArgs，则停止关闭窗口
-                If TypeOf e Is FormClosingEventArgs Then
-                    closeNow = False
-                    DirectCast(e, FormClosingEventArgs).Cancel = True
-                End If
-                Return
-            End If
-        End If
-
         ' 保存配置并检查保存是否成功
         If saveConfig() Then
-            ' 设置对话框结果为确定
-            DialogResult = DialogResult.OK
-            ' 如果事件不是窗口关闭事件，关闭当前窗口
-            If Not TypeOf e Is FormClosingEventArgs Then
-                closeNow = True
-                Environment.Exit(2)
-                Close()
+            If Not closeNO Then
+                ' 设置对话框结果为确定
+                DialogResult = DialogResult.OK
+                ' 如果事件不是窗口关闭事件，关闭当前窗口
+                If Not TypeOf e Is FormClosingEventArgs Then
+                    closeNow = True
+                    Environment.Exit(2)
+                    Close()
+                End If
             End If
         Else
             Environment.Exit(1)
@@ -138,7 +122,7 @@ Partial Public Class FormGroupSelect
     ''' 表单加载事件，用于初始化组件和启动获取用户组的线程。
     ''' </summary>
     Private Sub FormGroupSelect_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' 处理窗口坐标
+        ' 處理視窗座標
         If Me.mainWinPS.Length > 0 Then
             Dim mainWinPS As String() = Me.mainWinPS.Split(","c)
             Dim mainWinPSn As Integer() = Array.ConvertAll(mainWinPS, Function(str) Convert.ToInt32(str))
@@ -149,20 +133,14 @@ Partial Public Class FormGroupSelect
             End If
         End If
 
-        ' 初始化动画设置，指定参数 20
+        ' 初始化動畫設定，指定引數 20
         slboot.Init(20)
-
-        ' 如果动画字体不为空，设置等待标签的字体
+        ' 如果動畫字型不為空，設定等待標籤的字型
         If slboot.aniFont IsNot Nothing Then
             labelWait.Font = slboot.aniFont
-            timerWaitAni.Enabled = True
         End If
 
-        ' 创建一个后台线程，用于异步获取用户组
-        Dim thread As New Thread(AddressOf GetUserGroup) With {
-            .IsBackground = True
-        }
-        thread.Start() ' 启动线程
+        reloadConfig()
     End Sub
 
     ''' <summary>
@@ -213,33 +191,53 @@ Partial Public Class FormGroupSelect
     Private Sub listBoxSystemGroup_SelectedIndexChanged(sender As Object, e As EventArgs) Handles listBoxSystemGroup.SelectedIndexChanged
         chkBtnEnable()
     End Sub
+
+    ''' <summary>
+    ''' 檢查並更新新增和移除按鈕的啟用狀態。
+    ''' </summary>
     Private Sub listBoxSelectedGroup_SelectedIndexChanged(sender As Object, e As EventArgs) Handles listBoxSelectedGroup.SelectedIndexChanged
         chkBtnEnable()
+        If itemIsV() Then
+            If Not buttonRemove.Image.Equals(Me.imgDel) Then
+                buttonRemove.Image = Me.imgDel
+            End If
+        Else
+            If Not buttonRemove.Image.Equals(Me.imgLeft) Then
+                buttonRemove.Image = Me.imgLeft
+            End If
+        End If
     End Sub
 
     ''' <summary>
     ''' 處理移除按鈕的點選事件，將選中的專案從已選組列表框移動到系統組列表框。
     ''' </summary>
     Private Sub buttonRemove_Click(sender As Object, e As EventArgs) Handles buttonRemove.Click
-        ' 如果未選擇任何專案，直接返回
-        If listBoxSelectedGroup.SelectedIndex = -1 Then
+        ' 儲存當前選中項的索引
+        Dim nowSelectedIndex As Integer = listBoxSelectedGroup.SelectedIndex
+        ' 如果未選擇任何項，直接返回
+        If nowSelectedIndex = -1 Then
+            buttonRemove.Enabled = False
             Return
         End If
 
-        ' 儲存當前選中項的索引
-        Dim nowSelectedIndex As Integer = listBoxSelectedGroup.SelectedIndex
-        ' 獲取選中的所有專案，並將其轉換為列表
-        Dim selectedObjectCollection As List(Of Object) = listBoxSelectedGroup.SelectedItems.Cast(Of Object)().ToList()
+        If itemIsV() Then
+            If MessageBox.Show(listBoxSelectedGroup.SelectedItem.ToString() + " 是一个不实际存在于系统中的用户组，因此此操作会将其永久删除。确认吗？", "删除虚拟用户组", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) = DialogResult.OK Then
+                listBoxSelectedGroup.Items.Remove(listBoxSelectedGroup.SelectedItem)
+            End If
+        Else
+            ' 獲取選中的所有項，並將其轉換為列表
+            Dim selectedObjectCollection As List(Of Object) = listBoxSelectedGroup.SelectedItems.Cast(Of Object)().ToList()
 
-        ' 清除目標列表框的選中狀態
-        listBoxSystemGroup.SelectedItems.Clear()
+            ' 清除目標列表框的選中狀態
+            listBoxSystemGroup.SelectedItems.Clear()
 
-        ' 將選中的專案從已選組列表框移動到系統組列表框
-        For Each item As Object In selectedObjectCollection
-            listBoxSystemGroup.Items.Add(item) ' 新增到系統組列表框
-            listBoxSystemGroup.SelectedItems.Add(item) ' 設定為選中狀態
-            listBoxSelectedGroup.Items.Remove(item) ' 從已選組列表框移除
-        Next
+            ' 將選中的專案從已選組列表框移動到系統組列表框
+            For Each item As Object In selectedObjectCollection
+                listBoxSystemGroup.Items.Add(item) ' 新增到系統組列表框
+                listBoxSystemGroup.SelectedItems.Add(item) ' 設定為選中狀態
+                listBoxSelectedGroup.Items.Remove(item) ' 從已選組列表框移除
+            Next
+        End If
 
         ' 更新已選組列表框的選中狀態
         If listBoxSelectedGroup.Items.Count > 0 AndAlso nowSelectedIndex >= 0 Then
@@ -265,6 +263,7 @@ Partial Public Class FormGroupSelect
     Private Sub textBoxCustom_TextChanged(sender As Object, e As EventArgs) Handles textBoxCustom.TextChanged
         ' 如果文字框有內容，則啟用按鈕，否則禁用按鈕
         buttonAddCustom.Enabled = textBoxCustom.Text.Length > 0
+        buttonAddGroup.Enabled = textBoxCustom.Text.Length > 0
     End Sub
 
     ''' <summary>
@@ -273,7 +272,7 @@ Partial Public Class FormGroupSelect
     ''' </summary>
     ''' <param name="sender">事件的傳送者物件</param>
     ''' <param name="e">按鍵事件引數</param>
-    Private Sub textBoxCustom_KeyPress(sender As Object, e As KeyPressEventArgs) Handles textBoxCustom.KeyPress
+    Private Sub textBoxCustom_KeyPress(sender As Object, e As KeyPressEventArgs)
         ' 如果輸入字元不是控制字元、字母或數字，也不是允許的特殊字元，則阻止輸入
         If Not Char.IsControl(e.KeyChar) AndAlso
            Not Char.IsLetterOrDigit(e.KeyChar) AndAlso
@@ -291,6 +290,9 @@ Partial Public Class FormGroupSelect
     ''' <param name="sender">事件的傳送者物件</param>
     ''' <param name="e">事件引數</param>
     Private Sub buttonAddCustom_Click(sender As Object, e As EventArgs) Handles buttonAddCustom.Click
+        If textBoxCustom.Text.Length = 0 Then
+            Return
+        End If
         ' 將文字框內容新增到選定組列表框中
         listBoxSelectedGroup.Items.Add(textBoxCustom.Text)
         ' 清空文字框內容
@@ -317,21 +319,22 @@ Partial Public Class FormGroupSelect
         End If
 
         ' 如果有未保存的更改，提示用户选择操作
-        If buttonOK.Enabled Then
-            Dim result As DialogResult = MessageBox.Show(
-                "更改尚未保存，是否要保存更改？",
-                "更改未保存",
-                MessageBoxButtons.YesNoCancel,
-                MessageBoxIcon.Question)
-
-            If result = DialogResult.Yes Then
-                closeNow = True
-                buttonOK_Click(sender, e) ' 调用保存按钮的点击事件
-            ElseIf result = DialogResult.Cancel Then
-                e.Cancel = True ' 取消关闭操作
-            End If
+        Dim result As DialogResult = ChkUnsavedChanges()
+        If result = DialogResult.Abort Then
+            ' 沒有未儲存的變更
+            Return
+        ElseIf result = DialogResult.Yes Then
+            ' 有未儲存的變更並且儲存
+            closeNow = True
+            buttonOK_Click(sender, e) ' 调用保存按钮的点击事件
+        ElseIf result = DialogResult.No Then
+            ' 有未儲存的變更但是不儲存
+        ElseIf result = DialogResult.Cancel Then
+            ' 有未儲存的變更但是不继续
+            e.Cancel = True ' 取消关闭操作
         End If
     End Sub
+
 
     ''' <summary>
     ''' 定時器 tick 事件處理器，用於停止等待動畫。
@@ -375,5 +378,42 @@ Partial Public Class FormGroupSelect
     Private Sub timerWaitAni_Tick(sender As Object, e As EventArgs) Handles timerWaitAni.Tick
         ' 更新等待動畫標籤中的字元
         labelWait.Text = slboot.UpdateChar()
+    End Sub
+
+    Private Sub buttonAddGroup_Click(sender As Object, e As EventArgs) Handles buttonAddGroup.Click
+        Dim result As DialogResult = ChkUnsavedChanges()
+        If result = DialogResult.Abort Then
+            ' 沒有未儲存的變更
+        ElseIf result = DialogResult.Yes Then
+            ' 有未儲存的變更並且儲存
+            closeNO = True
+            buttonOK_Click(sender, e)
+            reloadConfig()
+        ElseIf result = DialogResult.No Then
+            ' 有未儲存的變更但是不儲存
+        ElseIf result = DialogResult.Cancel Then
+            ' 有未儲存的變更但是不继续
+            Return
+        End If
+        MessageBox.Show("功能尚未實現。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
+    End Sub
+
+    Private Sub bottonReload_Click(sender As Object, e As EventArgs) Handles bottonReload.Click
+        Dim result As DialogResult = ChkUnsavedChanges()
+        If result = DialogResult.Abort Then
+            ' 沒有未儲存的變更
+            reloadConfig()
+        ElseIf result = DialogResult.Yes Then
+            ' 有未儲存的變更並且儲存
+            closeNO = True
+            buttonOK_Click(sender, e)
+            reloadConfig()
+        ElseIf result = DialogResult.No Then
+            ' 有未儲存的變更但是不儲存
+            reloadConfig()
+        ElseIf result = DialogResult.Cancel Then
+            ' 有未儲存的變更但是不继续
+            Return
+        End If
     End Sub
 End Class

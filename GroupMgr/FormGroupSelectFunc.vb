@@ -1,11 +1,29 @@
 ﻿Imports System
 Imports System.Collections.Generic
 Imports System.Linq
+Imports System.Threading
 Imports System.Windows.Forms
 Imports UserInfo
 
 Partial Public Class FormGroupSelect
     Inherits Form
+
+    Private Sub reloadConfig()
+        ' 如果動畫字型不為空，開始等待動畫
+        If slboot.aniFont IsNot Nothing Then
+            labelWait.Visible = True
+            timerWaitAni.Enabled = True
+        End If
+        listBoxSelectedGroup.Items.Clear()
+        listBoxSystemGroup.Items.Clear()
+        listBoxSystemGroupStartItems = Nothing
+        listBoxSelectedGroupStartItems = Nothing
+        ' 建立一個後臺執行緒，用於非同步獲取使用者組
+        Dim thread As New Thread(AddressOf getUserGroup) With {
+            .IsBackground = True
+        }
+        thread.Start() ' 啟動執行緒
+    End Sub
 
     ''' <summary>
     ''' 儲存當前配置到 INI 檔案。
@@ -127,6 +145,42 @@ Partial Public Class FormGroupSelect
     End Function
 
     ''' <summary>
+    ''' 檢查是否有被移除的虛擬組
+    ''' </summary>
+    ''' <returns>有返回 true，否則返回 false。</returns>
+    Private Function chkIsRemoveVGroup() As Boolean
+        Dim removedGroups As String() = chkSystemGroup()
+        Return removedGroups.Length > 0
+    End Function
+
+    Private Function ChkUnsavedChanges() As DialogResult
+        ' 如果有未儲存的更改，提示使用者選擇操作
+        If Not chkChange() Then
+            Return MessageBox.Show(
+                "列的显示配置还没有保存，是否要保存更改？",
+                "更改未保存",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question)
+        End If
+        Return DialogResult.Abort
+    End Function
+
+    Private Function itemIsV() As Boolean
+        Dim vGroups As String() = chkSystemGroup()
+        Dim isV As Boolean = False
+        If vGroups.Length > 0 And listBoxSelectedGroup.SelectedIndex > -1 Then
+            ' 检查是不是在 removedGroups 中
+            For Each item In vGroups
+                If item = listBoxSelectedGroup.SelectedItem.ToString() Then
+                    isV = True
+                    Exit For
+                End If
+            Next
+        End If
+        Return isV
+    End Function
+
+    ''' <summary>
     ''' 檢查當前系統使用者組列表框中新增的使用者組。
     ''' </summary>
     ''' <returns>返回新增使用者組的字串陣列</returns>
@@ -134,11 +188,21 @@ Partial Public Class FormGroupSelect
         ' 建立一個列表用於儲存新增的使用者組
         Dim list As New List(Of String)()
 
-        ' 遍歷當前使用者組列表框的專案
+        ' 遍歷當前使用者組列表框的
         For Each item In listBoxSystemGroup.Items
             ' 如果該使用者組不在原始組中，則認為是新增的
             If Not systemGroups.Contains(item.ToString()) Then
                 list.Add(item.ToString())
+            End If
+        Next
+        ' 遍歷當前系統組列表框
+        For Each item In listBoxSelectedGroup.Items
+            ' 如果該使用者組不在原始組中，則認為是新增的
+            If Not systemGroups.Contains(item.ToString()) Then
+                list.Add(item.ToString())
+            ElseIf list.Contains(item.ToString()) Then
+                ' 如果該使用者組在新增列表中，則移除
+                list.Remove(item.ToString())
             End If
         Next
 
@@ -150,6 +214,8 @@ Partial Public Class FormGroupSelect
     ''' 檢查並更新新增和移除按鈕的啟用狀態。
     ''' </summary>
     Private Sub chkBtnEnable()
+        ' 如果系統組列表框中有選中項，則啟用刪除按鈕
+        buttonDelGroup.Enabled = listBoxSystemGroup.SelectedIndex <> -1
         ' 如果已選組列表框中有選中項，則啟用移除按鈕
         buttonRemove.Enabled = listBoxSelectedGroup.SelectedIndex <> -1
         ' 如果系統組列表框中有選中項，則啟用新增按鈕
