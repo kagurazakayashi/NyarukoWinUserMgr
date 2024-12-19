@@ -6,7 +6,6 @@ Partial Public Class FormGroupSelect
 
     Private systemGroups As String()
     Private iniconf As INI
-    Private linkMachineName As String = ""
     Private listBoxSystemGroupStartItems As String() = Nothing
     Private listBoxSelectedGroupStartItems As String() = Nothing
     Private closeNow As Boolean = False
@@ -17,6 +16,7 @@ Partial Public Class FormGroupSelect
     Private mainWinPS As String = ""
     Private imgLeft As Bitmap
     Private imgDel As Bitmap
+    Private defaultTitle As String = ""
 
     ''' <summary>
     ''' 表单群组选择 (FormGroupSelect) 的构造函数。
@@ -37,16 +37,17 @@ Partial Public Class FormGroupSelect
 
         ' 传入计算机名
         If args.Length > 1 Then
-            Me.linkMachineName = args(1)
+            toolStripComboBoxMachine.Text = args(1)
         End If
         ' 如果提供了链接的机器名称，则设置至类属性。
         If linkMachineName.Length > 0 Then
-            Me.linkMachineName = linkMachineName
+            toolStripComboBoxMachine.Text = linkMachineName
         End If
-        If Me.linkMachineName.Length = 0 Then
-            Me.linkMachineName = Environment.MachineName
+        If toolStripComboBoxMachine.Text.Length = 0 Then
+            toolStripComboBoxMachine.Text = Environment.MachineName
         End If
-        Text = $"{Me.linkMachineName} 中的用户组 - {Text}"
+        defaultTitle = " 中的用户组 - " + Text
+        Text = toolStripComboBoxMachine.Text + defaultTitle
 
         ' 传入窗口坐标
         If args.Length > 2 Then
@@ -220,8 +221,13 @@ Partial Public Class FormGroupSelect
             Return
         End If
 
+        ' 判斷這個是不是不在系統中存在的使用者組（虛擬使用者組）
         If itemIsV() Then
-            If MessageBox.Show(listBoxSelectedGroup.SelectedItem.ToString() + " 是一个不实际存在于系统中的用户组，因此此操作会将其永久删除。确认吗？", "删除虚拟用户组", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) = DialogResult.OK Then
+            If MessageBox.Show(listBoxSelectedGroup.SelectedItem.ToString() & Environment.NewLine & "是一个不实际存在于系统中的用户组，" & Environment.NewLine &
+                   "因此此操作会将其永久删除。" & Environment.NewLine & "确认吗？",
+                   "删除虚拟用户组",
+                   MessageBoxButtons.OKCancel,
+                   MessageBoxIcon.Question) = DialogResult.OK Then
                 listBoxSelectedGroup.Items.Remove(listBoxSelectedGroup.SelectedItem)
             End If
         Else

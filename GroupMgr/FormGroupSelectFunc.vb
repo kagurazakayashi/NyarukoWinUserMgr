@@ -82,22 +82,46 @@ Partial Public Class FormGroupSelect
     ''' </summary>
     Private Sub getUserGroup()
         ' 呼叫 UserLoader 獲取系統使用者組資訊
-        Dim groups As String()() = UserLoader.GetGroups(linkMachineName)
+        Dim groups As String()() = UserLoader.GetGroups(toolStripComboBoxMachine.Text)
 
         ' 使用 Invoke 更新 UI 執行緒上的控制元件
         Me.Invoke(CType(Sub()
-                            ' 如果獲取的組列表為空或表示錯誤，則顯示錯誤資訊並關閉視窗
+                            ' 检查获取的用户组列表是否为空或包含特定的错误标识
                             If groups.Length = 0 OrElse (groups.Length = 1 AndAlso groups(0).Length >= 1 AndAlso groups(0)(0) = "%E%") Then
-                                Dim errinfo As String = "无法获取系统用户组列表"
+                                ' 构建错误信息，提示无法获取当前机器的用户组列表
+                                Dim errinfo As String = "无法获取 " + toolStripComboBoxMachine.Text + " 的用户组列表"
+
+                                ' 如果用户组列表长度为 1，并且该组包含足够的元素（至少有 2 个），
+                                ' 则将附加第二个元素（详细的错误信息）到错误信息中
                                 If groups.Length = 1 AndAlso groups(0).Length >= 1 AndAlso groups(0)(0).Length >= 2 Then
-                                    errinfo = groups(0)(1) ' 使用错误信息
+                                    errinfo += "\n" + groups(0)(1)  ' 如果有额外的错误信息，追加到错误信息
                                 End If
-                                MessageBox.Show(errinfo, "无法获取系统用户组列表", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+                                ' 弹出消息框，显示错误信息，并停止当前操作
+                                MessageBox.Show(errinfo, "无法获取用户组列表", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+                                ' 设置关闭标志为 True，表示程序需要关闭
                                 closeNow = True
+
+                                ' 禁用等待动画的定时器
                                 timerWaitAni.Enabled = False
-                                Me.Close()
+
+                                ' 如果当前机器名等于选中的机器名，则关闭当前窗体
+                                If toolStripComboBoxMachine.Text = Environment.MachineName Then
+                                    Close()
+                                Else
+                                    ' 否则，将当前机器名设置为当前机器，并重新获取用户组
+                                    toolStripComboBoxMachine.Text = Environment.MachineName
+                                    getUserGroup()  ' 重新调用获取用户组的函数
+                                End If
+
+                                ' 提前结束当前方法的执行
                                 Return
                             End If
+
+                            ' 如果没有发生错误，将窗体标题设置为选中的机器名加上默认标题
+                            Text = toolStripComboBoxMachine.Text + defaultTitle
+
 
                             ' 將獲取的使用者組名稱新增到列表框中
                             For Each group In groups
