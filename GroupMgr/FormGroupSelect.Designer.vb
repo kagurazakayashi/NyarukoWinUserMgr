@@ -175,10 +175,10 @@ Partial Class FormGroupSelect
         '
         Me.labelWait.BackColor = System.Drawing.SystemColors.Control
         Me.labelWait.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.labelWait.Location = New System.Drawing.Point(0, 0)
+        Me.labelWait.Location = New System.Drawing.Point(0, 29)
         Me.labelWait.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.labelWait.Name = "labelWait"
-        Me.labelWait.Size = New System.Drawing.Size(784, 561)
+        Me.labelWait.Size = New System.Drawing.Size(784, 532)
         Me.labelWait.TabIndex = 11
         Me.labelWait.Text = "正在加载"
         Me.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -311,9 +311,9 @@ Partial Class FormGroupSelect
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(784, 561)
+        Me.Controls.Add(Me.labelWait)
         Me.Controls.Add(Me.MenuStrip1)
         Me.Controls.Add(Me.tableLayoutPanel1)
-        Me.Controls.Add(Me.labelWait)
         Me.Font = New System.Drawing.Font("Microsoft YaHei UI", 12.0!)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1

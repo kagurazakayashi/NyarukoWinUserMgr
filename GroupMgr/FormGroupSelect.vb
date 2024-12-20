@@ -17,6 +17,8 @@ Partial Public Class FormGroupSelect
     Private imgLeft As Bitmap
     Private imgDel As Bitmap
     Private defaultTitle As String = ""
+    Private nowAction As String = ""
+    Private nowMachine As String = ""
 
     ''' <summary>
     ''' 表单群组选择 (FormGroupSelect) 的构造函数。
@@ -195,14 +197,22 @@ Partial Public Class FormGroupSelect
 
     ''' <summary>
     ''' 檢查並更新新增和移除按鈕的啟用狀態。
+    ''' 根據當前選中的項，調整按鈕狀態並切換按鈕影像。
     ''' </summary>
+    ''' <param name="sender">事件的傳送者物件，通常是觸發事件的控制元件。</param>
+    ''' <param name="e">包含事件資料的 EventArgs 物件。</param>
     Private Sub listBoxSelectedGroup_SelectedIndexChanged(sender As Object, e As EventArgs) Handles listBoxSelectedGroup.SelectedIndexChanged
+        ' 呼叫 chkBtnEnable 方法以啟用或停用相關按鈕
         chkBtnEnable()
+
+        ' 檢查當前選中的項是否滿足某種條件（透過 itemIsV 方法判斷）
         If itemIsV() Then
+            ' 如果條件滿足，檢查按鈕影像是否為 imgDel，如果不是則更新為 imgDel
             If Not buttonRemove.Image.Equals(Me.imgDel) Then
                 buttonRemove.Image = Me.imgDel
             End If
         Else
+            ' 如果條件不滿足，檢查按鈕影像是否為 imgLeft，如果不是則更新為 imgLeft
             If Not buttonRemove.Image.Equals(Me.imgLeft) Then
                 buttonRemove.Image = Me.imgLeft
             End If
@@ -279,13 +289,20 @@ Partial Public Class FormGroupSelect
     ''' <param name="sender">事件的傳送者物件</param>
     ''' <param name="e">按鍵事件引數</param>
     Private Sub textBoxCustom_KeyPress(sender As Object, e As KeyPressEventArgs)
-        ' 如果輸入字元不是控制字元、字母或數字，也不是允許的特殊字元，則阻止輸入
+        ' 檢查按鍵是否符合以下條件：
+        ' 1. 按鍵不是控制字元（如退格鍵、刪除鍵等）
+        ' 2. 按鍵不是字母或數字
+        ' 3. 按鍵不是連字元（-）
+        ' 4. 按鍵不是下劃線（_）
+        ' 5. 按鍵不是空格
+        ' 如果上述條件都成立，則禁止輸入。
         If Not Char.IsControl(e.KeyChar) AndAlso
-           Not Char.IsLetterOrDigit(e.KeyChar) AndAlso
-           e.KeyChar <> "-"c AndAlso
-           e.KeyChar <> "_"c AndAlso
-           e.KeyChar <> " "c Then
-            e.Handled = True ' 阻止非法字符输入
+       Not Char.IsLetterOrDigit(e.KeyChar) AndAlso
+       e.KeyChar <> "-"c AndAlso
+       e.KeyChar <> "_"c AndAlso
+       e.KeyChar <> " "c Then
+            ' 設定 e.Handled 為 True 表示此按鍵事件已處理，按鍵輸入將被忽略。
+            e.Handled = True
         End If
     End Sub
 
@@ -386,40 +403,109 @@ Partial Public Class FormGroupSelect
         labelWait.Text = slboot.UpdateChar()
     End Sub
 
+    ''' <summary>
+    ''' 點選“新增組”按鈕時的事件處理程式。
+    ''' 如果未選擇機器或未輸入自定義文字框，則停用按鈕並返回。
+    ''' 如果當前使用者沒有管理員許可權或未進行使用者操作，則直接返回。
+    ''' 建立一個後臺執行緒，用於非同步新增使用者組。
+    ''' </summary>
+    ''' <param name="sender">觸發事件的控制元件。</param>
+    ''' <param name="e">包含事件資料的引數。</param>
     Private Sub buttonAddGroup_Click(sender As Object, e As EventArgs) Handles buttonAddGroup.Click
-        Dim result As DialogResult = ChkUnsavedChanges()
-        If result = DialogResult.Abort Then
-            ' 沒有未儲存的變更
-        ElseIf result = DialogResult.Yes Then
-            ' 有未儲存的變更並且儲存
-            closeNO = True
-            buttonOK_Click(sender, e)
-            reloadConfig()
-        ElseIf result = DialogResult.No Then
-            ' 有未儲存的變更但是不儲存
-        ElseIf result = DialogResult.Cancel Then
-            ' 有未儲存的變更但是不继续
+        ' 檢查工具欄中的機器選擇框是否為空，以及自定義文字框的輸入是否為零
+        If toolStripComboBoxMachine.Text.Length = 0 Or textBoxCustom.Text = 0 Then
+            ' 停用“新增組”按鈕
+            buttonAddGroup.Enabled = False
+            ' 提前返回，停止執行
             Return
         End If
-        MessageBox.Show("功能尚未實現。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+        ' 記錄當前選擇的機器名稱
+        nowMachine = toolStripComboBoxMachine.Text
+
+        ' 檢查使用者是否具有管理員許可權，並確認是否執行使用者操作
+        If Not useAdmin() Or Not userAction() Then
+            ' 如果條件不滿足，則直接返回
+            Return
+        End If
+
+        ' 建立一個後臺執行緒，用於非同步執行新增使用者組的操作
+        Dim thread As New Thread(AddressOf addUserGroup) With {
+        .IsBackground = True ' 設定執行緒為後臺執行
+    }
+
+        ' 啟動後臺執行緒
+        thread.Start()
     End Sub
 
+
+    ''' <summary>
+    ''' 重新載入按鈕的點選事件處理函式。
+    ''' 根據是否存在未儲存的更改，執行相應的處理邏輯。
+    ''' </summary>
+    ''' <param name="sender">事件的傳送者。</param>
+    ''' <param name="e">包含事件資料的 EventArgs 物件。</param>
     Private Sub bottonReload_Click(sender As Object, e As EventArgs) Handles bottonReload.Click
+        ' 檢查是否存在未儲存的更改，返回的結果儲存在 result 中。
         Dim result As DialogResult = ChkUnsavedChanges()
+
+        ' 如果沒有未儲存的更改，則直接重新載入配置。
         If result = DialogResult.Abort Then
-            ' 沒有未儲存的變更
             reloadConfig()
+
+            ' 如果有未儲存的更改並選擇了儲存，先儲存更改，然後重新載入配置。
         ElseIf result = DialogResult.Yes Then
-            ' 有未儲存的變更並且儲存
-            closeNO = True
-            buttonOK_Click(sender, e)
+            closeNO = True ' 標記不需要關閉。
+            buttonOK_Click(sender, e) ' 呼叫確認按鈕的點選事件以儲存更改。
             reloadConfig()
+
+            ' 如果有未儲存的更改並選擇了不儲存，直接重新載入配置。
         ElseIf result = DialogResult.No Then
-            ' 有未儲存的變更但是不儲存
             reloadConfig()
+
+            ' 如果有未儲存的更改並選擇了取消操作，則退出處理。
         ElseIf result = DialogResult.Cancel Then
-            ' 有未儲存的變更但是不继续
             Return
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' 處理刪除使用者組按鈕的點選事件。
+    ''' 當用戶確認刪除時，啟動一個後臺執行緒執行刪除操作。
+    ''' </summary>
+    ''' <param name="sender">觸發事件的控制元件物件。</param>
+    ''' <param name="e">事件引數。</param>
+    Private Sub buttonDelGroup_Click(sender As Object, e As EventArgs) Handles buttonDelGroup.Click
+        ' 檢查是否選中了使用者組
+        If listBoxSystemGroup.SelectedIndex < 0 Then
+            ' 如果沒有選中使用者組，則停用刪除按鈕並返回
+            buttonDelGroup.Enabled = False
+            Return
+        End If
+
+        ' 獲取當前選中的裝置和操作
+        nowMachine = toolStripComboBoxMachine.Text
+        nowAction = listBoxSystemGroup.SelectedItem.ToString()
+
+        ' 驗證是否有管理員許可權並允許當前操作
+        If Not useAdmin() Or Not userAction() Then
+            Return
+        End If
+
+        ' 顯示確認刪除使用者組的對話方塊
+        If MessageBox.Show(
+            "要刪除使用者組 " & nowAction & " 嗎？",
+            "刪除使用者組",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Warning) = DialogResult.Yes Then
+
+            ' 建立一個後臺執行緒以執行刪除使用者組操作
+            Dim thread As New Thread(AddressOf delUserGroup) With {
+            .IsBackground = True
+        }
+
+            ' 啟動執行緒
+            thread.Start()
         End If
     End Sub
 End Class

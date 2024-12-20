@@ -7,7 +7,7 @@ namespace UserInfo
     /// <summary>
     /// 用於管理 Windows 使用者賬戶
     /// </summary>
-    internal class UserInfoModifier
+    public class UserInfoModifier
     {
         public string domain;
 

@@ -3,27 +3,45 @@ Imports System.Collections.Generic
 Imports System.Linq
 Imports System.Threading
 Imports System.Windows.Forms
+Imports SystemRes
 Imports UserInfo
 
 Partial Public Class FormGroupSelect
     Inherits Form
 
+    ''' <summary>
+    ''' 載入設定和系統內使用者組列表
+    ''' </summary>
     Private Sub reloadConfig()
-        ' 如果動畫字型不為空，開始等待動畫
+        ' 如果動畫字型不為空，開始顯示等待動畫
         If slboot.aniFont IsNot Nothing Then
+            ' 顯示等待標籤
             labelWait.Visible = True
+            ' 啟動等待動畫的定時器
             timerWaitAni.Enabled = True
         End If
+
+        ' 清空已選擇的群組列表框
         listBoxSelectedGroup.Items.Clear()
+        ' 清空系統群組列表框
         listBoxSystemGroup.Items.Clear()
+
+        ' 將列表框的起始專案設為空
         listBoxSystemGroupStartItems = Nothing
         listBoxSelectedGroupStartItems = Nothing
+
+        ' 停用刪除群組的按鈕
+        buttonDelGroup.Enabled = False
+        ' 停用確認的按鈕
+        buttonOK.Enabled = False
+
         ' 建立一個後臺執行緒，用於非同步獲取使用者組
         Dim thread As New Thread(AddressOf getUserGroup) With {
-            .IsBackground = True
-        }
+        .IsBackground = True ' 設定執行緒為後臺執行緒
+    }
         thread.Start() ' 啟動執行緒
     End Sub
+
 
     ''' <summary>
     ''' 儲存當前配置到 INI 檔案。
@@ -48,33 +66,41 @@ Partial Public Class FormGroupSelect
     End Function
 
     ''' <summary>
-    ''' 從 INI 檔案載入配置。
+    ''' 載入 INI 配置檔案中的組資訊並填充到列表框中。
+    ''' 如果配置檔案不存在或配置讀取失敗，則適當處理。
     ''' </summary>
     Private Sub loadConfig()
-        ' 檢查 INI 檔案是否存在
+        ' 檢查配置檔案是否存在，如果不存在，則直接返回。
         If Not iniconf.ExistINIFile() Then
             Return
         End If
 
         Try
-            ' 讀取組數量並載入每個組名到列表框
+            ' 讀取配置中的組數量。
             Dim countS As String = iniconf.IniReadValue("Config", "GroupsCount")
+            ' 如果組數量字串為空，則直接返回。
             If countS.Length = 0 Then
                 Return
             End If
+
+            ' 將組數量字串轉換為整數。
             Dim count As Integer = Integer.Parse(countS)
+            ' 遍歷每個組，將其新增到列表框中。
             For i As Integer = 0 To count - 1
                 listBoxSelectedGroup.Items.Add(iniconf.IniReadValue("Groups", $"G{i}"))
             Next
-            ' 移除重複的組名
+
+            ' 移除列表框中的重複項。
             removeDuplicateItems()
         Catch ex As Exception
-            ' 彈出錯誤提示
-            If MessageBox.Show(ex.Message, "配置读取失败", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) = DialogResult.Retry Then
+            ' 如果讀取配置時發生異常，提示使用者重試或取消。
+            If MessageBox.Show(ex.Message, "配置讀取失敗", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) = DialogResult.Retry Then
+                ' 如果使用者選擇重試，則再次呼叫 loadConfig 方法。
                 loadConfig()
             End If
         End Try
     End Sub
+
 
     ''' <summary>
     ''' 獲取系統使用者組的方法，執行在單獨的執行緒中。
@@ -148,6 +174,56 @@ Partial Public Class FormGroupSelect
     End Sub
 
     ''' <summary>
+    ''' 新增使用者組的方法。
+    ''' 建立一個新的使用者組，並根據操作結果更新 UI。
+    ''' </summary>
+    Private Sub addUserGroup()
+        ' 建立一個 UserInfoModifier 物件，用於使用者資訊修改操作
+        Dim chUser As UserInfoModifier = New UserInfoModifier(nowMachine)
+
+        ' 呼叫 CreateGroup 方法建立使用者組，傳入使用者輸入的組名
+        Dim err As String = chUser.CreateGroup(textBoxCustom.Text)
+
+        ' 使用 Invoke 更新 UI 執行緒上的控制元件
+        Me.Invoke(CType(Sub()
+                            ' 如果建立使用者組時發生錯誤，顯示錯誤資訊
+                            If err.Length > 0 Then
+                                MessageBox.Show(err, "建立使用者組 " + textBoxCustom.Text + " 失敗", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Else
+                                ' 如果建立成功，顯示成功資訊
+                                MessageBox.Show("已建立使用者組 " + textBoxCustom.Text, "建立使用者組成功", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            End If
+                            ' 重新載入配置資訊
+                            reloadConfig()
+                        End Sub, Action))
+    End Sub
+
+    ''' <summary>
+    ''' 刪除使用者組的方法。
+    ''' 刪除指定的使用者組，並根據操作結果更新 UI。
+    ''' </summary>
+    Private Sub delUserGroup()
+        ' 建立一個 UserInfoModifier 物件，用於使用者資訊修改操作
+        Dim chUser As UserInfoModifier = New UserInfoModifier(nowMachine)
+
+        ' 呼叫 DeleteGroup 方法刪除使用者組，傳入當前操作的組名
+        Dim err As String = chUser.DeleteGroup(nowAction)
+
+        ' 使用 Invoke 更新 UI 執行緒上的控制元件
+        Me.Invoke(CType(Sub()
+                            ' 如果刪除使用者組時發生錯誤，顯示錯誤資訊
+                            If err.Length > 0 Then
+                                MessageBox.Show(err, "刪除使用者組 " + nowAction + " 失敗", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Else
+                                ' 如果刪除成功，顯示成功資訊
+                                MessageBox.Show("已刪除使用者組 " + nowAction, "刪除使用者組成功", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            End If
+                            ' 重新載入配置資訊
+                            reloadConfig()
+                        End Sub, Action))
+    End Sub
+
+    ''' <summary>
     ''' 檢查使用者組列表框是否有更改，並啟用/禁用確定按鈕。
     ''' </summary>
     ''' <returns>返回所有列表框是否都未更改</returns>
@@ -169,16 +245,22 @@ Partial Public Class FormGroupSelect
     End Function
 
     ''' <summary>
-    ''' 檢查是否有被移除的虛擬組
+    ''' 檢查是否移除虛擬使用者組。
     ''' </summary>
-    ''' <returns>有返回 true，否則返回 false。</returns>
+    ''' <returns>如果有需要移除的組，返回 True；否則返回 False。</returns>
     Private Function chkIsRemoveVGroup() As Boolean
+        ' 呼叫 chkSystemGroup 方法獲取需要移除的組
         Dim removedGroups As String() = chkSystemGroup()
+        ' 如果返回的組數量大於 0，說明需要移除
         Return removedGroups.Length > 0
     End Function
 
+    ''' <summary>
+    ''' 檢查是否有未儲存的更改，並提示使用者操作。
+    ''' </summary>
+    ''' <returns>返回使用者在對話方塊中選擇的結果。</returns>
     Private Function ChkUnsavedChanges() As DialogResult
-        ' 如果有未儲存的更改，提示使用者選擇操作
+        ' 如果沒有更改，提示使用者是否儲存。
         If Not chkChange() Then
             Return MessageBox.Show(
                 "列的显示配置还没有保存，是否要保存更改？",
@@ -186,21 +268,31 @@ Partial Public Class FormGroupSelect
                 MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question)
         End If
+        ' 如果沒有觸發儲存提示，返回 Abort 表示無操作
         Return DialogResult.Abort
     End Function
 
+    ''' <summary>
+    ''' 檢查當前選擇的組是否為虛擬使用者組。
+    ''' </summary>
+    ''' <returns>如果是虛擬使用者組，返回 True；否則返回 False。</returns>
     Private Function itemIsV() As Boolean
+        ' 獲取系統中標記為虛擬使用者的組
         Dim vGroups As String() = chkSystemGroup()
+        ' 初始化變數以儲存是否為虛擬使用者組的結果
         Dim isV As Boolean = False
+        ' 如果虛擬使用者組列表不為空，且使用者選擇了一個有效的組
         If vGroups.Length > 0 And listBoxSelectedGroup.SelectedIndex > -1 Then
-            ' 检查是不是在 removedGroups 中
+            ' 遍歷虛擬使用者組列表，檢查是否與選定的組匹配
             For Each item In vGroups
                 If item = listBoxSelectedGroup.SelectedItem.ToString() Then
+                    ' 如果匹配，設定 isV 為 True 並退出迴圈
                     isV = True
                     Exit For
                 End If
             Next
         End If
+        ' 返回檢查結果
         Return isV
     End Function
 
@@ -296,5 +388,76 @@ Partial Public Class FormGroupSelect
             slboot.StopUpdateChar()
         End If
     End Sub
+
+    ''' <summary>
+    ''' 檢查並嘗試以管理員許可權執行程式。
+    ''' 如果程式未以管理員許可權執行，提示使用者獲取管理員許可權。
+    ''' 如果使用者同意獲取許可權，將以管理員許可權重新啟動程式。
+    ''' </summary>
+    ''' <returns>
+    ''' 如果程式已以管理員許可權執行，則返回 True；否則返回 False。
+    ''' </returns>
+    Private Function useAdmin() As Boolean
+        ' 檢查當前是否已以管理員許可權執行
+        If UAC.IsRunAsAdministrator() Then
+            ' 如果已是管理員許可權，則返回 True
+            Return True
+        End If
+
+        ' 如果未以管理員許可權執行，提示使用者獲取許可權
+        If MessageBox.Show(
+            "此操作需要以管理員許可權執行本程式。" & vbCrLf &
+            "要獲取管理員許可權嗎？" & vbCrLf &
+            "未儲存的改動將丟失。",
+            "許可權不足",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question) = DialogResult.Yes Then
+            ' 如果使用者選擇“是”，嘗試以管理員許可權重新啟動程式
+            If UAC.RestartAsAdministrator() Then
+                ' 如果重新啟動成功，退出當前程式例項
+                Application.Exit()
+            End If
+        End If
+
+        ' 如果未獲取管理員許可權，則返回 False
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' 用於處理使用者操作的函式，包含對未儲存更改的檢查和相關處理。
+    ''' </summary>
+    ''' <returns>如果可以繼續操作則返回 True，否則返回 False。</returns>
+    Private Function userAction() As Boolean
+        ' 檢查是否有未儲存的更改，返回一個對話方塊結果
+        Dim result As DialogResult = ChkUnsavedChanges()
+
+        ' 根據使用者的選擇執行相應的操作
+        If result = DialogResult.Abort Then
+            ' 沒有未儲存的更改
+            Return True
+        ElseIf result = DialogResult.Yes Then
+            ' 有未儲存的更改並且選擇儲存
+            closeNO = True ' 設定標誌表示不關閉
+            buttonOK_Click(Nothing, EventArgs.Empty) ' 呼叫確認按鈕點選事件進行儲存操作
+            reloadConfig() ' 重新載入配置
+            Return True
+        ElseIf result = DialogResult.No Then
+            ' 有未儲存的更改但是選擇不儲存
+            reloadConfig() ' 重新載入配置
+            Return True
+        ElseIf result = DialogResult.Cancel Then
+            ' 有未儲存的更改並選擇取消操作
+            Return False
+        End If
+
+        ' 如果動畫字型不為空，啟動等待動畫
+        If slboot.aniFont IsNot Nothing Then
+            labelWait.Visible = True ' 顯示等待動畫標籤
+            timerWaitAni.Enabled = True ' 啟用等待動畫計時器
+        End If
+
+        ' 返回 True，表示操作成功完成
+        Return True
+    End Function
 
 End Class
