@@ -143,6 +143,16 @@ namespace WinUserMgr.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap globe {
+            get {
+                object obj = ResourceManager.GetObject("globe", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap inspection {
             get {
                 object obj = ResourceManager.GetObject("inspection", resourceCulture);
@@ -186,6 +196,16 @@ namespace WinUserMgr.Properties {
         internal static System.Drawing.Bitmap portrait_mode {
             get {
                 object obj = ResourceManager.GetObject("portrait_mode", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap questions {
+            get {
+                object obj = ResourceManager.GetObject("questions", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -36,7 +36,6 @@ namespace WinUserMgr
 
         private void ConfirmWindow_Load(object sender, EventArgs e)
         {
-
         }
 
         private void ConfirmWindow_SizeChanged(object sender, EventArgs e)

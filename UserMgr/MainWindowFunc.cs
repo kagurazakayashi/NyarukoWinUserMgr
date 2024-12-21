@@ -284,40 +284,8 @@ namespace WinUserMgr
 
         private void updateChgList()
         {
-            changes.RemoveAll(x => true);
             RemoveEmptyRows();
-            foreach (DataGridViewRow row in dataGridUsers.Rows)
-            {
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    if (cell.RowIndex < 0 || cell.ColumnIndex < 0 || cell.RowIndex >= dataGridUsers.Rows.Count || cell.ColumnIndex >= dataGridUsers.Columns.Count)
-                    {
-                        continue;
-                    }
-                    bool isNewRow = !originalData.ContainsKey((cell.RowIndex, cell.ColumnIndex));
-                    if (isNewRow)
-                    {
-                        originalData[(cell.RowIndex, cell.ColumnIndex)] = cell.Value;
-                    }
-                    var originalValue = originalData[(cell.RowIndex, cell.ColumnIndex)];
-                    var newValue = cell.Value;
-                    bool isBothNullOrEmpty = (originalValue == null || string.IsNullOrEmpty(originalValue.ToString())) &&
-                                     (newValue == null || string.IsNullOrEmpty(newValue.ToString()));
-                    if (!isBothNullOrEmpty && !Equals(originalValue, newValue))
-                    {
-                        changes.Add(new DataGridChange
-                        {
-                            OriginalValue = originalValue ?? "",
-                            NewValue = newValue,
-                            RowIndex = cell.RowIndex,
-                            ColumnIndex = cell.ColumnIndex,
-                            RowFirstColumnValue = (string)row.Cells[0].Value,
-                            Title = dataGridUsers.Columns[cell.ColumnIndex].HeaderText,
-                            isNewRow = isNewRow
-                        });
-                    }
-                }
-            }
+            chUser.GetChangeList(dataGridUsers, originalData);
             if (confirmWindow == null)
             {
                 return;
@@ -343,23 +311,6 @@ namespace WinUserMgr
                     }
                 }
             }
-        }
-
-        private string viewTaskStrConv(string info)
-        {
-            if (info == null || info.Length == 0)
-            {
-                return "（空）";
-            }
-            else if (info == "True")
-            {
-                return "是";
-            }
-            else if (info == "False")
-            {
-                return "否";
-            }
-            return info;
         }
 
         /// <summary>
@@ -437,134 +388,44 @@ namespace WinUserMgr
 
         public void StartButtonClicked()
         {
-            MessageBox.Show("TODO: 执行任务");
+            //MessageBox.Show("TODO: 执行任务");
+            // 顯示載入動畫
+            waitAni(true);
+            loadConfig(); // 載入配置
+            // 建立一個後臺執行緒執行資料載入
+            Thread thread = new Thread(changeNow);
+            thread.IsBackground = true; // 設定執行緒為後臺執行緒
+            thread.Start(); // 啟動執行緒
+        }
+
+        private void changeNow()
+        {
+
         }
 
         private void run()
         {
             // 先改 List<DataGridChange> changes 和 bool changesDO 再 run()
-            Thread thread = new Thread(runT);
-            thread.IsBackground = true;
-            thread.Start();
-        }
-
-        private void runT()
-        {
-            this.Invoke((Action)(() =>
+            try
             {
                 confirmWindow.listBoxTasks.Items.Clear();
-            }));
-            bool hasChPwd = false;
-            int ii = 0;
-            for (int i = 0; i < changes.Count; i++)
-            {
-                DataGridChange change = changes[i];
-                string originalValue = viewTaskStrConv(change.OriginalValue.ToString());
-                string newValue = viewTaskStrConv(change.NewValue.ToString());
-                string info = "";
-                string name = change.RowFirstColumnValue;
-                if (name == null || name.Length == 0)
-                {
-                    continue;
-                }
-                ii++;
-                if (change.ColumnIndex == 0)
-                {
-                    info = $"{ii}. 创建新用户 \"{change.RowFirstColumnValue}\"";
-                }
-                else if (change.ColumnIndex == 1)
-                {
-                    info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的全名从 \"{originalValue}\" 改为 \"{newValue}\"";
-                }
-                else if (change.ColumnIndex == 2)
-                {
-                    info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的描述从 \"{originalValue}\" 改为 \"{newValue}\"";
-                }
-                else if (change.ColumnIndex == 4)
-                {
-                    //string passwd = "";
-                    //for (int j = 0; j < newValue.Length; j++)
-                    //{
-                    //    passwd += "*";
-                    //}
-                    info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码重置为 \"{newValue}\"";
-                    hasChPwd = true;
-                }
-                else if (change.ColumnIndex == 5)
-                {
-                    if (change.NewValue.ToString() == "False")
-                    {
-                        info = $"{ii}. 禁用用户 \"{change.RowFirstColumnValue}\"";
-                    }
-                    else
-                    {
-                        info = $"{ii}. 启用用户 \"{change.RowFirstColumnValue}\"";
-                    }
-                }
-                else if (change.ColumnIndex == 6)
-                {
-                    if (change.NewValue.ToString() == "False")
-                    {
-                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为永不过期";
-                    }
-                    else
-                    {
-                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为需要定期更改";
-                    }
-                }
-                else if (change.ColumnIndex == 7)
-                {
-                    if (change.NewValue.ToString() == "False")
-                    {
-                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为可以由用户更改";
-                    }
-                    else
-                    {
-                        info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为不允许用户更改";
-                    }
-                }
-                else if (change.ColumnIndex >= defaultDataGridUsersColumnsCount)
-                {
-                    if (change.NewValue.ToString() == "False")
-                    {
-                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 从用户组 \"{change.Title}\" 中移除";
-                    }
-                    else
-                    {
-                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 添加到用户组 \"{change.Title}\"";
-                    }
-                }
-                else
-                {
-                    //info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的 \"{change.Title}\" 从 \"{originalValue}\" 改为 \"{newValue}\"";
-                    continue;
-                }
-                this.Invoke((Action)(() =>
-                {
-                    if (!confirmWindow.listBoxTasks.Items.Contains(info))
-                    {
-                        confirmWindow.listBoxTasks.Items.Add(info);
-                    }
-                }));
             }
-            // 收集删除项
-            List<string> delRows = GetMarkedDelRowsFirstColumn();
-            this.Invoke((Action)(() =>
+            catch (Exception)
             {
-                for (int i = 0; i < delRows.Count; i++) {
-                    ii++;
-                    string info = $"{ii}. 删除用户 \"{delRows[i]}\"";
-                    if (!confirmWindow.listBoxTasks.Items.Contains(info))
-                    {
-                        confirmWindow.listBoxTasks.Items.Add(info);
-                    }
-                }
-                confirmWindow.toolStripLabelStatus.Text = $"{confirmWindow.listBoxTasks.Items.Count} 个修改项。";
-                if (hasChPwd)
-                {
-                    confirmWindow.toolStripLabelStatus.Text += "注意：直接修改密码会导致未备份私钥的 EFS 加密文件失效。";
-                }
-            }));
+                return;
+            }
+            chUser.defaultDataGridUsersColumnsCount = defaultDataGridUsersColumnsCount;
+            chUser.doIt = false;
+            string[] markedRows = chUser.ShowChangeList();
+            for (int i = 0; i < markedRows.Length; i++)
+            {
+                confirmWindow.listBoxTasks.Items.Add(markedRows[i]);
+            }
+            confirmWindow.toolStripLabelStatus.Text = $"{confirmWindow.listBoxTasks.Items.Count} 个修改项。";
+            if (chUser.hasChPwd)
+            {
+                confirmWindow.toolStripLabelStatus.Text += "注意：直接修改密码会导致未备份私钥的 EFS 加密文件失效。";
+            }
         }
 
         private void startEXE(string path, string arguments = "")
@@ -657,20 +518,20 @@ namespace WinUserMgr
             return MessageBox.Show($"放弃新建用户 \"{user}\" 吗？", "删除用户", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
-        private List<string> GetMarkedDelRowsFirstColumn()
+        private void openURL(string url)
         {
-            List<string> markedRows = new List<string>();
-            foreach (DataGridViewRow row in dataGridUsers.Rows)
+            try
             {
-                if (row.DefaultCellStyle.BackColor == addDelColor[1])
+                Process.Start(new ProcessStartInfo
                 {
-                    if (row.Cells[0].Value != null)
-                    {
-                        markedRows.Add(row.Cells[0].Value.ToString());
-                    }
-                }
+                    FileName = url,
+                    UseShellExecute = true // 使用外部关联程序打开
+                });
             }
-            return markedRows;
+            catch (Exception)
+            {
+                startEXE("explorer", url);
+            }
         }
     }
 }

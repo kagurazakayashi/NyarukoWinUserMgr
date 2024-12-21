@@ -73,7 +73,14 @@
             this.ToolStripMenuItemOpenAccM = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolStripMenuItemOpenAccC = new System.Windows.Forms.ToolStripMenuItem();
+            this.HelpHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dEBUGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpREADME = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBoxBG = new System.Windows.Forms.PictureBox();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.helpCommits = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpIssues = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpReleases = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBG)).BeginInit();
@@ -133,6 +140,7 @@
             this.dataGridUsers.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridUsers_CellValidating);
             this.dataGridUsers.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridUsers_CellValueChanged);
             this.dataGridUsers.CurrentCellChanged += new System.EventHandler(this.dataGridUsers_CurrentCellChanged);
+            this.dataGridUsers.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridUsers_CurrentCellDirtyStateChanged);
             this.dataGridUsers.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridUsers_UserDeletedRow);
             this.dataGridUsers.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridUsers_UserDeletingRow);
             this.dataGridUsers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridUsers_KeyDown);
@@ -243,7 +251,8 @@
             this.密码生成器PToolStripMenuItem,
             this.toolStripLockOFF,
             this.toolStripLockON,
-            this.新建或删除账户UToolStripMenuItem});
+            this.新建或删除账户UToolStripMenuItem,
+            this.HelpHToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(1284, 29);
@@ -269,8 +278,8 @@
             this.连接到ToolStripMenuItem.Image = global::WinUserMgr.Properties.Resources.refresh;
             this.连接到ToolStripMenuItem.Name = "连接到ToolStripMenuItem";
             this.连接到ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
-            this.连接到ToolStripMenuItem.Size = new System.Drawing.Size(139, 25);
-            this.连接到ToolStripMenuItem.Text = "加载用户组(&C)";
+            this.连接到ToolStripMenuItem.Size = new System.Drawing.Size(146, 25);
+            this.连接到ToolStripMenuItem.Text = "连接到/刷新(&C)";
             // 
             // 主机名ToolStripMenuItem
             // 
@@ -368,6 +377,7 @@
             // 
             // toolStripButtonPWGen
             // 
+            this.toolStripButtonPWGen.Enabled = false;
             this.toolStripButtonPWGen.Image = global::WinUserMgr.Properties.Resources.key;
             this.toolStripButtonPWGen.Name = "toolStripButtonPWGen";
             this.toolStripButtonPWGen.Size = new System.Drawing.Size(241, 26);
@@ -426,7 +436,7 @@
             this.新建或删除账户UToolStripMenuItem.Name = "新建或删除账户UToolStripMenuItem";
             this.新建或删除账户UToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F12;
             this.新建或删除账户UToolStripMenuItem.Size = new System.Drawing.Size(125, 25);
-            this.新建或删除账户UToolStripMenuItem.Text = "快捷访问(&Q)";
+            this.新建或删除账户UToolStripMenuItem.Text = "系统设置(&Q)";
             // 
             // ToolStripMenuItemOpenAccL
             // 
@@ -457,6 +467,35 @@
             this.ToolStripMenuItemOpenAccC.Text = "本地用户和组MMC控制台(&C)";
             this.ToolStripMenuItemOpenAccC.Click += new System.EventHandler(this.ToolStripMenuItemOpenAccC_Click);
             // 
+            // HelpHToolStripMenuItem
+            // 
+            this.HelpHToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.helpREADME,
+            this.helpCommits,
+            this.helpIssues,
+            this.helpReleases,
+            this.toolStripMenuItem1,
+            this.dEBUGToolStripMenuItem});
+            this.HelpHToolStripMenuItem.Image = global::WinUserMgr.Properties.Resources.questions;
+            this.HelpHToolStripMenuItem.Name = "HelpHToolStripMenuItem";
+            this.HelpHToolStripMenuItem.Size = new System.Drawing.Size(92, 25);
+            this.HelpHToolStripMenuItem.Text = "帮助(&H)";
+            // 
+            // dEBUGToolStripMenuItem
+            // 
+            this.dEBUGToolStripMenuItem.Name = "dEBUGToolStripMenuItem";
+            this.dEBUGToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
+            this.dEBUGToolStripMenuItem.Text = "测试模式";
+            this.dEBUGToolStripMenuItem.Click += new System.EventHandler(this.dEBUGToolStripMenuItem_Click);
+            // 
+            // helpREADME
+            // 
+            this.helpREADME.Image = global::WinUserMgr.Properties.Resources.globe;
+            this.helpREADME.Name = "helpREADME";
+            this.helpREADME.Size = new System.Drawing.Size(197, 26);
+            this.helpREADME.Text = "在线文档(&H)";
+            this.helpREADME.Click += new System.EventHandler(this.helpREADME_Click);
+            // 
             // pictureBoxBG
             // 
             this.pictureBoxBG.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -468,6 +507,35 @@
             this.pictureBoxBG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxBG.TabIndex = 3;
             this.pictureBoxBG.TabStop = false;
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(194, 6);
+            // 
+            // helpCommits
+            // 
+            this.helpCommits.Image = global::WinUserMgr.Properties.Resources.globe;
+            this.helpCommits.Name = "helpCommits";
+            this.helpCommits.Size = new System.Drawing.Size(197, 26);
+            this.helpCommits.Text = "变更历史记录(&C)";
+            this.helpCommits.Click += new System.EventHandler(this.helpCommits_Click);
+            // 
+            // helpIssues
+            // 
+            this.helpIssues.Image = global::WinUserMgr.Properties.Resources.globe;
+            this.helpIssues.Name = "helpIssues";
+            this.helpIssues.Size = new System.Drawing.Size(197, 26);
+            this.helpIssues.Text = "报告问题(&I)";
+            this.helpIssues.Click += new System.EventHandler(this.helpIssues_Click);
+            // 
+            // helpReleases
+            // 
+            this.helpReleases.Image = global::WinUserMgr.Properties.Resources.globe;
+            this.helpReleases.Name = "helpReleases";
+            this.helpReleases.Size = new System.Drawing.Size(197, 26);
+            this.helpReleases.Text = "下载最新版(&R)";
+            this.helpReleases.Click += new System.EventHandler(this.helpReleases_Click);
             // 
             // MainWindow
             // 
@@ -540,6 +608,13 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn udPasswordNeverExpires;
         private System.Windows.Forms.DataGridViewCheckBoxColumn udUserMayNotChangePassword;
         private System.Windows.Forms.DataGridViewTextBoxColumn AllGroup;
+        private System.Windows.Forms.ToolStripMenuItem HelpHToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dEBUGToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpREADME;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem helpCommits;
+        private System.Windows.Forms.ToolStripMenuItem helpIssues;
+        private System.Windows.Forms.ToolStripMenuItem helpReleases;
     }
 }
 

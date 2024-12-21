@@ -12,6 +12,7 @@ namespace WinUserMgr
 {
     public partial class MainWindow : Form
     {
+        private static string gitURL = "https://github.com/kagurazakayashi/winusermgr";
         private UserLoader userLoader = new UserLoader();
         private SlbootAni slboot = new SlbootAni();
         private INI iniconf;
@@ -24,8 +25,8 @@ namespace WinUserMgr
         private int defaultDataGridUsersColumnsCount = 0;
         private ConfirmWindow confirmWindow;
         private Dictionary<(int row, int col), object> originalData = new Dictionary<(int row, int col), object>();
-        private List<DataGridChange> changes = new List<DataGridChange>();
         private static Color[] addDelColor = new Color[] { Color.LightGreen, Color.LightCoral };
+        private ChangeUser chUser = new ChangeUser(addDelColor);
         bool changesDO = false;
         bool isAdmin = false;
         bool rowCodeAdding = false;
@@ -435,7 +436,43 @@ namespace WinUserMgr
 
         private void dataGridUsers_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            menuStrip.Enabled = false;
+        }
+
+        private void dEBUGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dataGridUsers.ReadOnly = false;
+            dataGridUsers.AllowUserToAddRows = true;
+            dataGridUsers.AllowUserToDeleteRows = true;
+            dEBUGToolStripMenuItem.Enabled = false;
+            dEBUGToolStripMenuItem.Checked = true;
+        }
+
+        private void helpREADME_Click(object sender, EventArgs e)
+        {
+            openURL(gitURL + "/blob/main/README.md");
+        }
+
+        private void helpCommits_Click(object sender, EventArgs e)
+        {
+            openURL(gitURL + "/commits/main/");
+        }
+
+        private void helpIssues_Click(object sender, EventArgs e)
+        {
+            openURL(gitURL + "/issues");
+        }
+
+        private void helpReleases_Click(object sender, EventArgs e)
+        {
+            openURL(gitURL + "/releases");
+        }
+
+        private void dataGridUsers_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dataGridUsers.CurrentCell is DataGridViewCheckBoxCell && dataGridUsers.IsCurrentCellDirty)
+            {
+                dataGridUsers.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
         }
     }
 }
