@@ -38,18 +38,18 @@ Partial Class FormGroupSelect
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.buttonCancel = New System.Windows.Forms.ToolStripMenuItem()
         Me.buttonOK = New System.Windows.Forms.ToolStripMenuItem()
-        Me.添加ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.buttonAddCustom = New System.Windows.Forms.ToolStripMenuItem()
-        Me.buttonAddGroup = New System.Windows.Forms.ToolStripMenuItem()
-        Me.buttonDelGroup = New System.Windows.Forms.ToolStripMenuItem()
         Me.bottonReloadM = New System.Windows.Forms.ToolStripMenuItem()
         Me.主机名ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.toolStripComboBoxMachine = New System.Windows.Forms.ToolStripTextBox()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
         Me.bottonReload = New System.Windows.Forms.ToolStripMenuItem()
+        Me.添加ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.要新建的组名称ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.textBoxCustom = New System.Windows.Forms.ToolStripTextBox()
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.buttonAddCustom = New System.Windows.Forms.ToolStripMenuItem()
+        Me.buttonAddGroup = New System.Windows.Forms.ToolStripMenuItem()
+        Me.buttonDelGroup = New System.Windows.Forms.ToolStripMenuItem()
         Me.tableLayoutPanel1.SuspendLayout()
         Me.groupBox1.SuspendLayout()
         Me.groupBox2.SuspendLayout()
@@ -220,38 +220,6 @@ Partial Class FormGroupSelect
         Me.buttonOK.Size = New System.Drawing.Size(155, 25)
         Me.buttonOK.Text = "保存显示列(F10)"
         '
-        '添加ToolStripMenuItem
-        '
-        Me.添加ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.要新建的组名称ToolStripMenuItem, Me.textBoxCustom, Me.ToolStripMenuItem2, Me.buttonAddCustom, Me.buttonAddGroup})
-        Me.添加ToolStripMenuItem.Image = Global.GroupMgr.My.Resources.Resources.plus
-        Me.添加ToolStripMenuItem.Name = "添加ToolStripMenuItem"
-        Me.添加ToolStripMenuItem.Size = New System.Drawing.Size(139, 25)
-        Me.添加ToolStripMenuItem.Text = "创建用户组(&A)"
-        '
-        'buttonAddCustom
-        '
-        Me.buttonAddCustom.Enabled = False
-        Me.buttonAddCustom.Image = Global.GroupMgr.My.Resources.Resources.podium_with_audience
-        Me.buttonAddCustom.Name = "buttonAddCustom"
-        Me.buttonAddCustom.Size = New System.Drawing.Size(214, 26)
-        Me.buttonAddCustom.Text = "新建虚拟用户组(&E)"
-        '
-        'buttonAddGroup
-        '
-        Me.buttonAddGroup.Enabled = False
-        Me.buttonAddGroup.Image = Global.GroupMgr.My.Resources.Resources.conference_call
-        Me.buttonAddGroup.Name = "buttonAddGroup"
-        Me.buttonAddGroup.Size = New System.Drawing.Size(214, 26)
-        Me.buttonAddGroup.Text = "新建真实用户组(&G)"
-        '
-        'buttonDelGroup
-        '
-        Me.buttonDelGroup.Enabled = False
-        Me.buttonDelGroup.Image = Global.GroupMgr.My.Resources.Resources.full_trash
-        Me.buttonDelGroup.Name = "buttonDelGroup"
-        Me.buttonDelGroup.Size = New System.Drawing.Size(140, 25)
-        Me.buttonDelGroup.Text = "删除选择组(&D)"
-        '
         'bottonReloadM
         '
         Me.bottonReloadM.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.主机名ToolStripMenuItem, Me.toolStripComboBoxMachine, Me.ToolStripMenuItem1, Me.bottonReload})
@@ -287,6 +255,14 @@ Partial Class FormGroupSelect
         Me.bottonReload.Size = New System.Drawing.Size(199, 26)
         Me.bottonReload.Text = "连接/刷新(&R)"
         '
+        '添加ToolStripMenuItem
+        '
+        Me.添加ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.要新建的组名称ToolStripMenuItem, Me.textBoxCustom, Me.ToolStripMenuItem2, Me.buttonAddCustom, Me.buttonAddGroup})
+        Me.添加ToolStripMenuItem.Image = Global.GroupMgr.My.Resources.Resources.plus
+        Me.添加ToolStripMenuItem.Name = "添加ToolStripMenuItem"
+        Me.添加ToolStripMenuItem.Size = New System.Drawing.Size(139, 25)
+        Me.添加ToolStripMenuItem.Text = "创建用户组(&A)"
+        '
         '要新建的组名称ToolStripMenuItem
         '
         Me.要新建的组名称ToolStripMenuItem.Enabled = False
@@ -305,6 +281,30 @@ Partial Class FormGroupSelect
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
         Me.ToolStripMenuItem2.Size = New System.Drawing.Size(211, 6)
         '
+        'buttonAddCustom
+        '
+        Me.buttonAddCustom.Enabled = False
+        Me.buttonAddCustom.Image = Global.GroupMgr.My.Resources.Resources.podium_with_audience
+        Me.buttonAddCustom.Name = "buttonAddCustom"
+        Me.buttonAddCustom.Size = New System.Drawing.Size(214, 26)
+        Me.buttonAddCustom.Text = "新建虚拟用户组(&E)"
+        '
+        'buttonAddGroup
+        '
+        Me.buttonAddGroup.Enabled = False
+        Me.buttonAddGroup.Image = Global.GroupMgr.My.Resources.Resources.conference_call
+        Me.buttonAddGroup.Name = "buttonAddGroup"
+        Me.buttonAddGroup.Size = New System.Drawing.Size(214, 26)
+        Me.buttonAddGroup.Text = "新建真实用户组(&G)"
+        '
+        'buttonDelGroup
+        '
+        Me.buttonDelGroup.Enabled = False
+        Me.buttonDelGroup.Image = Global.GroupMgr.My.Resources.Resources.full_trash
+        Me.buttonDelGroup.Name = "buttonDelGroup"
+        Me.buttonDelGroup.Size = New System.Drawing.Size(140, 25)
+        Me.buttonDelGroup.Text = "删除选择组(&D)"
+        '
         'FormGroupSelect
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(10.0!, 21.0!)
@@ -320,7 +320,6 @@ Partial Class FormGroupSelect
         Me.Margin = New System.Windows.Forms.Padding(5)
         Me.Name = "FormGroupSelect"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "选择要在表格中显示的用户组列(支持批量选择)"
         Me.tableLayoutPanel1.ResumeLayout(False)
         Me.groupBox1.ResumeLayout(False)
         Me.groupBox2.ResumeLayout(False)

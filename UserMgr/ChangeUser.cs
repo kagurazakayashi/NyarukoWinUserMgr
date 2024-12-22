@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UserInfo;
 
 namespace WinUserMgr
 {
@@ -13,13 +14,14 @@ namespace WinUserMgr
     {
         // 每次用 ShowChangeList 前必須先設定以下兩個屬性
         public int defaultDataGridUsersColumnsCount = 0;
-        public bool doIt = false;
+        public string doDomain = ""; // 如果設定值，將真正執行修改操作，否則只是顯示修改列表
         //
 
         public bool hasChPwd = false; // 這是 ShowChangeList 的返回值，用於讀取
 
         public List<DataGridChange> changes = new List<DataGridChange>();
         private Color[] addDelColor;
+        static string[] okInfo = { " 成功。", " 失败: " };
 
         public ChangeUser(Color[] addDelColor)
         {
@@ -79,6 +81,11 @@ namespace WinUserMgr
 
         public string[] ShowChangeList()
         {
+            UserInfoModifier chUsr = null;
+            if (doDomain.Length > 0)
+            {
+                chUsr = new UserInfoModifier(doDomain);
+            }
             hasChPwd = false;
             int ii = 0;
             List<string> markedRows = new List<string>();
@@ -97,18 +104,66 @@ namespace WinUserMgr
                 if (change.RowIndex == -1 && change.ColumnIndex == -1)
                 {
                     info = $"{ii}. 删除用户 \"{change.RowFirstColumnValue}\"";
+                    if (chUsr != null)
+                    {
+                        string err = chUsr.DeleteUser(change.RowFirstColumnValue);
+                        if (err.Length > 0)
+                        {
+                            info += okInfo[1] + err;
+                        }
+                        else
+                        {
+                            info += okInfo[0];
+                        }
+                    }
                 }
                 else if (change.ColumnIndex == 0)
                 {
                     info = $"{ii}. 创建新用户 \"{change.RowFirstColumnValue}\"";
+                    if (chUsr != null)
+                    {
+                        string err = chUsr.CreateUser(change.RowFirstColumnValue, "");
+                        if (err.Length > 0)
+                        {
+                            info += okInfo[1] + err;
+                        }
+                        else
+                        {
+                            info += okInfo[0];
+                        }
+                    }
                 }
                 else if (change.ColumnIndex == 1)
                 {
                     info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的全名从 \"{originalValue}\" 改为 \"{newValue}\"";
+                    if (chUsr != null)
+                    {
+                        string err = chUsr.SetFullName(change.RowFirstColumnValue, newValue);
+                        if (err.Length > 0)
+                        {
+                            info += okInfo[1] + err;
+                        }
+                        else
+                        {
+                            info += okInfo[0];
+                        }
+                    }
                 }
                 else if (change.ColumnIndex == 2)
                 {
                     info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的描述从 \"{originalValue}\" 改为 \"{newValue}\"";
+                    if (chUsr != null)
+                    {
+                        string err = chUsr.SetDescription(change.RowFirstColumnValue, newValue);
+                        if (err.Length > 0)
+                        {
+                            info += okInfo[1] + err;
+                        }
+                        else
+                        {
+                            info += okInfo[0];
+                        }
+                    }
                 }
                 else if (change.ColumnIndex == 4)
                 {
@@ -119,10 +174,22 @@ namespace WinUserMgr
                     //}
                     info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码重置为 \"{newValue}\"";
                     hasChPwd = true;
+                    if (chUsr != null)
+                    {
+                        string err = chUsr.SetUserPassword(change.RowFirstColumnValue, newValue);
+                        if (err.Length > 0)
+                        {
+                            info += okInfo[1] + err;
+                        }
+                        else
+                        {
+                            info += okInfo[0];
+                        }
+                    }
                 }
                 else if (change.ColumnIndex == 5)
                 {
-                    if (change.NewValue.ToString() == "False")
+                    if (change.NewValue.ToString() == "True")
                     {
                         info = $"{ii}. 禁用用户 \"{change.RowFirstColumnValue}\"";
                     }
@@ -130,10 +197,22 @@ namespace WinUserMgr
                     {
                         info = $"{ii}. 启用用户 \"{change.RowFirstColumnValue}\"";
                     }
+                    if (chUsr != null)
+                    {
+                        string err = chUsr.SetAccountDisabled(change.RowFirstColumnValue, change.NewValue.ToString() == "True");
+                        if (err.Length > 0)
+                        {
+                            info += okInfo[1] + err;
+                        }
+                        else
+                        {
+                            info += okInfo[0];
+                        }
+                    }
                 }
                 else if (change.ColumnIndex == 6)
                 {
-                    if (change.NewValue.ToString() == "False")
+                    if (change.NewValue.ToString() == "True")
                     {
                         info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为永不过期";
                     }
@@ -141,16 +220,40 @@ namespace WinUserMgr
                     {
                         info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为需要定期更改";
                     }
+                    if (chUsr != null)
+                    {
+                        string err = chUsr.SetPasswordNeverExpires(change.RowFirstColumnValue, change.NewValue.ToString() == "True");
+                        if (err.Length > 0)
+                        {
+                            info += okInfo[1] + err;
+                        }
+                        else
+                        {
+                            info += okInfo[0];
+                        }
+                    }
                 }
                 else if (change.ColumnIndex == 7)
                 {
-                    if (change.NewValue.ToString() == "False")
+                    if (change.NewValue.ToString() == "True")
                     {
-                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为可以由用户更改";
+                        info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为不允许用户更改";
                     }
                     else
                     {
-                        info = $"{i + 1}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为不允许用户更改";
+                        info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的密码设置为可以由用户更改";
+                    }
+                    if (chUsr != null)
+                    {
+                        string err = chUsr.SetPasswordCannotBeChanged(change.RowFirstColumnValue, change.NewValue.ToString() == "True");
+                        if (err.Length > 0)
+                        {
+                            info += okInfo[1] + err;
+                        }
+                        else
+                        {
+                            info += okInfo[0];
+                        }
                     }
                 }
                 else if (change.ColumnIndex >= defaultDataGridUsersColumnsCount)
@@ -163,10 +266,31 @@ namespace WinUserMgr
                     {
                         info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 添加到用户组 \"{change.Title}\"";
                     }
+                    if (chUsr != null)
+                    {
+                        string err = "";
+                        if (change.NewValue.ToString() == "True")
+                        {
+                            err = chUsr.AddToGroup(change.RowFirstColumnValue, change.Title);
+                        }
+                        else
+                        {
+                            err = chUsr.RemoveFromGroup(change.RowFirstColumnValue, change.Title);
+                        }
+                        if (err.Length > 0)
+                        {
+                            info += okInfo[1] + err;
+                        }
+                        else
+                        {
+                            info += okInfo[0];
+                        }
+                    }
                 }
                 else
                 {
-                    //info = $"{ii}. 将用户 \"{change.RowFirstColumnValue}\" 的 \"{change.Title}\" 从 \"{originalValue}\" 改为 \"{newValue}\"";
+                    ii--;
+                    Console.WriteLine($"禁止将用户 \"{change.RowFirstColumnValue}\" 的 \"{change.Title}\" 从 \"{originalValue}\" 改为 \"{newValue}\"");
                     continue;
                 }
                 if (!markedRows.Contains(info))

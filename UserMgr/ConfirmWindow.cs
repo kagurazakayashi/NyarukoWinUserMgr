@@ -15,6 +15,7 @@ namespace WinUserMgr
     {
         private DraggingOpacity draggingOpacity;
         public event Action StartButtonClicked;
+        public event Action CancelButtonClicked;
 
         public ConfirmWindow()
         {
@@ -55,7 +56,18 @@ namespace WinUserMgr
                 MessageBox.Show("以管理员权限运行本程序并修改表格，\n即可在这里实时看到将要修改的项目。", "没有要执行的任务", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            StartButtonClicked?.Invoke();
+            toolStrip1.BackColor = Color.Orange;
+            toolStripLabelStatus.Text = "正在执行操作，请稍候……";
+            toolStripButtonOK.Visible = false;
+            StartButtonClicked?.Invoke(); // -> MainWindowFunc.cs/StartButtonClicked()
+        }
+
+        private void toolStripButtonClose_Click(object sender, EventArgs e)
+        {
+            toolStripButtonOK.Visible = true;
+            toolStripButtonClose.Visible = false;
+            CancelButtonClicked?.Invoke(); // -> MainWindowFunc.cs/CancelButtonClicked()
+            Close();
         }
     }
 }

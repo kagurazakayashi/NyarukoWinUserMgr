@@ -34,6 +34,11 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.dataGridUsers = new System.Windows.Forms.DataGridView();
+            this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
+            this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
+            this.labelWait = new System.Windows.Forms.Label();
+            this.timerOpenGroup = new System.Windows.Forms.Timer(this.components);
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.udName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.udFullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.udDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,11 +48,6 @@
             this.udPasswordNeverExpires = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.udUserMayNotChangePassword = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.AllGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
-            this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
-            this.labelWait = new System.Windows.Forms.Label();
-            this.timerOpenGroup = new System.Windows.Forms.Timer(this.components);
-            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.toolStripButtonOK = new System.Windows.Forms.ToolStripMenuItem();
             this.连接到ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.主机名ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,13 +74,13 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolStripMenuItemOpenAccC = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dEBUGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpREADME = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBoxBG = new System.Windows.Forms.PictureBox();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.helpCommits = new System.Windows.Forms.ToolStripMenuItem();
             this.helpIssues = new System.Windows.Forms.ToolStripMenuItem();
             this.helpReleases = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.dEBUGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBoxBG = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBG)).BeginInit();
@@ -145,74 +145,6 @@
             this.dataGridUsers.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridUsers_UserDeletingRow);
             this.dataGridUsers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridUsers_KeyDown);
             // 
-            // udName
-            // 
-            this.udName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.udName.HeaderText = "用户名";
-            this.udName.Name = "udName";
-            this.udName.ReadOnly = true;
-            this.udName.Width = 83;
-            // 
-            // udFullName
-            // 
-            this.udFullName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.udFullName.HeaderText = "全名";
-            this.udFullName.Name = "udFullName";
-            this.udFullName.Width = 67;
-            // 
-            // udDescription
-            // 
-            this.udDescription.HeaderText = "描述";
-            this.udDescription.Name = "udDescription";
-            // 
-            // udAccountExpires
-            // 
-            this.udAccountExpires.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.udAccountExpires.HeaderText = "有效期";
-            this.udAccountExpires.Name = "udAccountExpires";
-            this.udAccountExpires.ReadOnly = true;
-            this.udAccountExpires.Width = 83;
-            // 
-            // chpwd
-            // 
-            this.chpwd.HeaderText = "密码";
-            this.chpwd.Name = "chpwd";
-            this.chpwd.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.chpwd.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.chpwd.Width = 80;
-            // 
-            // udDisabled
-            // 
-            this.udDisabled.HeaderText = "禁用";
-            this.udDisabled.Name = "udDisabled";
-            this.udDisabled.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.udDisabled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.udDisabled.Width = 80;
-            // 
-            // udPasswordNeverExpires
-            // 
-            this.udPasswordNeverExpires.HeaderText = "不过期";
-            this.udPasswordNeverExpires.Name = "udPasswordNeverExpires";
-            this.udPasswordNeverExpires.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.udPasswordNeverExpires.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.udPasswordNeverExpires.Width = 80;
-            // 
-            // udUserMayNotChangePassword
-            // 
-            this.udUserMayNotChangePassword.HeaderText = "禁改密";
-            this.udUserMayNotChangePassword.Name = "udUserMayNotChangePassword";
-            this.udUserMayNotChangePassword.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.udUserMayNotChangePassword.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.udUserMayNotChangePassword.Width = 80;
-            // 
-            // AllGroup
-            // 
-            this.AllGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.AllGroup.HeaderText = "所属全部用户组";
-            this.AllGroup.Name = "AllGroup";
-            this.AllGroup.ReadOnly = true;
-            this.AllGroup.Width = 147;
-            // 
             // timerStopWaitAni
             // 
             this.timerStopWaitAni.Interval = 1000;
@@ -258,6 +190,74 @@
             this.menuStrip.Size = new System.Drawing.Size(1284, 29);
             this.menuStrip.TabIndex = 4;
             this.menuStrip.Text = "menuStrip1";
+            // 
+            // udName
+            // 
+            this.udName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.udName.HeaderText = "用户名";
+            this.udName.Name = "udName";
+            this.udName.ReadOnly = true;
+            this.udName.Width = 83;
+            // 
+            // udFullName
+            // 
+            this.udFullName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.udFullName.HeaderText = "全名";
+            this.udFullName.Name = "udFullName";
+            this.udFullName.Width = 67;
+            // 
+            // udDescription
+            // 
+            this.udDescription.HeaderText = "描述";
+            this.udDescription.Name = "udDescription";
+            // 
+            // udAccountExpires
+            // 
+            this.udAccountExpires.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.udAccountExpires.HeaderText = "有效期";
+            this.udAccountExpires.Name = "udAccountExpires";
+            this.udAccountExpires.ReadOnly = true;
+            this.udAccountExpires.Width = 83;
+            // 
+            // chpwd
+            // 
+            this.chpwd.HeaderText = "改密码";
+            this.chpwd.Name = "chpwd";
+            this.chpwd.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.chpwd.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.chpwd.Width = 80;
+            // 
+            // udDisabled
+            // 
+            this.udDisabled.HeaderText = "禁用";
+            this.udDisabled.Name = "udDisabled";
+            this.udDisabled.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.udDisabled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.udDisabled.Width = 80;
+            // 
+            // udPasswordNeverExpires
+            // 
+            this.udPasswordNeverExpires.HeaderText = "不过期";
+            this.udPasswordNeverExpires.Name = "udPasswordNeverExpires";
+            this.udPasswordNeverExpires.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.udPasswordNeverExpires.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.udPasswordNeverExpires.Width = 80;
+            // 
+            // udUserMayNotChangePassword
+            // 
+            this.udUserMayNotChangePassword.HeaderText = "禁改密";
+            this.udUserMayNotChangePassword.Name = "udUserMayNotChangePassword";
+            this.udUserMayNotChangePassword.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.udUserMayNotChangePassword.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.udUserMayNotChangePassword.Width = 80;
+            // 
+            // AllGroup
+            // 
+            this.AllGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.AllGroup.HeaderText = "所属全部用户组";
+            this.AllGroup.Name = "AllGroup";
+            this.AllGroup.ReadOnly = true;
+            this.AllGroup.Width = 147;
             // 
             // toolStripButtonOK
             // 
@@ -481,13 +481,6 @@
             this.HelpHToolStripMenuItem.Size = new System.Drawing.Size(92, 25);
             this.HelpHToolStripMenuItem.Text = "帮助(&H)";
             // 
-            // dEBUGToolStripMenuItem
-            // 
-            this.dEBUGToolStripMenuItem.Name = "dEBUGToolStripMenuItem";
-            this.dEBUGToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
-            this.dEBUGToolStripMenuItem.Text = "测试模式";
-            this.dEBUGToolStripMenuItem.Click += new System.EventHandler(this.dEBUGToolStripMenuItem_Click);
-            // 
             // helpREADME
             // 
             this.helpREADME.Image = global::WinUserMgr.Properties.Resources.globe;
@@ -495,23 +488,6 @@
             this.helpREADME.Size = new System.Drawing.Size(197, 26);
             this.helpREADME.Text = "在线文档(&H)";
             this.helpREADME.Click += new System.EventHandler(this.helpREADME_Click);
-            // 
-            // pictureBoxBG
-            // 
-            this.pictureBoxBG.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxBG.BackColor = System.Drawing.Color.LightBlue;
-            this.pictureBoxBG.Location = new System.Drawing.Point(609, 29);
-            this.pictureBoxBG.Name = "pictureBoxBG";
-            this.pictureBoxBG.Size = new System.Drawing.Size(675, 532);
-            this.pictureBoxBG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxBG.TabIndex = 3;
-            this.pictureBoxBG.TabStop = false;
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(194, 6);
             // 
             // helpCommits
             // 
@@ -537,6 +513,30 @@
             this.helpReleases.Text = "下载最新版(&R)";
             this.helpReleases.Click += new System.EventHandler(this.helpReleases_Click);
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(194, 6);
+            // 
+            // dEBUGToolStripMenuItem
+            // 
+            this.dEBUGToolStripMenuItem.Name = "dEBUGToolStripMenuItem";
+            this.dEBUGToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
+            this.dEBUGToolStripMenuItem.Text = "测试模式";
+            this.dEBUGToolStripMenuItem.Click += new System.EventHandler(this.dEBUGToolStripMenuItem_Click);
+            // 
+            // pictureBoxBG
+            // 
+            this.pictureBoxBG.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxBG.BackColor = System.Drawing.Color.LightBlue;
+            this.pictureBoxBG.Location = new System.Drawing.Point(609, 29);
+            this.pictureBoxBG.Name = "pictureBoxBG";
+            this.pictureBoxBG.Size = new System.Drawing.Size(675, 532);
+            this.pictureBoxBG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxBG.TabIndex = 3;
+            this.pictureBoxBG.TabStop = false;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
@@ -552,7 +552,6 @@
             this.MainMenuStrip = this.menuStrip;
             this.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.Name = "MainWindow";
-            this.Text = "用户管理器";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
@@ -599,6 +598,13 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripButtonPWGenC;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem toolStripButtonUDIDGen;
+        private System.Windows.Forms.ToolStripMenuItem HelpHToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dEBUGToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpREADME;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem helpCommits;
+        private System.Windows.Forms.ToolStripMenuItem helpIssues;
+        private System.Windows.Forms.ToolStripMenuItem helpReleases;
         private System.Windows.Forms.DataGridViewTextBoxColumn udName;
         private System.Windows.Forms.DataGridViewTextBoxColumn udFullName;
         private System.Windows.Forms.DataGridViewTextBoxColumn udDescription;
@@ -608,13 +614,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn udPasswordNeverExpires;
         private System.Windows.Forms.DataGridViewCheckBoxColumn udUserMayNotChangePassword;
         private System.Windows.Forms.DataGridViewTextBoxColumn AllGroup;
-        private System.Windows.Forms.ToolStripMenuItem HelpHToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dEBUGToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem helpREADME;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem helpCommits;
-        private System.Windows.Forms.ToolStripMenuItem helpIssues;
-        private System.Windows.Forms.ToolStripMenuItem helpReleases;
     }
 }
 

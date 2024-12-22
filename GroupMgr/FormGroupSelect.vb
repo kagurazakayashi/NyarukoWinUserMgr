@@ -1,9 +1,12 @@
-﻿Imports System.Threading
+﻿Imports System.Reflection
+Imports System.Threading
 Imports SystemRes
 
 Partial Public Class FormGroupSelect
     Inherits Form
 
+    Private Const defaultTitle As String = "选择显示用户组 - Nyaruko Windows User Manager"
+    Private version As String = " v"
     Private systemGroups As String()
     Private iniconf As INI
     Private listBoxSystemGroupStartItems As String() = Nothing
@@ -16,7 +19,6 @@ Partial Public Class FormGroupSelect
     Private mainWinPS As String = ""
     Private imgLeft As Bitmap
     Private imgDel As Bitmap
-    Private defaultTitle As String = ""
     Private nowAction As String = ""
     Private nowMachine As String = ""
 
@@ -26,10 +28,12 @@ Partial Public Class FormGroupSelect
     ''' </summary>
     ''' <param name="linkMachineName">可选参数，链接的机器名称。如果未提供，将使用默认值。</param>
     Public Sub New(Optional linkMachineName As String = "")
-        ' 初始化表单组件。
         InitializeComponent()
+        Dim assembly As Assembly = Assembly.GetExecutingAssembly()
+        version &= assembly.GetName().Version.ToString()
+        Dim versionParts As String() = version.ToString().Split("."c)
+        version = String.Join(".", versionParts.Take(versionParts.Length - 1))
         draggingOpacity = New DraggingOpacity(Me)
-
         ' 獲取命令列引數
         Dim args As String() = Environment.GetCommandLineArgs()
         ' 顯示引數，用於除錯
@@ -48,8 +52,7 @@ Partial Public Class FormGroupSelect
         If toolStripComboBoxMachine.Text.Length = 0 Then
             toolStripComboBoxMachine.Text = Environment.MachineName
         End If
-        defaultTitle = " 中的用户组 - " + Text
-        Text = toolStripComboBoxMachine.Text + defaultTitle
+        Text = toolStripComboBoxMachine.Text + " 中的用户组 - " + defaultTitle + version
 
         ' 传入窗口坐标
         If args.Length > 2 Then

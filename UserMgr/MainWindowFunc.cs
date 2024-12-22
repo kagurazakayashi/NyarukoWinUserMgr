@@ -34,10 +34,13 @@ namespace WinUserMgr
             dataGridUsers.Visible = !enable; // 顯示或隱藏資料表格
 
             // 如果啟用了等待動畫並且存在動畫字型
-            if (enable && slboot.aniFont != null)
+            if (enable)
             {
-                timerWaitAni.Enabled = enable; // 啟用等待動畫計時器
-                timerStopWaitAni.Enabled = enable; // 啟用停止動畫計時器
+                if (slboot.aniFont != null)
+                {
+                    timerWaitAni.Enabled = true; // 啟用等待動畫計時器
+                    //timerStopWaitAni.Enabled = true; // 啟用停止動畫計時器
+                }
             }
             else
             {
@@ -228,8 +231,7 @@ namespace WinUserMgr
             }
 
             // 更新視窗標題為當前機器名
-            Text = linkMachineName + " 的用户目录";
-
+            Text = linkMachineName + " 的用户目录 - " + defaultTitle + version;
 
             // 遍歷使用者列表，填充使用者資訊到表格
             rowCodeAdding = true;
@@ -242,7 +244,7 @@ namespace WinUserMgr
                 newRow.Add(user.FullName);                   // 全名
                 newRow.Add(user.Description);                // 描述
                 newRow.Add(user.AccountExpires);             // 賬戶過期時間
-                newRow.Add("");
+                newRow.Add("");                              // 空白列，用於僅填寫密碼
                 newRow.Add(user.Disabled);                   // 是否禁用
                 newRow.Add(user.PasswordNeverExpires);       // 密碼是否永不過期
                 newRow.Add(user.UserMayNotChangePassword);   // 是否禁止使用者更改密碼
@@ -388,19 +390,39 @@ namespace WinUserMgr
 
         public void StartButtonClicked()
         {
-            //MessageBox.Show("TODO: 执行任务");
             // 顯示載入動畫
             waitAni(true);
             loadConfig(); // 載入配置
             // 建立一個後臺執行緒執行資料載入
+            chUser.defaultDataGridUsersColumnsCount = defaultDataGridUsersColumnsCount;
+            chUser.doDomain = linkMachineName;
             Thread thread = new Thread(changeNow);
             thread.IsBackground = true; // 設定執行緒為後臺執行緒
             thread.Start(); // 啟動執行緒
         }
 
+        public void CancelButtonClicked()
+        {
+            reloadData();
+        }
+
         private void changeNow()
         {
-
+            this.Invoke((Action)(() =>
+            {
+                confirmWindow.listBoxTasks.Items.Clear();
+            }));
+            string[] markedRows = chUser.ShowChangeList();
+            this.Invoke((Action)(() =>
+            {
+                for (int i = 0; i < markedRows.Length; i++)
+                {
+                    confirmWindow.listBoxTasks.Items.Add(markedRows[i]);
+                }
+                confirmWindow.toolStripLabelStatus.Text = $"队列完成，已尝试 {confirmWindow.listBoxTasks.Items.Count} 个修改项。";
+                confirmWindow.toolStripButtonClose.Visible = true;
+                confirmWindow.toolStrip1.BackColor = Color.Pink;
+            }));
         }
 
         private void run()
@@ -415,7 +437,7 @@ namespace WinUserMgr
                 return;
             }
             chUser.defaultDataGridUsersColumnsCount = defaultDataGridUsersColumnsCount;
-            chUser.doIt = false;
+            chUser.doDomain = "";
             string[] markedRows = chUser.ShowChangeList();
             for (int i = 0; i < markedRows.Length; i++)
             {

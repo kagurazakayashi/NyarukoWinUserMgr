@@ -146,8 +146,7 @@ Partial Public Class FormGroupSelect
                             End If
 
                             ' 如果没有发生错误，将窗体标题设置为选中的机器名加上默认标题
-                            Text = toolStripComboBoxMachine.Text + defaultTitle
-
+                            Text = toolStripComboBoxMachine.Text + defaultTitle + version
 
                             ' 將獲取的使用者組名稱新增到列表框中
                             For Each group In groups

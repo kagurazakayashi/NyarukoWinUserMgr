@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <None Include="Resources\end_call.png" />
     <None Include="Resources\globe.png" />
     <None Include="Resources\questions.png" />
     <None Include="Resources\app1-512.png" />

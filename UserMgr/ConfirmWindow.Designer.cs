@@ -30,9 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfirmWindow));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButtonOK = new System.Windows.Forms.ToolStripButton();
-            this.listBoxTasks = new System.Windows.Forms.ListBox();
             this.toolStripLabelStatus = new System.Windows.Forms.ToolStripLabel();
+            this.listBoxTasks = new System.Windows.Forms.ListBox();
+            this.toolStripButtonOK = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonClose = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,6 +46,7 @@
             this.toolStrip1.GripMargin = new System.Windows.Forms.Padding(0);
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonClose,
             this.toolStripButtonOK,
             this.toolStripLabelStatus});
             this.toolStrip1.Location = new System.Drawing.Point(0, 403);
@@ -55,15 +57,10 @@
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "主机";
             // 
-            // toolStripButtonOK
+            // toolStripLabelStatus
             // 
-            this.toolStripButtonOK.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripButtonOK.Image = global::WinUserMgr.Properties.Resources.flash_on;
-            this.toolStripButtonOK.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonOK.Name = "toolStripButtonOK";
-            this.toolStripButtonOK.Size = new System.Drawing.Size(113, 25);
-            this.toolStripButtonOK.Text = "开始执行(&E)";
-            this.toolStripButtonOK.Click += new System.EventHandler(this.toolStripButtonOK_Click);
+            this.toolStripLabelStatus.Name = "toolStripLabelStatus";
+            this.toolStripLabelStatus.Size = new System.Drawing.Size(0, 25);
             // 
             // listBoxTasks
             // 
@@ -80,10 +77,26 @@
             this.listBoxTasks.Size = new System.Drawing.Size(984, 403);
             this.listBoxTasks.TabIndex = 2;
             // 
-            // toolStripLabelStatus
+            // toolStripButtonOK
             // 
-            this.toolStripLabelStatus.Name = "toolStripLabelStatus";
-            this.toolStripLabelStatus.Size = new System.Drawing.Size(0, 25);
+            this.toolStripButtonOK.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripButtonOK.Image = global::WinUserMgr.Properties.Resources.flash_on;
+            this.toolStripButtonOK.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonOK.Name = "toolStripButtonOK";
+            this.toolStripButtonOK.Size = new System.Drawing.Size(113, 25);
+            this.toolStripButtonOK.Text = "开始执行(&E)";
+            this.toolStripButtonOK.Click += new System.EventHandler(this.toolStripButtonOK_Click);
+            // 
+            // toolStripButtonClose
+            // 
+            this.toolStripButtonClose.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripButtonClose.Image = global::WinUserMgr.Properties.Resources.end_call;
+            this.toolStripButtonClose.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonClose.Name = "toolStripButtonClose";
+            this.toolStripButtonClose.Size = new System.Drawing.Size(81, 25);
+            this.toolStripButtonClose.Text = "完成(&F)";
+            this.toolStripButtonClose.Visible = false;
+            this.toolStripButtonClose.Click += new System.EventHandler(this.toolStripButtonClose_Click);
             // 
             // ConfirmWindow
             // 
@@ -109,10 +122,10 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButtonOK;
         public System.Windows.Forms.ListBox listBoxTasks;
         public System.Windows.Forms.ToolStripLabel toolStripLabelStatus;
+        public System.Windows.Forms.ToolStripButton toolStripButtonOK;
+        public System.Windows.Forms.ToolStripButton toolStripButtonClose;
+        public System.Windows.Forms.ToolStrip toolStrip1;
     }
 }

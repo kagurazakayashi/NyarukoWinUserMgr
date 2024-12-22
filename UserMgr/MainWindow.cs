@@ -7,12 +7,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
+using System.Linq;
 
 namespace WinUserMgr
 {
     public partial class MainWindow : Form
     {
         private static string gitURL = "https://github.com/kagurazakayashi/winusermgr";
+        private static string defaultTitle = "Nyaruko Windows User Manager";
+        private string version = " v";
         private UserLoader userLoader = new UserLoader();
         private SlbootAni slboot = new SlbootAni();
         private INI iniconf;
@@ -68,6 +72,11 @@ namespace WinUserMgr
         /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            version += assembly.GetName().Version.ToString();
+            string[] versionParts = version.ToString().Split('.');
+            version = string.Join(".", versionParts.Take(versionParts.Length - 1));
+            Text = defaultTitle + version;
             linkMachineName = Environment.MachineName;
             AdjustPictureBox(true); // 調整圖片框的顯示狀態
             for (int i = 4; i <= 127; i++)
@@ -174,6 +183,7 @@ namespace WinUserMgr
 
             // 啟動等待動畫。
             waitAni(true);
+            timerStopWaitAni.Enabled = true;
 
             // 建立一個後臺執行緒用於獲取管理員許可權。
             Thread thread = new Thread(getAdmin);
@@ -278,9 +288,11 @@ namespace WinUserMgr
             if (confirmWindow == null)
             {
                 confirmWindow = new ConfirmWindow();
+                confirmWindow.toolStrip1.BackColor = Color.SkyBlue;
                 confirmWindow.FormClosed += ConfirmWindow_FormClosed;
                 confirmWindow.Show();
                 confirmWindow.StartButtonClicked += StartButtonClicked;
+                confirmWindow.CancelButtonClicked += CancelButtonClicked;
                 toolStripButtonOK.Checked = true;
             }
             else
