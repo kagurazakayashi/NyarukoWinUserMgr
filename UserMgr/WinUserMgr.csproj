@@ -61,9 +61,6 @@
     <Compile Include="ConfirmWindow.Designer.cs">
       <DependentUpon>ConfirmWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConfirmWindowFunc.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="DataGridChange.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
