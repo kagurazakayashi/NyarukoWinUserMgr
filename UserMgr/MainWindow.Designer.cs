@@ -34,11 +34,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.dataGridUsers = new System.Windows.Forms.DataGridView();
-            this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
-            this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
-            this.labelWait = new System.Windows.Forms.Label();
-            this.timerOpenGroup = new System.Windows.Forms.Timer(this.components);
-            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.udName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.udFullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.udDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,6 +43,11 @@
             this.udPasswordNeverExpires = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.udUserMayNotChangePassword = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.AllGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timerStopWaitAni = new System.Windows.Forms.Timer(this.components);
+            this.timerWaitAni = new System.Windows.Forms.Timer(this.components);
+            this.labelWait = new System.Windows.Forms.Label();
+            this.timerOpenGroup = new System.Windows.Forms.Timer(this.components);
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.toolStripButtonOK = new System.Windows.Forms.ToolStripMenuItem();
             this.连接到ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.主机名ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -134,7 +134,6 @@
             this.dataGridUsers.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridUsers.Size = new System.Drawing.Size(957, 532);
             this.dataGridUsers.TabIndex = 1;
-            this.dataGridUsers.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridUsers_CellBeginEdit);
             this.dataGridUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridUsers.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridUsers_CellEndEdit);
             this.dataGridUsers.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridUsers_CellValidating);
@@ -144,52 +143,6 @@
             this.dataGridUsers.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridUsers_UserDeletedRow);
             this.dataGridUsers.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridUsers_UserDeletingRow);
             this.dataGridUsers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridUsers_KeyDown);
-            // 
-            // timerStopWaitAni
-            // 
-            this.timerStopWaitAni.Interval = 1000;
-            this.timerStopWaitAni.Tick += new System.EventHandler(this.timerStopWaitAni_Tick);
-            // 
-            // timerWaitAni
-            // 
-            this.timerWaitAni.Interval = 33;
-            this.timerWaitAni.Tick += new System.EventHandler(this.timerWaitAni_Tick);
-            // 
-            // labelWait
-            // 
-            this.labelWait.BackColor = System.Drawing.Color.LightBlue;
-            this.labelWait.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelWait.Location = new System.Drawing.Point(0, 0);
-            this.labelWait.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelWait.Name = "labelWait";
-            this.labelWait.Size = new System.Drawing.Size(1284, 561);
-            this.labelWait.TabIndex = 2;
-            this.labelWait.Text = "正在加载";
-            this.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelWait.UseWaitCursor = true;
-            // 
-            // timerOpenGroup
-            // 
-            this.timerOpenGroup.Interval = 3000;
-            this.timerOpenGroup.Tick += new System.EventHandler(this.timerOpenGroup_Tick);
-            // 
-            // menuStrip
-            // 
-            this.menuStrip.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
-            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonOK,
-            this.连接到ToolStripMenuItem,
-            this.toolStripButtonGroups,
-            this.密码生成器PToolStripMenuItem,
-            this.toolStripLockOFF,
-            this.toolStripLockON,
-            this.新建或删除账户UToolStripMenuItem,
-            this.HelpHToolStripMenuItem});
-            this.menuStrip.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(1284, 29);
-            this.menuStrip.TabIndex = 4;
-            this.menuStrip.Text = "menuStrip1";
             // 
             // udName
             // 
@@ -258,6 +211,52 @@
             this.AllGroup.Name = "AllGroup";
             this.AllGroup.ReadOnly = true;
             this.AllGroup.Width = 147;
+            // 
+            // timerStopWaitAni
+            // 
+            this.timerStopWaitAni.Interval = 1000;
+            this.timerStopWaitAni.Tick += new System.EventHandler(this.timerStopWaitAni_Tick);
+            // 
+            // timerWaitAni
+            // 
+            this.timerWaitAni.Interval = 33;
+            this.timerWaitAni.Tick += new System.EventHandler(this.timerWaitAni_Tick);
+            // 
+            // labelWait
+            // 
+            this.labelWait.BackColor = System.Drawing.Color.LightBlue;
+            this.labelWait.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelWait.Location = new System.Drawing.Point(0, 0);
+            this.labelWait.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelWait.Name = "labelWait";
+            this.labelWait.Size = new System.Drawing.Size(1284, 561);
+            this.labelWait.TabIndex = 2;
+            this.labelWait.Text = "正在加载";
+            this.labelWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelWait.UseWaitCursor = true;
+            // 
+            // timerOpenGroup
+            // 
+            this.timerOpenGroup.Interval = 3000;
+            this.timerOpenGroup.Tick += new System.EventHandler(this.timerOpenGroup_Tick);
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonOK,
+            this.连接到ToolStripMenuItem,
+            this.toolStripButtonGroups,
+            this.密码生成器PToolStripMenuItem,
+            this.toolStripLockOFF,
+            this.toolStripLockON,
+            this.新建或删除账户UToolStripMenuItem,
+            this.HelpHToolStripMenuItem});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(1284, 29);
+            this.menuStrip.TabIndex = 4;
+            this.menuStrip.Text = "menuStrip1";
             // 
             // toolStripButtonOK
             // 
@@ -554,6 +553,7 @@
             this.Name = "MainWindow";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.ResizeEnd += new System.EventHandler(this.MainWindow_ResizeEnd);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             this.Move += new System.EventHandler(this.MainWindow_Move);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).EndInit();

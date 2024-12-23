@@ -497,8 +497,8 @@ Partial Public Class FormGroupSelect
 
         ' 顯示確認刪除使用者組的對話方塊
         If MessageBox.Show(
-            "要刪除使用者組 " & nowAction & " 嗎？",
-            "刪除使用者組",
+            "要删除用户组 " & nowAction & " 吗？",
+            "删除用户组",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Warning) = DialogResult.Yes Then
 
@@ -510,5 +510,9 @@ Partial Public Class FormGroupSelect
             ' 啟動執行緒
             thread.Start()
         End If
+    End Sub
+
+    Private Sub FormGroupSelect_ResizeEnd(sender As Object, e As EventArgs) Handles MyBase.ResizeEnd
+        Opacity = 1
     End Sub
 End Class

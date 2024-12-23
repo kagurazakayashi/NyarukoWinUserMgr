@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Reflection.Emit;
 using System.Threading;
 using System.Windows.Forms;
 using SystemRes;
@@ -271,45 +272,75 @@ namespace WinUserMgr
             saveDataGridOriginalData();
         }
 
+        /// <summary>
+        /// 儲存 DataGridView 的初始資料到 originalData 字典中。
+        /// originalData 使用單元格的行索引和列索引作為鍵，單元格的值作為對應的值。
+        /// </summary>
         private void saveDataGridOriginalData()
         {
+            // 清空 originalData 字典，確保不包含舊資料。
             originalData.Clear();
+
+            // 遍歷 dataGridUsers 的每一行。
             foreach (DataGridViewRow row in dataGridUsers.Rows)
             {
+                // 遍歷當前行中的每一個單元格。
                 foreach (DataGridViewCell cell in row.Cells)
                 {
+                    // 將單元格的行索引和列索引作為鍵，單元格的值作為值，存入 originalData。
                     originalData[(cell.RowIndex, cell.ColumnIndex)] = cell.Value;
                 }
             }
+
+            // 更新更改列表。
             updateChgList();
         }
 
+        /// <summary>
+        /// 更新更改列表，移除空行並獲取更改資料。
+        /// 同時檢查確認視窗是否存在，必要時執行相應操作。
+        /// </summary>
         private void updateChgList()
         {
+            // 移除 DataGridView 中的空行。
             RemoveEmptyRows();
+
+            // 使用 chUser 的 GetChangeList 方法對比當前資料和 originalData，生成更改列表。
             chUser.GetChangeList(dataGridUsers, originalData);
+
+            // 如果確認視窗為空，則直接返回。
             if (confirmWindow == null)
             {
                 return;
             }
+
+            // 重置 changesDO 標誌為 false，表示沒有未確認的更改。
             changesDO = false;
+
+            // 執行後續操作。
             run();
         }
 
+        /// <summary>
+        /// 從 DataGridView 中移除空行。
+        /// 遍歷 DataGridView 的所有行，檢查第一列是否為空，若為空則移除該行。
+        /// 確保不會刪除新行（IsNewRow）。
+        /// </summary>
         private void RemoveEmptyRows()
         {
             // 遍歷 DataGridView 中的所有行
             for (int i = dataGridUsers.Rows.Count - 1; i >= 0; i--) // 從後向前刪除，避免索引問題
             {
+                // 獲取當前行
                 DataGridViewRow row = dataGridUsers.Rows[i];
 
-                // 檢查第一列的單元格是否為空或為 null
+                // 檢查第一列的單元格是否為空或僅包含空白字元
                 if (row.Cells[0].Value == null || string.IsNullOrWhiteSpace(row.Cells[0].Value.ToString()))
                 {
-                    // 刪除當前行
+                    // 如果當前行不是新行，則刪除
                     if (!row.IsNewRow) // 確保不刪除新行
                     {
-                        dataGridUsers.Rows.RemoveAt(i);
+                        dataGridUsers.Rows.RemoveAt(i); // 刪除當前行
                     }
                 }
             }
@@ -388,61 +419,102 @@ namespace WinUserMgr
             }
         }
 
+        /// <summary>
+        /// 當用戶點選“開始”按鈕時觸發的事件處理程式。
+        /// 負責顯示載入動畫、載入配置並啟動後臺執行緒以處理資料載入邏輯。
+        /// </summary>
         public void StartButtonClicked()
         {
             // 顯示載入動畫
             waitAni(true);
             loadConfig(); // 載入配置
-            // 建立一個後臺執行緒執行資料載入
+
+            // 設定使用者列預設顯示數量和域名
             chUser.defaultDataGridUsersColumnsCount = defaultDataGridUsersColumnsCount;
             chUser.doDomain = linkMachineName;
+            confirmWindow.toolStripProgressBar1.Value = 0;
+
+            // 建立並啟動後臺執行緒執行資料更改邏輯
             Thread thread = new Thread(changeNow);
             thread.IsBackground = true; // 設定執行緒為後臺執行緒
             thread.Start(); // 啟動執行緒
         }
 
+        /// <summary>
+        /// 當用戶點選“取消”按鈕時觸發的事件處理程式。
+        /// 負責重新載入資料。
+        /// </summary>
         public void CancelButtonClicked()
         {
             reloadData();
         }
 
+        /// <summary>
+        /// 負責處理資料更改的邏輯，包括更新介面和顯示更改項的狀態。
+        /// 在後臺執行緒中執行。
+        /// </summary>
         private void changeNow()
         {
+            // 使用 UI 執行緒清空任務列表
             this.Invoke((Action)(() =>
             {
                 confirmWindow.listBoxTasks.Items.Clear();
             }));
+
+            // 獲取更改列表並更新任務列表
             string[] markedRows = chUser.ShowChangeList();
             this.Invoke((Action)(() =>
             {
                 for (int i = 0; i < markedRows.Length; i++)
                 {
-                    confirmWindow.listBoxTasks.Items.Add(markedRows[i]);
+                    if (!confirmWindow.listBoxTasks.Items.Contains(markedRows[i]) )
+                    {
+                        confirmWindow.listBoxTasks.Items.Add(markedRows[i]);
+                    }
                 }
+
+                // 更新狀態標籤和工具欄樣式
                 confirmWindow.toolStripLabelStatus.Text = $"队列完成，已尝试 {confirmWindow.listBoxTasks.Items.Count} 个修改项。";
                 confirmWindow.toolStripButtonClose.Visible = true;
                 confirmWindow.toolStrip1.BackColor = Color.Pink;
             }));
         }
 
+        /// <summary>
+        /// 執行資料更改邏輯，包括清空任務列表和顯示更改項狀態。
+        /// </summary>
         private void run()
         {
-            // 先改 List<DataGridChange> changes 和 bool changesDO 再 run()
+            // 確保介面清理後執行更改邏輯
             try
             {
                 confirmWindow.listBoxTasks.Items.Clear();
+                confirmWindow.toolStripProgressBar1.Value = 0;
             }
             catch (Exception)
             {
-                return;
+                return; // 如果發生異常則直接返回
             }
+
+            // 設定使用者列預設顯示數量和域名
             chUser.defaultDataGridUsersColumnsCount = defaultDataGridUsersColumnsCount;
             chUser.doDomain = "";
+
+            // 獲取更改列表並更新任務列表
             string[] markedRows = chUser.ShowChangeList();
+            confirmWindow.listBoxTasks.Items.Clear();
             for (int i = 0; i < markedRows.Length; i++)
             {
-                confirmWindow.listBoxTasks.Items.Add(markedRows[i]);
+                // 去重
+                if (!confirmWindow.listBoxTasks.Items.Contains(markedRows[i]) )
+                {
+                    confirmWindow.listBoxTasks.Items.Add(markedRows[i]);
+                }
             }
+
+            confirmWindow.toolStripProgressBar1.Value = confirmWindow.toolStripProgressBar1.Maximum;
+
+            // 更新狀態標籤
             confirmWindow.toolStripLabelStatus.Text = $"{confirmWindow.listBoxTasks.Items.Count} 个修改项。";
             if (chUser.hasChPwd)
             {
@@ -450,10 +522,16 @@ namespace WinUserMgr
             }
         }
 
+        /// <summary>
+        /// 啟動一個外部可執行檔案。
+        /// </summary>
+        /// <param name="path">可執行檔案的路徑。</param>
+        /// <param name="arguments">可選引數，用於傳遞給可執行檔案。</param>
         private void startEXE(string path, string arguments = "")
         {
             try
             {
+                // 根據是否提供引數啟動外部程式
                 if (arguments.Length == 0)
                 {
                     Process.Start(path);
@@ -465,93 +543,138 @@ namespace WinUserMgr
             }
             catch (Exception ee)
             {
+                // 捕獲異常並顯示錯誤訊息
                 MessageBox.Show(ee.Message, "无法执行此命令", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        /// <summary>
+        /// 生成隨機密碼的方法。
+        /// </summary>
+        /// <returns>生成的密碼字串。如果未選擇密碼型別，則返回空字串。</returns>
         private string pwgen()
         {
+            // 從工具欄的密碼長度選擇框中獲取密碼長度，並將其解析為整數。
             int pwdCount = int.Parse(toolStripComboBoxPwdCount.Text);
+
+            // 從工具欄的密碼型別選擇框中獲取選中的型別，並以逗號分隔存入陣列。
             string[] types = toolStripComboBoxPwdType.Text.Split(',');
+
+            // 初始化儲存所有可用字元的字串。
             string pwdChars = "";
+
+            // 遍歷每個選中的密碼型別，根據型別新增相應的字元到 pwdChars。
             foreach (string type in types)
             {
                 switch (type)
                 {
                     case "0-9":
+                        // 新增數字字元 '0' 到 '9'。
                         for (int i = 0; i < 10; i++)
                         {
                             pwdChars += i.ToString();
                         }
                         break;
                     case "a-z":
+                        // 新增小寫字母 'a' 到 'z'。
                         for (int i = 0; i < 26; i++)
                         {
                             pwdChars += (char)('a' + i);
                         }
                         break;
                     case "A-Z":
+                        // 新增大寫字母 'A' 到 'Z'。
                         for (int i = 0; i < 26; i++)
                         {
                             pwdChars += (char)('A' + i);
                         }
                         break;
                     case "sym":
+                        // 新增常用的特殊符號。
                         pwdChars += "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
                         break;
                 }
             }
+
+            // 如果未選擇任何密碼型別，則彈出提示框並返回空字串。
             if (pwdChars.Length == 0)
             {
                 MessageBox.Show("请选择密码类型！", "密码生成器", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return "";
             }
+
+            // 建立隨機數生成器。
             Random random = new Random();
+
+            // 初始化用於儲存最終生成密碼的字串。
             string pwd = "";
+
+            // 根據指定的密碼長度，隨機從 pwdChars 中選擇字元，拼接到 pwd 中。
             for (int i = 0; i < pwdCount; i++)
             {
                 pwd += pwdChars[random.Next(pwdChars.Length)];
             }
-            //MessageBox.Show("生成的密码为：" + pwd, "密码生成器", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // 返回生成的密碼字串。
             return pwd;
         }
 
+        /// <summary>
+        /// 處理 DataGridView 行的標記操作。
+        /// 根據行的背景色，標記或取消標記行，並設定只讀狀態。
+        /// </summary>
+        /// <param name="row">要處理的 DataGridViewRow 物件。</param>
         private void HandleRowMarking(DataGridViewRow row)
         {
-            // 檢查行是否已被標記刪除
+            // 檢查行是否已被標記為刪除（透過背景色判斷）
             if (row.DefaultCellStyle.BackColor == addDelColor[1])
             {
-                // 恢復顏色
+                // 恢復預設背景色
                 row.DefaultCellStyle.BackColor = default;
+                // 取消只讀狀態
                 row.ReadOnly = false;
             }
             else
             {
-                // 標記行顏色為紅色
+                // 將行標記為刪除（背景色設定為紅色）
                 row.DefaultCellStyle.BackColor = addDelColor[1];
+                // 設定為只讀狀態
                 row.ReadOnly = true;
             }
-            // 取消行的選中狀態
+            // 取消當前行的選中狀態
             dataGridUsers.ClearSelection();
         }
 
+        /// <summary>
+        /// 確認是否刪除指定使用者。
+        /// 彈出確認對話方塊詢問使用者是否放棄建立新使用者。
+        /// </summary>
+        /// <param name="user">要刪除的使用者名稱。</param>
+        /// <returns>如果使用者選擇“是”，返回 true；否則返回 false。</returns>
         private bool confirmDelete(string user)
         {
             return MessageBox.Show($"放弃新建用户 \"{user}\" 吗？", "删除用户", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
+        /// <summary>
+        /// 開啟指定的 URL。
+        /// 如果無法透過預設方法開啟，嘗試使用系統資源管理器開啟。
+        /// </summary>
+        /// <param name="url">要開啟的 URL 地址。</param>
         private void openURL(string url)
         {
             try
             {
+                // 使用預設的外部程式開啟 URL
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = url,
-                    UseShellExecute = true // 使用外部关联程序打开
+                    UseShellExecute = true // 使用外部關聯程式開啟
                 });
             }
             catch (Exception)
             {
+                // 如果預設方法失敗，使用系統資源管理器開啟
                 startEXE("explorer", url);
             }
         }

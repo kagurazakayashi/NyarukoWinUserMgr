@@ -94,7 +94,7 @@ Partial Public Class FormGroupSelect
             removeDuplicateItems()
         Catch ex As Exception
             ' 如果讀取配置時發生異常，提示使用者重試或取消。
-            If MessageBox.Show(ex.Message, "配置讀取失敗", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) = DialogResult.Retry Then
+            If MessageBox.Show(ex.Message, "配置读取失败", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) = DialogResult.Retry Then
                 ' 如果使用者選擇重試，則再次呼叫 loadConfig 方法。
                 loadConfig()
             End If
@@ -187,10 +187,10 @@ Partial Public Class FormGroupSelect
         Me.Invoke(CType(Sub()
                             ' 如果建立使用者組時發生錯誤，顯示錯誤資訊
                             If err.Length > 0 Then
-                                MessageBox.Show(err, "建立使用者組 " + textBoxCustom.Text + " 失敗", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                MessageBox.Show(err, "建立用户组 " + textBoxCustom.Text + " 失败！", MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Else
                                 ' 如果建立成功，顯示成功資訊
-                                MessageBox.Show("已建立使用者組 " + textBoxCustom.Text, "建立使用者組成功", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show("已建立用户组 " + textBoxCustom.Text, "建立用户组成功", MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                             ' 重新載入配置資訊
                             reloadConfig()
@@ -212,10 +212,10 @@ Partial Public Class FormGroupSelect
         Me.Invoke(CType(Sub()
                             ' 如果刪除使用者組時發生錯誤，顯示錯誤資訊
                             If err.Length > 0 Then
-                                MessageBox.Show(err, "刪除使用者組 " + nowAction + " 失敗", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                MessageBox.Show(err, "删除用户组 " + nowAction + " 失败！", MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Else
                                 ' 如果刪除成功，顯示成功資訊
-                                MessageBox.Show("已刪除使用者組 " + nowAction, "刪除使用者組成功", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show("已删除用户组 " + nowAction, "删除用户组成功。", MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                             ' 重新載入配置資訊
                             reloadConfig()
@@ -405,10 +405,10 @@ Partial Public Class FormGroupSelect
 
         ' 如果未以管理員許可權執行，提示使用者獲取許可權
         If MessageBox.Show(
-            "此操作需要以管理員許可權執行本程式。" & vbCrLf &
-            "要獲取管理員許可權嗎？" & vbCrLf &
-            "未儲存的改動將丟失。",
-            "許可權不足",
+            "此操作需要以管理员权限运行本软件" & vbCrLf &
+            "要使用管理员权限重新运行吗？" & vbCrLf &
+            "未保存的更改将丢失。",
+            "权限不足",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question) = DialogResult.Yes Then
             ' 如果使用者選擇“是”，嘗試以管理員許可權重新啟動程式
