@@ -89,7 +89,8 @@ namespace WinUserMgr
             toolStripButtonOK.Visible = false;
 
             // 觸發開始按鈕點選事件（由外部訂閱）。
-            StartButtonClicked?.Invoke(); // -> MainWindowFunc.cs/StartButtonClicked()
+            if (StartButtonClicked != null)
+                StartButtonClicked.Invoke(); // -> MainWindowFunc.cs/StartButtonClicked()
         }
 
         /// <summary>
@@ -105,7 +106,8 @@ namespace WinUserMgr
             toolStrip1.BackColor = Color.SkyBlue;
 
             // 觸發取消按鈕點選事件（由外部訂閱）。
-            CancelButtonClicked?.Invoke(); // -> MainWindowFunc.cs/CancelButtonClicked()
+            if (CancelButtonClicked != null)
+                CancelButtonClicked.Invoke(); // -> MainWindowFunc.cs/CancelButtonClicked()
 
             // 關閉視窗。
             Close();

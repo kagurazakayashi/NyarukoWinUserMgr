@@ -88,7 +88,7 @@ namespace WinUserMgr
                 groupList = new string[count];
                 for (int i = 0; i < count; i++)
                 {
-                    groupList[i] = iniconf.IniReadValue("Groups", $"G{i}");
+                    groupList[i] = iniconf.IniReadValue("Groups", "G" + i.ToString());
                 }
             }
             catch (Exception ex)
@@ -114,7 +114,7 @@ namespace WinUserMgr
                 currentPosition = this.Location;
                 currentSize = this.Size;
             }));
-            string arguments = $"{linkMachineName} {currentPosition.X},{currentPosition.Y},{currentSize.Width},{currentSize.Height}";
+            string arguments = linkMachineName + " " + currentPosition.X.ToString() + "," + currentPosition.Y.ToString() + "," + currentSize.Width.ToString() + "," + currentSize.Height.ToString();
             // 创建 ProcessStartInfo 实例
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -224,8 +224,8 @@ namespace WinUserMgr
                     DataGridViewCheckBoxColumn groupColumn = new DataGridViewCheckBoxColumn
                     {
                         HeaderText = groupList[i], // 設定列頭文字為使用者組名稱
-                        Name = $"Group{i}",       // 設定列名
-                        Width = 80,               // 設定列寬
+                        Name = "Group" + i.ToString(), // 設定列名
+                        Width = 80, // 設定列寬
                     };
                     dataGridUsers.Columns.Add(groupColumn);
                 }
@@ -267,6 +267,12 @@ namespace WinUserMgr
             }
             rowCodeAdding = false;
 
+            foreach (var column in dataGridUsers.Columns)
+            {
+                // 設定所有列的排序模式為不可排序
+                ((DataGridViewColumn)column).SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
             // 啟動停止等待動畫的計時器
             timerStopWaitAni.Enabled = true;
             saveDataGridOriginalData();
@@ -288,7 +294,8 @@ namespace WinUserMgr
                 foreach (DataGridViewCell cell in row.Cells)
                 {
                     // 將單元格的行索引和列索引作為鍵，單元格的值作為值，存入 originalData。
-                    originalData[(cell.RowIndex, cell.ColumnIndex)] = cell.Value;
+                    Coordinate coordinate = new Coordinate(cell.RowIndex, cell.ColumnIndex);
+                    originalData[coordinate] = cell.Value;
                 }
             }
 
@@ -474,7 +481,7 @@ namespace WinUserMgr
                 }
 
                 // 更新狀態標籤和工具欄樣式
-                confirmWindow.toolStripLabelStatus.Text = $"队列完成，已尝试 {confirmWindow.listBoxTasks.Items.Count} 个修改项。";
+                confirmWindow.toolStripLabelStatus.Text = "队列完成，已尝试 " + confirmWindow.listBoxTasks.Items.Count.ToString() + " 个修改项。";
                 confirmWindow.toolStripButtonClose.Visible = true;
                 confirmWindow.toolStrip1.BackColor = Color.Pink;
             }));
@@ -515,7 +522,7 @@ namespace WinUserMgr
             confirmWindow.toolStripProgressBar1.Value = confirmWindow.toolStripProgressBar1.Maximum;
 
             // 更新狀態標籤
-            confirmWindow.toolStripLabelStatus.Text = $"{confirmWindow.listBoxTasks.Items.Count} 个修改项。";
+            confirmWindow.toolStripLabelStatus.Text = confirmWindow.listBoxTasks.Items.Count.ToString() + " 个修改项。";
             if (chUser.hasChPwd)
             {
                 confirmWindow.toolStripLabelStatus.Text += "注意：直接修改密码会导致未备份私钥的 EFS 加密文件失效。";
@@ -630,7 +637,7 @@ namespace WinUserMgr
             if (row.DefaultCellStyle.BackColor == addDelColor[1])
             {
                 // 恢復預設背景色
-                row.DefaultCellStyle.BackColor = default;
+                row.DefaultCellStyle.BackColor = Color.Empty;
                 // 取消只讀狀態
                 row.ReadOnly = false;
             }
@@ -653,7 +660,7 @@ namespace WinUserMgr
         /// <returns>如果使用者選擇“是”，返回 true；否則返回 false。</returns>
         private bool confirmDelete(string user)
         {
-            return MessageBox.Show($"放弃新建用户 \"{user}\" 吗？", "删除用户", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+            return MessageBox.Show("放弃新建用户 \"" + user + "\" 吗？", "删除用户", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
         /// <summary>

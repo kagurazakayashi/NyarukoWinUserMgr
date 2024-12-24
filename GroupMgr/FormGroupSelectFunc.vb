@@ -36,9 +36,8 @@ Partial Public Class FormGroupSelect
         buttonOK.Enabled = False
 
         ' 建立一個後臺執行緒，用於非同步獲取使用者組
-        Dim thread As New Thread(AddressOf getUserGroup) With {
-        .IsBackground = True ' 設定執行緒為後臺執行緒
-    }
+        Dim thread As New Thread(AddressOf getUserGroup)
+        thread.IsBackground = True ' 設定執行緒為後臺執行緒
         thread.Start() ' 啟動執行緒
     End Sub
 
@@ -53,7 +52,7 @@ Partial Public Class FormGroupSelect
             iniconf.IniWriteValue("Config", "GroupsCount", listBoxSelectedGroup.Items.Count.ToString())
             ' 寫入每個組名到 INI 檔案
             For i As Integer = 0 To listBoxSelectedGroup.Items.Count - 1
-                iniconf.IniWriteValue("Groups", $"G{i}", listBoxSelectedGroup.Items(i).ToString())
+                iniconf.IniWriteValue("Groups", "G" + i.ToString(), listBoxSelectedGroup.Items(i).ToString())
             Next
             Return True
         Catch ex As Exception
@@ -87,7 +86,7 @@ Partial Public Class FormGroupSelect
             Dim count As Integer = Integer.Parse(countS)
             ' 遍歷每個組，將其新增到列表框中。
             For i As Integer = 0 To count - 1
-                listBoxSelectedGroup.Items.Add(iniconf.IniReadValue("Groups", $"G{i}"))
+                listBoxSelectedGroup.Items.Add(iniconf.IniReadValue("Groups", "G" + i.ToString()))
             Next
 
             ' 移除列表框中的重複項。

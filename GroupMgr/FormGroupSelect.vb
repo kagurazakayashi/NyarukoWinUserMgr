@@ -38,7 +38,7 @@ Partial Public Class FormGroupSelect
         Dim args As String() = Environment.GetCommandLineArgs()
         ' 顯示引數，用於除錯
         'For i As Integer = 0 To args.Length - 1
-        '    Console.WriteLine($"参数 {i}: {args(i)}")
+        '    Console.WriteLine("参数 " & i.ToString() & ": " & args(i))
         'Next
 
         ' 传入计算机名
@@ -433,11 +433,8 @@ Partial Public Class FormGroupSelect
         End If
 
         ' 建立一個後臺執行緒，用於非同步執行新增使用者組的操作
-        Dim thread As New Thread(AddressOf addUserGroup) With {
-        .IsBackground = True ' 設定執行緒為後臺執行
-    }
-
-        ' 啟動後臺執行緒
+        Dim thread As New Thread(AddressOf addUserGroup)
+        thread.IsBackground = True ' 設定執行緒為後臺執行
         thread.Start()
     End Sub
 
@@ -503,11 +500,8 @@ Partial Public Class FormGroupSelect
             MessageBoxIcon.Warning) = DialogResult.Yes Then
 
             ' 建立一個後臺執行緒以執行刪除使用者組操作
-            Dim thread As New Thread(AddressOf delUserGroup) With {
-            .IsBackground = True
-        }
-
-            ' 啟動執行緒
+            Dim thread As New Thread(AddressOf delUserGroup)
+            thread.IsBackground = True
             thread.Start()
         End If
     End Sub

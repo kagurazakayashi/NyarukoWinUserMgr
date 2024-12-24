@@ -28,7 +28,7 @@ namespace WinUserMgr
         private string[] groupList = new string[0];
         private int defaultDataGridUsersColumnsCount = 0;
         private ConfirmWindow confirmWindow;
-        private Dictionary<(int row, int col), object> originalData = new Dictionary<(int row, int col), object>();
+        private Dictionary<Coordinate, object> originalData = new Dictionary<Coordinate, object>();
         private static Color[] addDelColor = new Color[] { Color.LightGreen, Color.LightCoral };
         private ChangeUser chUser = new ChangeUser(addDelColor);
         bool changesDO = false;
@@ -481,7 +481,11 @@ namespace WinUserMgr
             DataGridViewRow currentRow = e.Row;
 
             // 獲取當前行的第一列的值
-            string firstCell = currentRow.Cells[0].Value?.ToString();
+            string firstCell = "";
+            if (currentRow.Cells[0].Value != null)
+            {
+                firstCell = currentRow.Cells[0].Value.ToString();
+            }
 
             // 如果當前行的背景顏色為綠色（即允許刪除的顏色）
             if (currentRow.DefaultCellStyle.BackColor == addDelColor[0])
@@ -509,7 +513,8 @@ namespace WinUserMgr
             DataGridViewRow currentRow = dataGridUsers.CurrentRow;
 
             // 獲取當前行的第一列的值
-            string firstCell = currentRow.Cells[0].Value?.ToString();
+            string firstCell = "";
+            if (currentRow.Cells[0].Value != null) firstCell = currentRow.Cells[0].Value.ToString();
 
             // 如果當前行的背景顏色為綠色（即允許刪除的顏色）
             if (currentRow.DefaultCellStyle.BackColor == addDelColor[0])

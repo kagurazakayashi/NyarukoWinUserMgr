@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 '查看程序集特性的值
 
-<Assembly: AssemblyTitle("GroupMgr")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("GroupMgr")>
-<Assembly: AssemblyCopyright("Copyright ©  2024")>
+<Assembly: AssemblyTitle("Nya用户组管理器")>
+<Assembly: AssemblyDescription("Nyaruko Windows User Manager")>
+<Assembly: AssemblyCompany("KagurazakaYashi")>
+<Assembly: AssemblyProduct("Nyaruko Windows User Manager")>
+<Assembly: AssemblyCopyright("Copyright © KagurazakaMiyabi 2024")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>

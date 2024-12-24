@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("UserInfo")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("雅詩用户信息修改模组")]
+[assembly: AssemblyDescription("Nyaruko Windows User Manager")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("UserInfo")]
-[assembly: AssemblyCopyright("Copyright ©  2024")]
+[assembly: AssemblyCompany("KagurazakaYashi")]
+[assembly: AssemblyProduct("Nyaruko Windows User Manager")]
+[assembly: AssemblyCopyright("Copyright © KagurazakaMiyabi 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

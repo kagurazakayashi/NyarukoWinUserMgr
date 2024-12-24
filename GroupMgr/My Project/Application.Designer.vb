@@ -24,15 +24,15 @@ Namespace My
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Public Sub New()
             MyBase.New(Global.Microsoft.VisualBasic.ApplicationServices.AuthenticationMode.Windows)
-            Me.IsSingleInstance = True
-            Me.EnableVisualStyles = False
-            Me.SaveMySettingsOnExit = False
-            Me.ShutdownStyle = Global.Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses
+            Me.IsSingleInstance = true
+            Me.EnableVisualStyles = false
+            Me.SaveMySettingsOnExit = false
+            Me.ShutDownStyle = Global.Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses
         End Sub
-
-        <Global.System.Diagnostics.DebuggerStepThroughAttribute()>
+        
+        <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = New Global.GroupMgr.FormGroupSelect()
+            Me.MainForm = New Global.GroupMgr.FormGroupSelect
         End Sub
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _

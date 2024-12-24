@@ -88,7 +88,7 @@ namespace SystemRes
                 DestroyIcon(largeIcons[0]);
                 return icon;
             }
-            MessageBox.Show($"{Marshal.GetLastWin32Error()}", $"无法提取图标 {iconIndex} : {dllPath}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("{Marshal.GetLastWin32Error()}", "无法提取图标 " + iconIndex.ToString() + " : " + dllPath, MessageBoxButtons.OK, MessageBoxIcon.Error);
             return null;
         }
 

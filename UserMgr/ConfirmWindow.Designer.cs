@@ -30,11 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfirmWindow));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripButtonClose = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonOK = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabelStatus = new System.Windows.Forms.ToolStripLabel();
             this.listBoxTasks = new System.Windows.Forms.ListBox();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,7 +43,7 @@
             this.toolStrip1.AllowMerge = false;
             this.toolStrip1.BackColor = System.Drawing.Color.SkyBlue;
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.toolStrip1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            this.toolStrip1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.toolStrip1.GripMargin = new System.Windows.Forms.Padding(0);
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -58,6 +58,13 @@
             this.toolStrip1.Size = new System.Drawing.Size(984, 38);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "主机";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 25);
+            this.toolStripProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.toolStripProgressBar1.Value = 50;
             // 
             // toolStripButtonClose
             // 
@@ -76,7 +83,7 @@
             this.toolStripButtonOK.Image = global::WinUserMgr.Properties.Resources.flash_on;
             this.toolStripButtonOK.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonOK.Name = "toolStripButtonOK";
-            this.toolStripButtonOK.Size = new System.Drawing.Size(113, 25);
+            this.toolStripButtonOK.Size = new System.Drawing.Size(114, 25);
             this.toolStripButtonOK.Text = "开始执行(&E)";
             this.toolStripButtonOK.Click += new System.EventHandler(this.toolStripButtonOK_Click);
             // 
@@ -91,7 +98,7 @@
             this.listBoxTasks.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBoxTasks.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxTasks.FormattingEnabled = true;
-            this.listBoxTasks.ItemHeight = 21;
+            this.listBoxTasks.ItemHeight = 20;
             this.listBoxTasks.Location = new System.Drawing.Point(0, 0);
             this.listBoxTasks.Margin = new System.Windows.Forms.Padding(10);
             this.listBoxTasks.Name = "listBoxTasks";
@@ -100,19 +107,14 @@
             this.listBoxTasks.Size = new System.Drawing.Size(984, 403);
             this.listBoxTasks.TabIndex = 2;
             // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 25);
-            // 
             // ConfirmWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 441);
             this.Controls.Add(this.listBoxTasks);
             this.Controls.Add(this.toolStrip1);
-            this.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.MinimizeBox = false;

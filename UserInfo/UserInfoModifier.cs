@@ -17,7 +17,11 @@ namespace UserInfo
         /// <param name="domain">域名，如果為 null 則使用當前計算機名。</param>
         public UserInfoModifier(string domain = null)
         {
-            this.domain = domain ?? Environment.MachineName;
+            this.domain = domain;
+            if (string.IsNullOrWhiteSpace(domain))
+            {
+                this.domain = Environment.MachineName;
+            }
         }
 
         /// <summary>
@@ -29,7 +33,7 @@ namespace UserInfo
         {
             // 定義使用者路徑，使用 WinNT 提供的路徑格式。
             // domain 是當前類中定義的域名變數，username 是方法引數。
-            string userPath = $"WinNT://{domain}/{username},user";
+            string userPath = "WinNT://" + domain + "/" + username + ",user";
 
             // 建立並返回一個新的 DirectoryEntry 物件，表示指定使用者的目錄條目。
             return new DirectoryEntry(userPath);
@@ -46,7 +50,7 @@ namespace UserInfo
             try
             {
                 // 使用 WinNT 提供的方式連線到指定域。
-                using (var entry = new DirectoryEntry($"WinNT://{domain}"))
+                using (var entry = new DirectoryEntry("WinNT://" + domain))
                 {
                     // 在域中新增一個新的使用者。
                     var user = entry.Children.Add(username, "user");
@@ -78,7 +82,7 @@ namespace UserInfo
             try
             {
                 // 使用 WinNT 提供的方式訪問指定域中的目錄入口。
-                using (var entry = new DirectoryEntry($"WinNT://{domain}"))
+                using (var entry = new DirectoryEntry("WinNT://" + domain))
                 {
                     // 在目錄中查詢指定使用者名稱的使用者物件，型別為 "user"。
                     var user = entry.Children.Find(username, "user");
@@ -357,7 +361,7 @@ namespace UserInfo
                 // 透過 using 語句確保在使用完後資源會被自動釋放。
                 using (var userEntry = GetUserEntry(username))
                 // 建立一個目錄條目物件，表示指定的組。
-                using (var groupEntry = new DirectoryEntry($"WinNT://{domain}/{groupName},group"))
+                using (var groupEntry = new DirectoryEntry("WinNT://" + domain + "/" + groupName + ",group"))
                 {
                     // 呼叫組的 Add 方法，將使用者條目的路徑新增到組。
                     groupEntry.Invoke("Add", new object[] { userEntry.Path });
@@ -417,7 +421,7 @@ namespace UserInfo
                 // 獲取使用者的目錄條目
                 using (var userEntry = GetUserEntry(username))
                 // 獲取組的目錄條目
-                using (var groupEntry = new DirectoryEntry($"WinNT://{domain}/{groupName},group"))
+                using (var groupEntry = new DirectoryEntry("WinNT://" + domain + "/" + groupName + ",group"))
                 {
                     // 呼叫組條目的 Remove 方法，移除指定使用者
                     groupEntry.Invoke("Remove", new object[] { userEntry.Path });
@@ -442,7 +446,7 @@ namespace UserInfo
             try
             {
                 // 透過 WinNT 協議連線到指定域的目錄。
-                using (var entry = new DirectoryEntry($"WinNT://{domain}"))
+                using (var entry = new DirectoryEntry("WinNT://" + domain))
                 {
                     // 建立一個新的群組節點。
                     var group = entry.Children.Add(groupName, "group");
@@ -469,7 +473,7 @@ namespace UserInfo
             try
             {
                 // 使用 DirectoryEntry 对象连接到指定域（WinNT:// 格式用于访问 Windows NT 域）。
-                using (var entry = new DirectoryEntry($"WinNT://{domain}"))
+                using (var entry = new DirectoryEntry("WinNT://" + domain))
                 {
                     // 查找具有指定名称的组对象。
                     var group = entry.Children.Find(groupName, "group");

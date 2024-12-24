@@ -32,7 +32,7 @@ namespace WinUserMgr
         /// </summary>
         /// <param name="dataGridUsers">DataGridView 控制元件，包含使用者資料。</param>
         /// <param name="originalData">字典，儲存原始資料，鍵為單元格的行列索引 (row, col)，值為單元格的原始值。</param>
-        public void GetChangeList(DataGridView dataGridUsers, Dictionary<(int row, int col), object> originalData)
+        public void GetChangeList(DataGridView dataGridUsers, Dictionary<Coordinate, object> originalData)
         {
             // 清空之前記錄的更改列表。
             changes.RemoveAll(x => true);
@@ -51,16 +51,19 @@ namespace WinUserMgr
                         continue;
                     }
 
+                    // 建立 Coordinate 物件
+                    Coordinate coordinate = new Coordinate(cell.RowIndex, cell.ColumnIndex);
+
                     // 判斷該單元格是否為新行資料。
-                    bool isNewRow = !originalData.ContainsKey((cell.RowIndex, cell.ColumnIndex));
+                    bool isNewRow = !originalData.ContainsKey(coordinate);
                     if (isNewRow)
                     {
                         // 如果是新行，將其當前值儲存為原始資料。
-                        originalData[(cell.RowIndex, cell.ColumnIndex)] = cell.Value;
+                        originalData[coordinate] = cell.Value;
                     }
 
                     // 獲取單元格的原始值和當前值。
-                    var originalValue = originalData[(cell.RowIndex, cell.ColumnIndex)];
+                    var originalValue = originalData[coordinate];
                     var newValue = cell.Value;
 
                     // 判斷兩個值是否都為 null 或為空字串。
@@ -72,7 +75,7 @@ namespace WinUserMgr
                     {
                         changes.Add(new DataGridChange
                         {
-                            OriginalValue = originalValue ?? "",
+                            OriginalValue = originalValue != null ? originalValue : "",
                             NewValue = newValue,
                             RowIndex = cell.RowIndex,
                             ColumnIndex = cell.ColumnIndex,
@@ -134,56 +137,58 @@ namespace WinUserMgr
                 // 根據列索引處理不同型別的更改
                 switch (change.ColumnIndex)
                 {
-                    case -1 when change.RowIndex == -1:
-                        // 刪除使用者
-                        info = $"{ii}. 删除用户 \"{name}\"";
-                        err = chUsr?.DeleteUser(name) ?? "";
+                    case -1:
+                        if (change.RowIndex == -1)
+                        {
+                            // 刪除使用者
+                            info = ii.ToString() + ". 删除用户 \"" + name + "\"";
+                            if (chUsr != null) err = chUsr.DeleteUser(name);
+                        }
                         break;
-
                     case 0:
                         // 建立新使用者
-                        info = $"{ii}. 创建新用户 \"{name}\"";
-                        err = chUsr?.CreateUser(name, "") ?? "";
+                        info = ii.ToString() + ". 创建新用户 \"" + name + "\"";
+                        if (chUsr != null) err = chUsr.CreateUser(name, "");
                         break;
 
                     case 1:
                         // 更改使用者全名
-                        info = $"{ii}. 将用户 \"{name}\" 的全名从 \"{originalValue}\" 改为 \"{newValue}\"";
-                        err = chUsr?.SetFullName(name, newValue) ?? "";
+                        info = ii.ToString() + ". 将用户 \"" + name + "\" 的全名从 \"" + originalValue + "\" 改为 " + newValue;
+                        if (chUsr != null) err = chUsr.SetFullName(name, newValue);
                         break;
 
                     case 2:
                         // 更改使用者描述
-                        info = $"{ii}. 将用户 \"{name}\" 的描述从 \"{originalValue}\" 改为 \"{newValue}\"";
-                        err = chUsr?.SetDescription(name, newValue) ?? "";
+                        info = ii.ToString() + ". 将用户 \"" + name + "\" 的描述从 \"" + originalValue + "\" 改为 " + newValue;
+                        if (chUsr != null) err = chUsr.SetDescription(name, newValue);
                         break;
 
                     case 4:
                         // 重置使用者密碼
-                        info = $"{ii}. 将用户 \"{name}\" 的密码重置为 \"{newValue}\"";
+                        info = ii.ToString() + ". 将用户 \"" + name + "\" 的密码重置为 " + newValue;
                         hasChPwd = true;
-                        err = chUsr?.SetUserPassword(name, newValue) ?? "";
+                        if (chUsr != null) err = chUsr.SetUserPassword(name, newValue);
                         break;
 
                     case 5:
                         // 停用或啟用使用者
                         bool disable = change.NewValue.ToString() == "True";
-                        info = $"{ii}. {(disable ? "禁用" : "启用")}用户 \"{name}\"";
-                        err = chUsr?.SetAccountDisabled(name, disable) ?? "";
+                        info = ii.ToString() + ". " + (disable ? "禁用" : "启用") + "用户 \"" + name + "\"";
+                        if (chUsr != null) err = chUsr.SetAccountDisabled(name, disable);
                         break;
 
                     case 6:
                         // 設定密碼是否永不過期
                         bool neverExpires = change.NewValue.ToString() == "True";
-                        info = $"{ii}. 将用户 \"{name}\" 的密码设置为{(neverExpires ? "永不过期" : "需要定期更改")}";
-                        err = chUsr?.SetPasswordNeverExpires(name, neverExpires) ?? "";
+                        info = ii.ToString() + ". 将用户 \"" + name + "\" 的密码设置为" + (neverExpires ? "永不过期" : "需要定期更改");
+                        if (chUsr != null) err = chUsr.SetPasswordNeverExpires(name, neverExpires);
                         break;
 
                     case 7:
                         // 設定密碼是否允許使用者更改
                         bool cannotChange = change.NewValue.ToString() == "True";
-                        info = $"{ii}. 将用户 \"{name}\" 的密码设置为{(cannotChange ? "不允许用户更改" : "可以由用户更改")}";
-                        err = chUsr?.SetPasswordCannotBeChanged(name, cannotChange) ?? "";
+                        info = ii.ToString() + ". 将用户 \"" + name + "\" 的密码设置为" + (cannotChange ? "不允许用户更改" : "可以由用户更改");
+                        if (chUsr != null) err = chUsr.SetPasswordCannotBeChanged(name, cannotChange);
                         break;
 
                     default:
@@ -191,13 +196,23 @@ namespace WinUserMgr
                         if (change.ColumnIndex >= defaultDataGridUsersColumnsCount)
                         {
                             bool addToGroup = change.NewValue.ToString() == "True";
-                            info = $"{ii}. 将用户 \"{name}\" {(addToGroup ? "添加到" : "从")}用户组 \"{change.Title}\" {(addToGroup ? "" : "中移除")}";
-                            err = addToGroup ? chUsr?.AddToGroup(name, change.Title) ?? "" : chUsr?.RemoveFromGroup(name, change.Title) ?? "";
+                            info = ii.ToString() + ". 将用户 \"" + name + "\" " + (addToGroup ? "添加到" : "从") + "用户组 \"" + change.Title + "\" " + (addToGroup ? "" : "中移除");
+                            if (chUsr != null)
+                            {
+                                if (addToGroup)
+                                {
+                                    err = chUsr.AddToGroup(name, change.Title);
+                                }
+                                else
+                                {
+                                    err = chUsr.RemoveFromGroup(name, change.Title);
+                                }
+                            }
                         }
                         else
                         {
                             ii--;
-                            Console.WriteLine($"禁止将用户 \"{name}\" 的 \"{change.Title}\" 从 \"{originalValue}\" 改为 \"{newValue}\"");
+                            Console.WriteLine("禁止将用户 \"" + name + "\" 的 \"" + change.Title + "\" 从 \"" + originalValue + "\" 改为 \"" + newValue + "\"");
                             continue;
                         }
                         break;
