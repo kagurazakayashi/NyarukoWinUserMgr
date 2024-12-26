@@ -149,23 +149,18 @@ _要是能像 Excel 一样管理和配置 Windows 账户就好了，尤其是能
 
 请勿直接运行主项目，主项目依赖解决方案中的其他组件，这些组件必须先完成编译才行。
 
-### 打包
-
-当 `解决方案配置` 为 `Release` 时， `重新生成解决方案` 将自动将生成的文件以 `.cab` 格式打包到 `bin/` 中，并包括文档文件。
-
-例如，在 `解决方案平台` 为 `x64` 时，会创建文件 `bin/WinUserMgr_x64.cab` 。
-
 ### 使用构建+打包脚本（输出和 Release 相同的文件）
 
 1. 进入[环境2](#环境2-为兼容操作系统构建) 。
 2. 在开始菜单中找到并打开 `Visual Studio 命令提示(2010)` (`Microsoft Visual Studio 2010 x86 tools`) 。
 3. `CD` 到本项目的根文件夹。
 4. 输入 `clean.bat` 执行。该操作会清理上次生成的全部文件。
-5. 输入 `buildxp.bat` 执行。该操作会生成文件 `bin\*_Itanium.cab` 和 `bin\*_x86.cab` 。
+5. 输入 `buildxp.bat` 执行。该操作会生成文件 Itanium 和 x86 平台构建。
 6. 进入[环境1](#环境1-为较新操作系统构建) 。
 7. 在开始菜单中找到并打开 `Developer Command Prompt for VS 2022` 。
 8. `CD` 到本项目的根文件夹。
-9. 输入 `build.bat` 执行。该操作会生成文件 `bin\*_ARM64.cab` 和 `bin\*_x64.cab` 。
+9. 输入 `build.bat` 执行。该操作会生成文件 ARM64.cab 和 x64 平台构建。
+10. 输入 `public.bat` 执行。该操作会打包各个平台的构建到 `bin\*.cab` 文件中。
 
 ## 许可证 LICENSE
 

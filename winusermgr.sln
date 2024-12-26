@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinUserMgr", "UserMgr\WinUserMgr.csproj", "{F83C87F1-37DF-4A21-949F-BF7D2A03B807}"
+	ProjectSection(ProjectDependencies) = postProject
+		{65BB3000-3D76-46BA-8C04-E8F87124FD8C} = {65BB3000-3D76-46BA-8C04-E8F87124FD8C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemRes", "SystemRes\SystemRes.csproj", "{00E6561B-C3EB-4CAE-A294-7F70C6D185D8}"
 EndProject

@@ -157,7 +157,7 @@ namespace WinUserMgr
             {
                 this.Invoke((Action)(() =>
                 {
-                    if (MessageBox.Show(ex.Message, "未能打开对话框", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
+                    if (MessageBox.Show(ex.Message, programPath, MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
                     {
                         toolStripButtonGroups_Click(null, null);
                     }

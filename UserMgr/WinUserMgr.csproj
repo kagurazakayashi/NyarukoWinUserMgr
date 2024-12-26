@@ -268,16 +268,7 @@ COPY /Y "$(SolutionDir)README.md" "$(TargetDir)"
 ECHO [.ShellClassInfo] &gt; "$(TargetDir)desktop.ini"
 ECHO IconResource=$(TargetFileName),0 &gt;&gt; "$(TargetDir)desktop.ini"
 ECHO IconFile=$(TargetFileName) &gt;&gt; "$(TargetDir)desktop.ini"
-ECHO IconIndex=0 &gt;&gt; "$(TargetDir)desktop.ini"
-DIR /B &gt; filelist.txt
-if "$(ConfigurationName)"=="Release" (
-
-MKDIR $(SolutionDir)bin
-MAKECAB /F filelist.txt /D CompressionType=LZX /D CompressionMemory=21 /D maxdisksize=1024000000
-MOVE /Y $(ProjectDir)\$(OutDir)disk1\1.cab $(SolutionDir)bin\$(ProjectName)_$(PlatformName).cab
-RMDIR /Q $(ProjectDir)\$(OutDir)disk1
-
-)</PostBuildEvent>
+ECHO IconIndex=0 &gt;&gt; "$(TargetDir)desktop.ini"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>DEL /S /Q $(SolutionDir)UserMgr\$(OutDir)*</PreBuildEvent>

@@ -1,0 +1,14 @@
+desktop.ini
+GroupMgr.exe
+GroupMgr.exe.config
+GroupMgr.pdb
+GroupMgr.xml
+LICENSE
+README.md
+SystemRes.dll
+SystemRes.pdb
+UserInfo.dll
+UserInfo.pdb
+WinUserMgr.exe
+WinUserMgr.exe.config
+WinUserMgr.pdb
