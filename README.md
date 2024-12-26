@@ -55,7 +55,7 @@ _要是能像 Excel 一样管理和配置 Windows 账户就好了，尤其是能
 
 ## 它怎么使用？
 
-### 这是本软件的主画面
+### 软件主画面
 
 ![主程序画面](screenshot/s001.png)
 
@@ -121,19 +121,21 @@ _要是能像 Excel 一样管理和配置 Windows 账户就好了，尤其是能
 
 你可以从以下两个方案中启动源代码：
 
-#### 方案1: 为较新操作系统构建
+#### 环境1: 为较新操作系统构建
 
 - Windows 10 (64位版) / Windows 11
 - Visual Studio 2022 (包含 C# 和 VB.NET 环境)
 - .NET Framework 4.0/4.8 SDK (Visual Studio 可能会提示你升级)
 - 打开工程文件: `winusermgr.sln`
+- 注意: 不支持 `Itanium` 平台
 
-#### 方案2: 为兼容操作系统构建
+#### 环境2: 为兼容操作系统构建
 
 - Windows XP SP3 (32位简体中文版)
 - Visual Studio 2010 (包含 C# 和 VB.NET 环境)
 - .NET Framework 4.0 SDK
 - 打开工程文件: `winusermgrxp.sln`
+- 注意: 不支持大于 4.0 的 .NET Framework 版本
 
 ### 编译步骤
 
@@ -141,8 +143,9 @@ _要是能像 Excel 一样管理和配置 Windows 账户就好了，尤其是能
 
 1. 前往 Visual Studio 的 主菜单 → `生成` → `重新生成解决方案` 。
 2. 在 `解决方案资源管理器` 窗口中的 `WinUserMgr` 项目点右键，选择 `设为启动项目` 。
-3. 在工具栏中的 `解决方案配置` 选择 `Debug` ，`解决方案平台` 选择你的系统和处理器或 `Any CPU` 。
-4. 按 `F5` 运行项目。
+3. 如果需要升级 .NET Framework 版本，可以在每个项目点右键，选择 `属性`，然后在 `目标框架` 中选择更新的 `4.x` 版本。
+4. 在工具栏中的 `解决方案配置` 选择 `Debug` ，`解决方案平台` 选择你的系统和处理器或 `Any CPU` 。
+5. 按 `F5` 运行项目。
 
 请勿直接运行主项目，主项目依赖解决方案中的其他组件，这些组件必须先完成编译才行。
 
@@ -152,6 +155,18 @@ _要是能像 Excel 一样管理和配置 Windows 账户就好了，尤其是能
 
 例如，在 `解决方案平台` 为 `x64` 时，会创建文件 `bin/WinUserMgr_x64.cab` 。
 
+### 使用构建+打包脚本（输出和 Release 相同的文件）
+
+1. 进入[环境2](#环境2-为兼容操作系统构建) 。
+2. 在开始菜单中找到并打开 `Visual Studio 命令提示(2010)` (`Microsoft Visual Studio 2010 x86 tools`) 。
+3. `CD` 到本项目的根文件夹。
+4. 输入 `clean.bat` 执行。该操作会清理上次生成的全部文件。
+5. 输入 `buildxp.bat` 执行。该操作会生成文件 `bin\*_Itanium.cab` 和 `bin\*_x86.cab` 。
+6. 进入[环境1](#环境1-为较新操作系统构建) 。
+7. 在开始菜单中找到并打开 `Developer Command Prompt for VS 2022` 。
+8. `CD` 到本项目的根文件夹。
+9. 输入 `build.bat` 执行。该操作会生成文件 `bin\*_ARM64.cab` 和 `bin\*_x64.cab` 。
+
 ## 许可证 LICENSE
 
-Copyright (c) 2024 KagurazakaYashi(Miyabi) NyarukoWindowsUserManager(WinUserMgr) is licensed under Mulan PSL v2. You can use this software according to the terms and conditions of the Mulan PSL v2. You may obtain a copy of Mulan PSL v2 at: http://license.coscl.org.cn/MulanPSL2 THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE. See the Mulan PSL v2 for more details.
+Copyright (c) 2024 KagurazakaYashi(Miyabi) NyarukoWindowsUserManager(WinUserMgr) is licensed under Mulan PSL v2. You can use this software according to the terms and conditions of the Mulan PSL v2. You may obtain a copy of Mulan PSL v2 at: <http://license.coscl.org.cn/MulanPSL2> THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE. See the Mulan PSL v2 for more details.

@@ -223,9 +223,39 @@ namespace WinUserMgr
         /// <param name="e">窗體關閉事件引數。</param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // 釋放 PictureBox 的資源並置空引用
-            pictureBoxBG.Dispose();
-            pictureBoxBG = null;
+            // 檢查是否有未應用的更改
+            updateChgList();
+            if (chUser.changes.Count > 0)
+            {
+                string info = "有 " + chUser.changes.Count.ToString() + " 个更改还没有应用到系统，要查看这些更改吗？\n\n是：核对未应用到系统的更改；\n否：放弃更改并退出；\n取消：什么都不做。";
+                DialogResult dr = MessageBox.Show(info, "有未应用到系统的更改", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (dr == DialogResult.Yes)
+                {
+                    // 開啟“核對更改”視窗
+                    e.Cancel = true;
+                    if (confirmWindow == null)
+                    {
+                        toolStripButtonOK_Click(sender, e);
+                    }
+                    else
+                    {
+                        confirmWindow.Activate();
+                    }
+                }
+                else if (dr == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+            }
+            if (e.Cancel == false)
+            {
+                // 釋放 PictureBox 的資源並置空引用
+                if (pictureBoxBG != null)
+                {
+                    pictureBoxBG.Dispose();
+                    pictureBoxBG = null;
+                }
+            }
         }
 
         /// <summary>

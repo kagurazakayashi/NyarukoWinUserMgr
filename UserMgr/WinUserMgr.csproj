@@ -259,8 +259,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>setlocal enabledelayedexpansion
-DEL /Q "$(TargetDir)\GroupMgr.exe"
+    <PostBuildEvent>DEL /Q "$(TargetDir)\GroupMgr.exe"
 
 COPY /Y "$(SolutionDir)GroupMgr\$(OutDir)\GroupMgr.exe" "$(TargetDir)"
 COPY /Y "$(SolutionDir)desktop.ini" "$(TargetDir)"
